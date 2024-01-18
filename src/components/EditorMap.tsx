@@ -1,15 +1,13 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import React, { FC, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import { ScenegraphLayer, ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
 import { COORDINATE_SYSTEM, PickingInfo } from '@deck.gl/core/typed';
+import { PathLayer } from '@deck.gl/layers/typed';
 import { demoPolygonLayer } from '../constants/layers';
 import { coordinateToMeter } from '../utils/deckGlHelpers';
-import { PathLayer } from '@deck.gl/layers/typed';
 import { mapRobotElementsToPathData } from '../utils/dataHelper';
-import { number } from 'prop-types';
-import { Simulate } from 'react-dom/test-utils';
-import keyDown = Simulate.keyDown;
 
 const scenegraphLayerDefaults: Partial<ScenegraphLayerProps> = {
     coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
@@ -34,6 +32,7 @@ enum EDragMode {
 const INITIAL_VIEW_STATE: ViewState<any, any, any> = {
     longitude: 0,
     latitude: 0,
+    // @ts-ignore
     zoom: 21,
     maxZoom: 25,
     minZoom: 19,
@@ -76,6 +75,7 @@ const EditorMap: FC<{
         id: 'path-layer-track',
         coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
         pickable: true,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         data: mapRobotElementsToPathData(pathData.elements),
         widthScale: 0.05,
         getWidth: 1,
