@@ -4,10 +4,14 @@ import DeckGL from '@deck.gl/react/typed';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import { ScenegraphLayer, ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
 import { COORDINATE_SYSTEM, PickingInfo } from '@deck.gl/core/typed';
-import { PathLayer } from '@deck.gl/layers/typed';
+import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { demoPolygonLayer } from '../constants/layers';
 import { coordinateToMeter } from '../utils/deckGlHelpers';
-import { mapRobotElementsToPathData } from '../utils/dataHelper';
+import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../utils/dataHelper';
+import { TMapElement } from '../types/pudu-api/robotMap';
+import { svgToDataURL } from '../utils/marker';
+import { blueMarker } from '../assets/markers';
+import { IIconData } from '../types/deckgl-map';
 
 const scenegraphLayerDefaults: Partial<ScenegraphLayerProps> = {
     coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
@@ -60,12 +64,16 @@ type TUndoStackItem = {
     orientation: [number, number, number],
 }
 
+type TMap = {
+    elements: TMapElement[],
+}
+
 const EditorMap: FC<{
     gltfModelsProp: TGltfModel[],
-    pathData: any,
+    map: TMap,
 }> = ({
     gltfModelsProp,
-    pathData,
+    map,
 }) => {
     const [viewState, setViewState] = useState<ViewState<any, any, any>>(INITIAL_VIEW_STATE);
 
@@ -84,11 +92,30 @@ const EditorMap: FC<{
 
     const [hasChanged, setHasChanged] = useState(false);
 
+    const pathData = useMemo(() => mapRobotElementsToPathData(map.elements), [map]);
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
         ...pathLayerDefaults,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-        data: mapRobotElementsToPathData(pathData.elements),
+        data: pathData,
     }), [pathData]);
+
+    const iconData = useMemo(() => mapRobotElementsToIconData(map.elements), [map]);
+    const iconLayer = useMemo<IconLayer>(() => new IconLayer({
+        id: 'icon-layer',
+        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+        pickable: true,
+        data: iconData,
+        sizeScale: 3,
+        getSize: 1,
+        sizeUnits: 'meters',
+        getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
+        getIcon: () => ({
+            url: svgToDataURL(blueMarker()),
+            height: 128,
+            width: 128,
+        }),
+        getColor: (d: IIconData) => d.color || [0, 0, 0],
+    }), [iconData])
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => gltfModels.map((gltfModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
@@ -279,6 +306,7 @@ const EditorMap: FC<{
                     ...scenegraphLayers,
                     demoPolygonLayer,
                     pathLayer,
+                    iconLayer,
                 ]}
                 controller={!draggingId}
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState)}

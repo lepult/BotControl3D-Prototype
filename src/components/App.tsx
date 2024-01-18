@@ -32,7 +32,7 @@ const App = () => {
                 position: [0.6, 1.3, 0],
                 orientation: [0, 122, 90]
             }]}
-            pathData={pathData}
+            map={pathData}
         />
     )
 };
