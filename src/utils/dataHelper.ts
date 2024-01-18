@@ -17,22 +17,44 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
         // Elements with the same id are connected lines
         // Add vector to other element, if they have the same id
         const find = pathData.find((d) => d.id === element.id && d.type === element.type);
+        const newVector = insertTokenEveryN(element.vector, 0.1, 2, false);
+        console.log('element.vector', element.vector);
+        console.log('newVector', newVector);
         if (!find) {
             pathData.push({
                 id: element.id,
                 type: element.type,
                 name: typeof element.name === 'string' ? element.name : element.id,
                 color: element.type === MapElementType.track ? [255, 0, 0] : [0, 0, 255],
-                path: [...element.vector]
+                path: [...newVector]
             });
         } else {
-            find.path.push(...element.vector);
+            find.path.push(...newVector);
         }
     });
 
     return pathData;
 };
 // endregion
+
+const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: boolean) => {
+    // Clone the received array, so we don't mutate the
+    // original one. You can ignore this if you don't mind.
+
+    const a = array.slice(0);
+
+    // Insert the <token> every <n> elements.
+
+    let idx = fromEnd ? a.length - n : n;
+
+    while ((fromEnd ? idx >= 1 : idx <= a.length))
+    {
+        a.splice(idx, 0, token);
+        idx = (fromEnd  ? idx - n : idx + n + 1);
+    }
+
+    return a;
+};
 
 // region IconData
 /**

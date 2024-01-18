@@ -29,7 +29,6 @@ const pathLayerDefaults: Partial<PathLayer> = {
     widthScale: 0.05,
     getWidth: 1,
     widthMinPixels: 2,
-    positionFormat: `XY`,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
     getColor: (d: { color: [number, number, number] }) => d.color || [0, 0, 0],
 }
