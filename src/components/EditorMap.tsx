@@ -17,6 +17,19 @@ const scenegraphLayerDefaults: Partial<ScenegraphLayerProps> = {
     _lighting: 'pbr',
 }
 
+const pathLayerDefaults: Partial<PathLayer> = {
+    id: 'path-layer-track',
+    // @ts-ignore
+    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+    pickable: true,
+    widthScale: 0.05,
+    getWidth: 1,
+    widthMinPixels: 2,
+    positionFormat: `XY`,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
+    getColor: (d: { color: [number, number, number] }) => d.color || [0, 0, 0],
+}
+
 type TGltfModel = {
     id: string,
     url: string,
@@ -72,18 +85,10 @@ const EditorMap: FC<{
     const [hasChanged, setHasChanged] = useState(false);
 
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
-        id: 'path-layer-track',
-        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-        pickable: true,
+        ...pathLayerDefaults,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         data: mapRobotElementsToPathData(pathData.elements),
-        widthScale: 0.05,
-        getWidth: 1,
-        widthMinPixels: 2,
-        positionFormat: `XY`,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-        getColor: (d) => d.color || [0, 0, 0],
-    }), [pathData])
+    }), [pathData]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => gltfModels.map((gltfModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
@@ -98,24 +103,30 @@ const EditorMap: FC<{
         scenegraph: gltfModel.url,
         getPosition: (m: TGltfModel) => m.position,
         getOrientation: (m: TGltfModel) => m.orientation,
-        onDragStart: (info) => {
+        onDragStart: (pickingInfo) => {
+            // Only start dragging if shift XOR ctrl were pressed.
             if ((ctrlPressed && !shiftPressed) || (!ctrlPressed && shiftPressed)) {
-                setDraggingId(info.layer?.id || '');
+                // Saves the id of the element that is being dragged.
+                setDraggingId(pickingInfo.layer?.id || '');
 
-                const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
+                // Saves the position at which the cursor started dragging the element.
+                const meterCoordinate = coordinateToMeter(pickingInfo.coordinate as [number, number]);
                 setDragOffset([
                     meterCoordinate[0] - gltfModel.position[0],
                     meterCoordinate[1] - gltfModel.position[1]]
                 );
 
+                // Saves the rotation of the element before dragging.
                 setPreviousRotation(gltfModel.orientation[1]);
 
+                // Sets the drag mode to translate or rotate depending on whether ctrl or shift was pressed.
                 if (ctrlPressed) {
                     setDragMode(EDragMode.translate);
                 } else if (shiftPressed) {
                     setDragMode(EDragMode.rotate);
                 }
 
+                // Adds the position and rotation of the element to the undo stack.
                 setUndoStack((prev) => [
                     ...prev, {
                         id: gltfModel.id,
@@ -125,23 +136,22 @@ const EditorMap: FC<{
                 ]);
                 setRedoStack([]);
             }
-
-            // TODO Add undo and redo.
         },
-        onDrag: (i, e) => {
+        onDrag: (pickingInfo) => {
             if (draggingId === gltfModel.id) {
                 switch (dragMode) {
                     case EDragMode.translate:
-                        translateModel(i, gltfModel);
+                        translateModel(pickingInfo, gltfModel);
                         break;
                     case EDragMode.rotate:
-                        rotateModel(i, gltfModel);
+                        rotateModel(pickingInfo, gltfModel);
                         break;
                     default:
                 }
             }
         },
         onDragEnd: () => {
+            // Resets various states, that were needed while the element was dragged.
             setDraggingId('');
             setDragOffset([0, 0]);
             setDragMode(null);
