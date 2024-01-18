@@ -58,12 +58,14 @@ const EditorMap: FC<{
     const [viewState, setViewState] = useState<ViewState<any, any, any>>(INITIAL_VIEW_STATE);
 
     const [gltfModels, setGltfModels] = useState<TGltfModel[]>(gltfModelsProp);
+
     const [draggingId, setDraggingId] = useState<string>('');
     // Offset between position of dragging cursor on model in relation to the models center.
     const [dragOffset, setDragOffset] = useState<[number, number]>([0, 0]);
     const [dragMode, setDragMode] = useState<EDragMode | null>(null);
     const [ctrlPressed, setCtrlPressed] = useState(false);
     const [shiftPressed, setShiftPressed] = useState(false);
+    const [previousRotation, setPreviousRotation] = useState(0);
 
     const [undoStack, setUndoStack] = useState<TUndoStackItem[]>([]);
     const [redoStack, setRedoStack] = useState<TUndoStackItem[]>([]);
@@ -81,15 +83,7 @@ const EditorMap: FC<{
         positionFormat: `XY`,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
         getColor: (d) => d.color || [0, 0, 0],
-        onHover: () => console.log('Hover'),
     }), [pathData])
-
-    useEffect(() => {
-        console.log('undoStack', [...undoStack]);
-    }, [undoStack]);
-    useEffect(() => {
-        console.log('redoStack', [...redoStack]);
-    }, [redoStack]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => gltfModels.map((gltfModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
@@ -98,6 +92,9 @@ const EditorMap: FC<{
             position: gltfModel.position,
             orientation: gltfModel.orientation,
         }],
+        opacity: (shiftPressed || ctrlPressed) && ((draggingId && draggingId === gltfModel.id) || !draggingId)
+            ? 0.75
+            : 1,
         scenegraph: gltfModel.url,
         getPosition: (m: TGltfModel) => m.position,
         getOrientation: (m: TGltfModel) => m.orientation,
@@ -110,6 +107,8 @@ const EditorMap: FC<{
                     meterCoordinate[0] - gltfModel.position[0],
                     meterCoordinate[1] - gltfModel.position[1]]
                 );
+
+                setPreviousRotation(gltfModel.orientation[1]);
 
                 if (ctrlPressed) {
                     setDragMode(EDragMode.translate);
@@ -130,8 +129,6 @@ const EditorMap: FC<{
             // TODO Add undo and redo.
         },
         onDrag: (i, e) => {
-            // console.log('onDrag', i);
-            // console.log('coordinate', i.coordinate);
             if (draggingId === gltfModel.id) {
                 switch (dragMode) {
                     case EDragMode.translate:
@@ -148,6 +145,7 @@ const EditorMap: FC<{
             setDraggingId('');
             setDragOffset([0, 0]);
             setDragMode(null);
+            setPreviousRotation(0);
         },
         updateTriggers: {
             // TODO Only update dragged model
@@ -173,7 +171,7 @@ const EditorMap: FC<{
             if (targetModel){
                 targetModel.orientation = [
                     targetModel.orientation[0],
-                    targetModel.orientation[0] + (targetToDragPositionAngleDegree - targetToDragOriginAngleDegree),
+                    previousRotation + (targetToDragPositionAngleDegree - targetToDragOriginAngleDegree),
                     targetModel.orientation[2]
                 ];
             }
@@ -210,8 +208,6 @@ const EditorMap: FC<{
 
                 if (event.keyCode === 90 && event.ctrlKey) {
                     const undoAction = undoStack[undoStack.length - 1];
-                    console.log('undoStack', [...undoStack]);
-                    console.log('undoAction', undoAction);
                     if (undoAction) {
                         const redoStackItem = {
                             id: undoAction.id,
