@@ -1,8 +1,14 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { counterReducer } from './counter/slice';
+import { counterReducer } from './counter/reducer';
+import mapReducer from './map/reducer';
+import destinationReducer from './destination/reducer';
+import miscReducer from './misc/reducer';
 
 const rootReducer = combineReducers({
-    counter: counterReducer
+    counter: counterReducer,
+    map: mapReducer,
+    destination: destinationReducer,
+    misc: miscReducer,
 });
 
 const Store = configureStore({

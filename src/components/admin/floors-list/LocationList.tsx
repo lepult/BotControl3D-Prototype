@@ -1,32 +1,43 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Accordion, Button } from 'chayns-components';
-
-type TLocation = {
-    name: string,
-    id: number,
-}
+import { Accordion } from 'chayns-components';
+import { CustomDestinationType } from '../../../types/api/destination';
+import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
+import LocationItem from './LocationItem';
 
 const LocationList: FC<{
-    locations: TLocation[],
+    mapId: number
+    customTypes: (CustomDestinationType | undefined)[],
     name: string,
+    dataGroup: string,
 }> = ({
-    locations,
+    mapId,
+    customTypes,
     name,
+    dataGroup,
 }) => {
+    const allDestinationsOfMap = useSelector(selectDestinationIdsByMapId(mapId));
+    const allDestinationEntities = useSelector(selectDestinationEntities);
+    const filteredDestinationIds = useMemo(() => allDestinationsOfMap.filter((destinationId) => customTypes.includes(allDestinationEntities[destinationId].customType)),
+        [allDestinationsOfMap, allDestinationEntities, customTypes]);
+
     return (
-        <Accordion head={name} isWrapped>
+        <Accordion
+            head={name}
+            isWrapped
+            dataGroup={dataGroup}
+        >
             <div
                 className="accordion__content"
                 style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    flexWrap: 'wrap',
                 }}
             >
-                {locations.map((location) => (
-                    <Button>
-                        {location.name}
-                    </Button>
+                {filteredDestinationIds.map((destinationId) => (
+                    <LocationItem key={destinationId} destinationId={destinationId}/>
                 ))}
             </div>
         </Accordion>

@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
 import { useIsAdminMode } from 'chayns-api';
+import { useDispatch } from 'react-redux';
 import AdminMode from './admin/AdminMode';
 import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
+import { getAllMapsAction } from '../redux-modules/map/actions';
+import { getAllDestinationsAction } from '../redux-modules/destination/actions';
 
 const App = () => {
+    const dispatch = useDispatch();
     const isAdminMode = useIsAdminMode();
 
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.exclusive);
-    }, []);
+        // @ts-ignore
+        dispatch(getAllMapsAction());
+        // @ts-ignore
+        dispatch(getAllDestinationsAction());
+    }, [dispatch]);
 
     return isAdminMode ? (
         <AdminMode/>
@@ -24,7 +32,7 @@ const App = () => {
         //         position: [0.6, 1.3, 0],
         //         orientation: [0, 122, 90]
         //     }]}
-        //     map={pathData}
+        //     map={pathDataT21OG}
         // />
     ) : 'Nutzermodus'
 };

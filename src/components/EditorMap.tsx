@@ -5,17 +5,19 @@ import { Button } from 'chayns-components';
 import DeckGL from '@deck.gl/react/typed';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
-import { COORDINATE_SYSTEM, PickingInfo } from '@deck.gl/core/typed';
+import { PickingInfo } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { demoPolygonLayer } from '../constants/layers';
 import { coordinateToMeter } from '../utils/deckGlHelpers';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../utils/dataHelper';
 import { TMapElement } from '../types/pudu-api/robotMap';
-import { svgToDataURL } from '../utils/marker';
-import { blueMarker } from '../assets/markers';
-import { IIconData } from '../types/deckgl-map';
 import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
+import { getModelsByMapId, getPathDataByMapId } from '../constants/puduData';
+import { ModelType } from '../constants/models';
+import { useDispatch } from 'react-redux';
+import { changeAdminModeType } from '../redux-modules/misc/actions';
+import { AdminModeType } from '../types/misc';
 
 type TGltfModel = {
     id: string,
@@ -40,15 +42,16 @@ type TMap = {
 }
 
 const EditorMap: FC<{
-    gltfModelsProp: TGltfModel[],
-    map: TMap,
+    mapId: number,
 }> = ({
-    gltfModelsProp,
-    map,
+    mapId,
 }) => {
+    const dispatch = useDispatch();
+
     const [viewState, setViewState] = useState<ViewState<any, any, any>>(INITIAL_VIEW_STATE);
 
-    const [gltfModels, setGltfModels] = useState<TGltfModel[]>(gltfModelsProp);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+    const [gltfModels, setGltfModels] = useState<ModelType[]>([]);
 
     const [draggingId, setDraggingId] = useState<string>('');
     // Offset between position of dragging cursor on model in relation to the models center.
@@ -63,14 +66,16 @@ const EditorMap: FC<{
 
     const [hasChanged, setHasChanged] = useState(false);
 
-    const pathData = useMemo(() => mapRobotElementsToPathData(map.elements), [map]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+    const pathData = useMemo(() => mapRobotElementsToPathData(getPathDataByMapId(mapId).elements), [mapId]);
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
         ...pathLayerDefaults,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         data: pathData,
     }), [pathData]);
 
-    const iconData = useMemo(() => mapRobotElementsToIconData(map.elements), [map]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+    const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements), [mapId]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         data: iconData,
@@ -198,6 +203,7 @@ const EditorMap: FC<{
 
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.wide);
+        setGltfModels(getModelsByMapId(mapId));
     }, []);
 
     return (
@@ -272,19 +278,20 @@ const EditorMap: FC<{
                     left: '50%',
                     transform: 'translateX(-50%)',
                     display: 'flex',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
+                    zIndex: 1000,
                 }}
             >
                 <div style={{ padding: '10px' }}>
                     <Button
-                        onClick={() => console.log('Speichern')}
+                        onClick={() => dispatch(changeAdminModeType({ adminModeType: AdminModeType.default }))}
                     >
                         Speichern
                     </Button>
                 </div>
                 <div style={{ padding: '10px' }}>
                     <Button
-                        onClick={() => console.log('Abbrechen')}
+                        onClick={() => dispatch(changeAdminModeType({ adminModeType: AdminModeType.default }))}
                     >
                         Abbrechen
                     </Button>

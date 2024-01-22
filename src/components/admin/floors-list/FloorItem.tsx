@@ -1,48 +1,131 @@
 import React, { FC } from 'react';
 // @ts-ignore
-import { Accordion } from 'chayns-components';
+import { Accordion, ContextMenu } from 'chayns-components';
+import { useDispatch, useSelector } from 'react-redux';
 import FloorPreview from './FloorPreview';
-import pathData from '../../../constants/pathData';
 import LocationList from './LocationList';
+import { selectMapById } from '../../../redux-modules/map/selectors';
+import { selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
+import { CustomDestinationType } from '../../../types/api/destination';
+import { changeAdminModeType } from '../../../redux-modules/misc/actions';
+import { AdminModeType } from '../../../types/misc';
+import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
 
-const LOCATIONS = [{
-    name: 'Tisch 1',
-    id: 0
+enum LocationType {
+    target,
+    diningOutlet,
+    chargingStation,
+    door,
+    elevator,
+    misc,
+}
+
+const LOCATION_TYPES = [{
+    customTypes: [CustomDestinationType.target],
+    name: 'Lieferpunkte',
+    type: LocationType.target,
 }, {
-    name: 'Tisch 2',
-    id: 1
+    customTypes: [CustomDestinationType.diningOutlet],
+    name: 'Ausgabepunkte',
+    type: LocationType.diningOutlet,
 }, {
-    name: 'Tisch 3',
-    id: 2
+    customTypes: [CustomDestinationType.chargingStation],
+    name: 'Ladestationen',
+    type: LocationType.chargingStation,
+}, {
+    customTypes: [
+        CustomDestinationType.openDoor,
+        CustomDestinationType.closeDoor
+    ],
+    name: 'Türen',
+    type: LocationType.door,
+}, {
+    customTypes: [
+        CustomDestinationType.elevator,
+        CustomDestinationType.inFrontOfElevator,
+        CustomDestinationType.behindElevator
+    ],
+    name: 'Fahrstühle',
+    type: LocationType.elevator,
+}, {
+    customTypes: [CustomDestinationType.intermediate,],
+    name: 'Unzugeordnet',
+    type: LocationType.misc,
 }]
 
 const FloorItem: FC<{
-    name: string
+    mapId: number
 }> = ({
-    name
+    mapId
 }) => {
+    const dispatch = useDispatch();
+
+    const map = useSelector(selectMapById(mapId));
+    const destinations = useSelector(selectDestinationIdsByMapId(mapId));
+    const editingMapId = useSelector(selectEditingMapId);
+    console.log('destinations', mapId, destinations);
+
     return (
-        <Accordion head={name} isWrapped>
+        <Accordion
+            head={map.showName}
+            isWrapped
+            dataGroup="floors"
+            defaultOpened={editingMapId === mapId}
+            right={(
+                <ContextMenu
+                    items={[{
+                        text: 'Karte bearbeiten',
+                        icon: 'fa fa-pencil',
+                        onClick: () => dispatch(changeAdminModeType({
+                            adminModeType: AdminModeType.editMap,
+                            editingMapId: mapId,
+                        })),
+                    }]}
+                />
+            )}
+        >
             <div className="accordion__content">
                 <FloorPreview
-                    floorModels={[{
-                        id: 'scenegraphLayer-1',
-                        url: 'https://w-lpinkernell-z.tobit.ag/models/Gross.glb',
-                        position: [23.65, 12.2, 0],
-                        orientation: [0, -5, 90]
-                    }, {
-                        id: 'scenegraphLayer-2',
-                        url: 'https://w-lpinkernell-z.tobit.ag/models/Gltf-Test.glb',
-                        position: [0.6, 1.3, 0],
-                        orientation: [0, 122, 90]
-                    }]}
-                    map={pathData}
+                    mapId={mapId}
                 />
             </div>
-            <LocationList locations={LOCATIONS} name="Lieferpunkte"/>
-            <LocationList locations={LOCATIONS} name="Ladestationen"/>
-            <LocationList locations={LOCATIONS} name="Türen"/>
-            <LocationList locations={LOCATIONS} name="Fahrstühle"/>
+            {LOCATION_TYPES
+                .filter((locationType) => [
+                    LocationType.target,
+                    LocationType.diningOutlet,
+                    LocationType.chargingStation
+                ].includes(locationType.type))
+                .map((locationType) => (
+                <LocationList
+                    key={locationType.type}
+                    mapId={mapId}
+                    customTypes={locationType.customTypes}
+                    name={locationType.name}
+                    dataGroup="customTypes"
+                />
+            ))}
+            <Accordion
+                head="Zwischenpunkte"
+                isWrapped
+                dataGroup="customTypes"
+            >
+                {LOCATION_TYPES
+                    .filter((locationType) => [
+                        LocationType.door,
+                        LocationType.elevator,
+                        LocationType.misc
+                    ].includes(locationType.type))
+                    .map((locationType) => (
+                    <LocationList
+                        key={locationType.type}
+                        mapId={mapId}
+                        customTypes={locationType.customTypes}
+                        name={locationType.name}
+                        dataGroup="customTypes-intermediate"
+                    />
+                ))}
+            </Accordion>
+
         </Accordion>
     );
 }

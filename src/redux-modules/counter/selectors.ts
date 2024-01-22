@@ -1,4 +1,4 @@
-import { counterSliceName } from './slice';
+import { counterSliceName } from './reducer';
 import { RootState } from '../index';
 
 export const selectCounterState = (state: RootState) => state[counterSliceName];

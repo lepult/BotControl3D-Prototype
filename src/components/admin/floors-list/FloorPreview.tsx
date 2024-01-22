@@ -1,8 +1,10 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
-import { demoPolygonLayer } from '../../../constants/layers';
+import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
+// @ts-ignore
+import { SmallWaitCursor } from 'chayns-components';
 import {
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
@@ -10,8 +12,8 @@ import {
     scenegraphLayerDefaults
 } from '../../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
-import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { TMapElement } from '../../../types/pudu-api/robotMap';
+import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
 
 type TGltfModel = {
     id: string,
@@ -25,28 +27,29 @@ type TMap = {
 }
 
 const FloorPreview: FC<{
-    floorModels: TGltfModel[],
-    map: TMap,
+    mapId: number,
 }> = ({
-    floorModels,
-    map,
+    mapId,
 }) => {
     const [viewState, setViewState] = useState<ViewState<any, any, any>>(INITIAL_VIEW_STATE);
+    const [showPreview, setShowPreview] = useState(false);
 
-    const iconData = useMemo(() => mapRobotElementsToIconData(map.elements), [map]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+    const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements), [mapId]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         data: iconData,
     }), [iconData]);
 
-    const pathData = useMemo(() => mapRobotElementsToPathData(map.elements), [map]);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+    const pathData = useMemo(() => mapRobotElementsToPathData(getPathDataByMapId(mapId).elements), [mapId]);
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
         ...pathLayerDefaults,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         data: pathData,
     }), [pathData]);
 
-    const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => floorModels.map((floorModel) => new ScenegraphLayer({
+    const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
         id: floorModel.id,
         data: [{
@@ -56,30 +59,53 @@ const FloorPreview: FC<{
         scenegraph: floorModel.url,
         getPosition: (m: TGltfModel) => m.position,
         getOrientation: (m: TGltfModel) => m.orientation,
-    })), [floorModels]);
+    })), [mapId]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShowPreview(true);
+        }, 1000)
+    }, []);
 
     return (
-        <div style={{
-            border: '1px solid #000',
-            height: '400px',
-            margin: '10px 10px 10px 0',
-            position: 'relative',
-            width: '100%',
-        }}>
-            <DeckGL
-                viewState={{
-                    ...viewState,
-                    minZoom: 19,
-                }}
-                layers={[
-                    ...scenegraphLayers,
-                    // demoPolygonLayer,
-                    pathLayer,
-                    iconLayer,
-                ]}
-                controller
-                onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
-            />
+        <div
+            style={{
+                border: '1px solid #000',
+                height: '400px',
+                margin: '10px 10px 10px 0',
+                position: 'relative',
+                width: '100%',
+            }}
+            onContextMenu={(event) => event.preventDefault()}
+        >
+            {showPreview ? (
+                <DeckGL
+                    viewState={{
+                        ...viewState,
+                        minZoom: 19,
+                    }}
+                    layers={[
+                        ...scenegraphLayers,
+                        // demoPolygonLayer,
+                        pathLayer,
+                        iconLayer,
+                    ]}
+                    controller
+                    onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
+                />
+            ) : (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100%',
+                        width: '100%'
+                    }}
+                >
+                    <SmallWaitCursor show/>
+                </div>
+            )}
         </div>
     );
 };
