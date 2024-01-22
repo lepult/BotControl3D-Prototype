@@ -18,8 +18,6 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
         // Add vector to other element, if they have the same id
         const find = pathData.find((d) => d.id === element.id && d.type === element.type);
         const newVector = insertTokenEveryN(element.vector, 0.1, 2, false);
-        console.log('element.vector', element.vector);
-        console.log('newVector', newVector);
         if (!find) {
             pathData.push({
                 id: element.id,

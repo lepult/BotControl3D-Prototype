@@ -6,17 +6,7 @@ import EditorMap from './EditorMap';
 const App = () => {
 
     useEffect(() => {
-        void invokeCall({
-            action: 266,
-            value: {
-                updates: [{
-                    type: 'tapp',
-                    value: {
-                        viewMode: 4
-                    }
-                }]
-            }
-        });
+
     }, []);
 
     return (

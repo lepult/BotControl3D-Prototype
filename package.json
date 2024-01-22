@@ -32,7 +32,7 @@
     "@loaders.gl/obj": "^3.4.13",
     "@reduxjs/toolkit": "^1.9.5",
     "chayns-api": "^1.0.20",
-    "chayns-components": "^4.29.3",
+    "chayns-components": "^4.31.4",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Button } from 'chayns-components';
 import DeckGL from '@deck.gl/react/typed';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
-import { ScenegraphLayer, ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
+import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { COORDINATE_SYSTEM, PickingInfo } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { demoPolygonLayer } from '../constants/layers';
@@ -12,26 +13,8 @@ import { TMapElement } from '../types/pudu-api/robotMap';
 import { svgToDataURL } from '../utils/marker';
 import { blueMarker } from '../assets/markers';
 import { IIconData } from '../types/deckgl-map';
-
-const scenegraphLayerDefaults: Partial<ScenegraphLayerProps> = {
-    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-    parameters: { cull: true },
-    pickable: true,
-    sizeScale: 1,
-    _lighting: 'pbr',
-}
-
-const pathLayerDefaults: Partial<PathLayer> = {
-    id: 'path-layer-track',
-    // @ts-ignore
-    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-    pickable: true,
-    widthScale: 0.05,
-    getWidth: 1,
-    widthMinPixels: 2,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-    getColor: (d: { color: [number, number, number] }) => d.color || [0, 0, 0],
-}
+import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
+import { INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
 
 type TGltfModel = {
     id: string,
@@ -44,18 +27,6 @@ enum EDragMode {
     translate,
     rotate,
 }
-
-const INITIAL_VIEW_STATE: ViewState<any, any, any> = {
-    longitude: 0,
-    latitude: 0,
-    // @ts-ignore
-    zoom: 21,
-    maxZoom: 25,
-    minZoom: 19,
-    pitch: 0,
-    bearing: 0,
-    rotationX: 20,
-};
 
 type TUndoStackItem = {
     id: string,
@@ -116,6 +87,53 @@ const EditorMap: FC<{
         getColor: (d: IIconData) => d.color || [0, 0, 0],
     }), [iconData])
 
+    const rotateModel = useCallback((info: PickingInfo, gltfModel: TGltfModel) => {
+        const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
+
+        const targetPosition = gltfModel.position;
+        const dragPosition = [
+            meterCoordinate[0] - targetPosition[0],
+            meterCoordinate[1] - targetPosition[1],
+        ];
+
+        const targetToDragOriginAngleDegree = Math.atan2(-dragOffset[1], -dragOffset[0]) * 180 / Math.PI + 180;
+        const targetToDragPositionAngleDegree = Math.atan2(-dragPosition[1], -dragPosition[0]) * 180 / Math.PI + 180;
+
+        setGltfModels((prev) => {
+            const newGltfModels = [...prev];
+            const targetModel = newGltfModels.find((m) => m.id === gltfModel.id);
+            if (targetModel){
+                targetModel.orientation = [
+                    targetModel.orientation[0],
+                    previousRotation + (targetToDragPositionAngleDegree - targetToDragOriginAngleDegree),
+                    targetModel.orientation[2]
+                ];
+            }
+            return newGltfModels;
+        });
+
+        setHasChanged((prev) => !prev);
+    }, [dragOffset, previousRotation]);
+
+    const translateModel = useCallback((info: PickingInfo, gltfModel: TGltfModel) => {
+        const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
+
+        setGltfModels((prev) => {
+            const newGltfModels = [...prev];
+            const targetModel = newGltfModels.find((m) => m.id === gltfModel.id);
+            if (targetModel){
+                targetModel.position = [
+                    meterCoordinate[0] - dragOffset[0],
+                    meterCoordinate[1] - dragOffset[1],
+                    targetModel.position[2]
+                ];
+            }
+            return newGltfModels;
+        });
+
+        setHasChanged((prev) => !prev);
+    }, [dragOffset]);
+
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => gltfModels.map((gltfModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
         id: gltfModel.id,
@@ -123,7 +141,7 @@ const EditorMap: FC<{
             position: gltfModel.position,
             orientation: gltfModel.orientation,
         }],
-        opacity: (shiftPressed || ctrlPressed) && ((draggingId && draggingId === gltfModel.id) || !draggingId)
+        opacity: ((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed)) && ((draggingId && draggingId === gltfModel.id) || !draggingId)
             ? 0.75
             : 1,
         scenegraph: gltfModel.url,
@@ -187,57 +205,16 @@ const EditorMap: FC<{
             // TODO Only update dragged model
             getPosition: [hasChanged]
         }
-    })), [gltfModels, hasChanged, draggingId, dragMode, ctrlPressed, shiftPressed]);
+    })), [gltfModels, hasChanged, draggingId, dragMode, ctrlPressed, shiftPressed, rotateModel, translateModel]);
 
-    const rotateModel = (info: PickingInfo, gltfModel: TGltfModel) => {
-        const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
-
-        const targetPosition = gltfModel.position;
-        const dragPosition = [
-            meterCoordinate[0] - targetPosition[0],
-            meterCoordinate[1] - targetPosition[1],
-        ];
-
-        const targetToDragOriginAngleDegree = Math.atan2(-dragOffset[1], -dragOffset[0]) * 180 / Math.PI + 180;
-        const targetToDragPositionAngleDegree = Math.atan2(-dragPosition[1], -dragPosition[0]) * 180 / Math.PI + 180;
-
-        setGltfModels((prev) => {
-            const newGltfModels = [...prev];
-            const targetModel = newGltfModels.find((m) => m.id === gltfModel.id);
-            if (targetModel){
-                targetModel.orientation = [
-                    targetModel.orientation[0],
-                    previousRotation + (targetToDragPositionAngleDegree - targetToDragOriginAngleDegree),
-                    targetModel.orientation[2]
-                ];
-            }
-            return newGltfModels;
-        });
-
-        setHasChanged((prev) => !prev);
-    }
-
-    const translateModel = (info: PickingInfo, gltfModel: TGltfModel) => {
-        const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
-
-        setGltfModels((prev) => {
-            const newGltfModels = [...prev];
-            const targetModel = newGltfModels.find((m) => m.id === gltfModel.id);
-            if (targetModel){
-                targetModel.position = [
-                    meterCoordinate[0] - dragOffset[0],
-                    meterCoordinate[1] - dragOffset[1],
-                    targetModel.position[2]
-                ];
-            }
-            return newGltfModels;
-        });
-
-        setHasChanged((prev) => !prev);
-    }
+    useEffect(() => {
+        updateChaynsViewmode(ChaynsViewMode.wide);
+    }, []);
 
     return (
         <div
+            className="deckGlWrapper"
+            onContextMenu={(event) => event.preventDefault()}
             onKeyDown={(event) => {
                 setCtrlPressed(event.ctrlKey);
                 setShiftPressed(event.shiftKey);
@@ -299,6 +276,32 @@ const EditorMap: FC<{
                 setShiftPressed(event.shiftKey);
             }}
         >
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    flexDirection: 'row'
+                }}
+            >
+                <div style={{ padding: '10px' }}>
+                    <Button
+                        onClick={() => console.log('Speichern')}
+                    >
+                        Speichern
+                    </Button>
+                </div>
+                <div style={{ padding: '10px' }}>
+                    <Button
+                        onClick={() => console.log('Abbrechen')}
+                    >
+                        Abbrechen
+                    </Button>
+                </div>
+
+            </div>
             <DeckGL
                 viewState={viewState}
                 layers={[
@@ -308,7 +311,7 @@ const EditorMap: FC<{
                     iconLayer,
                 ]}
                 controller={!draggingId}
-                onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState)}
+                onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
             />
         </div>
 
