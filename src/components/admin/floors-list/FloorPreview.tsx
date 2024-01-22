@@ -4,7 +4,7 @@ import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 // @ts-ignore
-import { SmallWaitCursor } from 'chayns-components';
+import { SmallWaitCursor, Button } from 'chayns-components';
 import {
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
@@ -79,20 +79,35 @@ const FloorPreview: FC<{
             onContextMenu={(event) => event.preventDefault()}
         >
             {showPreview ? (
-                <DeckGL
-                    viewState={{
-                        ...viewState,
-                        minZoom: 19,
-                    }}
-                    layers={[
-                        ...scenegraphLayers,
-                        // demoPolygonLayer,
-                        pathLayer,
-                        iconLayer,
-                    ]}
-                    controller
-                    onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
-                />
+                <div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            right: '10px',
+                            top: '10px',
+                            zIndex: 1000,
+                        }}
+                    >
+                        <Button onClick={() => setViewState(INITIAL_VIEW_STATE)}>
+                            <i className="fa fa-location-crosshairs"></i>
+                        </Button>
+                    </div>
+                    <DeckGL
+                        viewState={{
+                            ...viewState,
+                            minZoom: 19,
+                        }}
+                        layers={[
+                            ...scenegraphLayers,
+                            // demoPolygonLayer,
+                            pathLayer,
+                            iconLayer,
+                        ]}
+                        controller
+                        onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
+                    />
+                </div>
+
             ) : (
                 <div
                     style={{

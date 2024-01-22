@@ -274,6 +274,23 @@ const EditorMap: FC<{
             <div
                 style={{
                     position: 'absolute',
+                    right: '10px',
+                    top: '10px',
+                    zIndex: 1000,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <Button onClick={() => console.log('Click')}>
+                    <i className="fa fa-file-arrow-up"></i>
+                </Button>
+                <Button onClick={() => setViewState(INITIAL_VIEW_STATE)}>
+                    <i className="fa fa-location-crosshairs"></i>
+                </Button>
+            </div>
+            <div
+                style={{
+                    position: 'absolute',
                     bottom: 0,
                     left: '50%',
                     transform: 'translateX(-50%)',

@@ -11,13 +11,13 @@ const LocationList: FC<{
     customTypes: (CustomDestinationType | undefined)[],
     name: string,
     dataGroup: string,
-    defaultOpened: boolean,
+    defaultOpened?: boolean,
 }> = ({
     mapId,
     customTypes,
     name,
     dataGroup,
-    defaultOpened,
+    defaultOpened = false,
 }) => {
     const allDestinationsOfMap = useSelector(selectDestinationIdsByMapId(mapId));
     const allDestinationEntities = useSelector(selectDestinationEntities);
