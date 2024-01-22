@@ -204,7 +204,7 @@ const EditorMap: FC<{
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.wide);
         setGltfModels(getModelsByMapId(mapId));
-    }, []);
+    }, [mapId]);
 
     return (
         <div
@@ -283,6 +283,9 @@ const EditorMap: FC<{
             >
                 <Button onClick={() => console.log('Click')}>
                     <i className="fa fa-file-arrow-up"></i>
+                </Button>
+                <Button onClick={() => console.log('Models', gltfModels)}>
+                    <i className="fa fa-copy"></i>
                 </Button>
                 <Button onClick={() => setViewState(INITIAL_VIEW_STATE)}>
                     <i className="fa fa-location-crosshairs"></i>
