@@ -1,4 +1,4 @@
-import { pathDataT21OG, pathDataTobitEG } from './pathData';
+import { pathDataT21OG, pathDataTobitEG, pathDataTobitT22OG } from './pathData';
 import { floorModelsT22OG } from './models';
 
 export const getPathDataByMapId = (mapId: number) => {
@@ -7,6 +7,8 @@ export const getPathDataByMapId = (mapId: number) => {
             return pathDataTobitEG;
         case 88:
             return pathDataT21OG;
+        case 89:
+            return pathDataTobitT22OG;
         default:
             return pathDataT21OG;
     }

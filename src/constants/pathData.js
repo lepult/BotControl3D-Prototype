@@ -1,3 +1,1932 @@
+export const pathDataTobitT22OG = {
+    "elements": [
+        {
+            "type": "track",
+            "vector": [
+                11.5,
+                -2.3768224716186523,
+                0.75,
+                -1.226822853088379
+            ],
+            "id": "0",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                0.75,
+                -1.226822853088379,
+                0.40000152587890625,
+                2.223177909851074
+            ],
+            "id": "0",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                0.40000152587890625,
+                2.223177909851074,
+                1.5500011444091797,
+                9.973176956176758
+            ],
+            "id": "0",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                1.5500011444091797,
+                9.973176956176758,
+                14.25,
+                8.923177719116211
+            ],
+            "id": "0",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                29.700002670288086,
+                -3.8268227577209473,
+                30.55000114440918,
+                7.423177719116211
+            ],
+            "id": "1",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                14.80000114440918,
+                -7.626822471618652,
+                15.150001525878906,
+                -2.6768226623535156
+            ],
+            "id": "2",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                15.150001525878906,
+                -2.6768226623535156,
+                19.899999618530273,
+                -3.0768227577209473
+            ],
+            "id": "3",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                27.200002670288086,
+                -8.126822471618652,
+                27.600000381469727,
+                -3.776822566986084
+            ],
+            "id": "4",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                23.399999618530273,
+                -3.3768224716186523,
+                27.600000381469727,
+                -3.776822566986084
+            ],
+            "id": "5",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                35.70000457763672,
+                8.523178100585938,
+                34.849998474121094,
+                7.073177337646484
+            ],
+            "id": "6",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                34.849998474121094,
+                7.073177337646484,
+                32.45000457763672,
+                7.373178482055664
+            ],
+            "id": "6",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                24.100000381469727,
+                8.073177337646484,
+                28.100000381469727,
+                7.723176956176758
+            ],
+            "id": "7",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                20.250001907348633,
+                8.423177719116211,
+                24.100000381469727,
+                8.073177337646484
+            ],
+            "id": "8",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                19.30000114440918,
+                -6.826822280883789,
+                19.899999618530273,
+                -3.0768227577209473
+            ],
+            "id": "9",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                24.55000114440918,
+                11.773178100585938,
+                24.100000381469727,
+                8.073177337646484
+            ],
+            "id": "10",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                14.25,
+                8.923177719116211,
+                17.950002670288086,
+                8.623178482055664
+            ],
+            "id": "11",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                11.5,
+                -2.3768224716186523,
+                15.150001525878906,
+                -2.6768226623535156
+            ],
+            "id": "12",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                19.899999618530273,
+                -3.0768227577209473,
+                23.399999618530273,
+                -3.3768224716186523
+            ],
+            "id": "13",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                28.399999618530273,
+                11.123178482055664,
+                28.100000381469727,
+                7.723176956176758
+            ],
+            "id": "14",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                14.600000381469727,
+                12.223176956176758,
+                14.25,
+                8.923177719116211
+            ],
+            "id": "15",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                18.399999618530273,
+                11.873178482055664,
+                17.950002670288086,
+                8.623178482055664
+            ],
+            "id": "16",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                20.750001907348633,
+                11.523178100585938,
+                20.250001907348633,
+                8.423177719116211
+            ],
+            "id": "17",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                11.30000114440918,
+                -5.376822471618652,
+                11.5,
+                -2.3768224716186523
+            ],
+            "id": "18",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                32.70000457763672,
+                10.223176956176758,
+                32.45000457763672,
+                7.373178482055664
+            ],
+            "id": "19",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                31.750001907348633,
+                -7.026822566986084,
+                31.950002670288086,
+                -4.176822662353516
+            ],
+            "id": "20",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                34.0,
+                -5.376822471618652,
+                33.75,
+                -4.376822471618652
+            ],
+            "id": "21",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                33.75,
+                -4.376822471618652,
+                31.950002670288086,
+                -4.176822662353516
+            ],
+            "id": "21",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                23.100000381469727,
+                -6.176822662353516,
+                23.399999618530273,
+                -3.3768224716186523
+            ],
+            "id": "22",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                28.100000381469727,
+                7.723176956176758,
+                30.55000114440918,
+                7.423177719116211
+            ],
+            "id": "23",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                17.950002670288086,
+                8.623178482055664,
+                20.250001907348633,
+                8.423177719116211
+            ],
+            "id": "24",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                29.700002670288086,
+                -3.8268227577209473,
+                31.950002670288086,
+                -4.176822662353516
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                27.600000381469727,
+                -3.776822566986084,
+                29.700002670288086,
+                -3.8268227577209473
+            ],
+            "id": "26",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "track",
+            "vector": [
+                30.55000114440918,
+                7.423177719116211,
+                32.45000457763672,
+                7.373178482055664
+            ],
+            "id": "27",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                11.548,
+                -5.9237,
+                -1.2081
+            ],
+            "name": "10",
+            "mode": "table",
+            "id": "10",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.2081,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                11.869,
+                -3.5451,
+                -1.6925
+            ],
+            "name": "11",
+            "mode": "table",
+            "id": "11",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6925,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.877,
+                -3.9333,
+                -1.6462
+            ],
+            "name": "12",
+            "mode": "table",
+            "id": "12",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6462,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.952,
+                -5.9641,
+                -2.2694
+            ],
+            "name": "13",
+            "mode": "table",
+            "id": "13",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -2.2694,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                15.445,
+                -8.0012,
+                -0.14971
+            ],
+            "name": "14",
+            "mode": "table",
+            "id": "14",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -0.14971,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                15.951,
+                -4.2279,
+                -1.6786
+            ],
+            "name": "15",
+            "mode": "table",
+            "id": "15",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6786,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                18.957,
+                -3.609,
+                3.0062
+            ],
+            "name": "16",
+            "mode": "table",
+            "id": "16",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 3.0062,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                18.957,
+                -4.8958,
+                -1.9457
+            ],
+            "name": "17",
+            "mode": "table",
+            "id": "17",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.9457,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                19.707,
+                -6.2453,
+                -1.6324
+            ],
+            "name": "18",
+            "mode": "table",
+            "id": "18",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6324,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                19.959,
+                -5.0474,
+                0.05387
+            ],
+            "name": "19",
+            "mode": "table",
+            "id": "19",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.05387,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                22.688,
+                -6.4821,
+                -1.5213
+            ],
+            "name": "20",
+            "mode": "table",
+            "id": "20",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.5213,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                23.1,
+                -6.7731,
+                -1.5978
+            ],
+            "name": "21",
+            "mode": "table",
+            "id": "21",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.5978,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                23.506,
+                -4.5007,
+                -1.6114
+            ],
+            "name": "22",
+            "mode": "table",
+            "id": "22",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6114,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                26.039,
+                -4.6521,
+                -1.5203
+            ],
+            "name": "23",
+            "mode": "table",
+            "id": "23",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.5203,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                26.537,
+                -7.1441,
+                -2.1658
+            ],
+            "name": "24",
+            "mode": "table",
+            "id": "24",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -2.1658,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                27.778,
+                -7.1239,
+                -1.2383
+            ],
+            "name": "25",
+            "mode": "table",
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.2383,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                28.197,
+                -4.6395,
+                -1.6503
+            ],
+            "name": "26",
+            "mode": "table",
+            "id": "26",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6503,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                31.096,
+                -5.266,
+                -1.6591
+            ],
+            "name": "27",
+            "mode": "table",
+            "id": "27",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.6591,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                30.956,
+                -7.3348,
+                -2.0283
+            ],
+            "name": "28",
+            "mode": "table",
+            "id": "28",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -2.0283,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                33.928,
+                -5.9766,
+                -1.5496
+            ],
+            "name": "29",
+            "mode": "table",
+            "id": "29",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -1.5496,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                35.493,
+                9.222,
+                1.5352
+            ],
+            "name": "30",
+            "mode": "table",
+            "id": "30",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.5352,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                32.42,
+                10.837,
+                1.3976
+            ],
+            "name": "31",
+            "mode": "table",
+            "id": "31",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.3976,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                32.018,
+                8.4721,
+                1.5209
+            ],
+            "name": "32",
+            "mode": "table",
+            "id": "32",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.5209,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                29.263,
+                8.8296,
+                1.5891
+            ],
+            "name": "33",
+            "mode": "table",
+            "id": "33",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.5891,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                29.119,
+                11.107,
+                0.89179
+            ],
+            "name": "34",
+            "mode": "table",
+            "id": "34",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.89179,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                27.721,
+                11.279,
+                2.0431
+            ],
+            "name": "35",
+            "mode": "table",
+            "id": "35",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 2.0431,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                27.332,
+                9.1159,
+                1.5031
+            ],
+            "name": "36",
+            "mode": "table",
+            "id": "36",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.5031,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                24.67,
+                9.4054,
+                1.6375
+            ],
+            "name": "37",
+            "mode": "table",
+            "id": "37",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.6375,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                24.56,
+                11.657,
+                0.90496
+            ],
+            "name": "38",
+            "mode": "table",
+            "id": "38",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.90496,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                24.536,
+                11.857,
+                2.0164
+            ],
+            "name": "39",
+            "mode": "table",
+            "id": "39",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 2.0164,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                23.844,
+                9.4821,
+                1.526
+            ],
+            "name": "40",
+            "mode": "table",
+            "id": "40",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.526,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                21.154,
+                9.7192,
+                1.4749
+            ],
+            "name": "41",
+            "mode": "table",
+            "id": "41",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.4749,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                21.017,
+                11.936,
+                1.0686
+            ],
+            "name": "42",
+            "mode": "table",
+            "id": "42",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.0686,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                18.604,
+                10.018,
+                1.4761
+            ],
+            "name": "43",
+            "mode": "table",
+            "id": "43",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.4761,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                18.68,
+                12.111,
+                1.0627
+            ],
+            "name": "44",
+            "mode": "table",
+            "id": "44",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.0627,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                17.836,
+                10.6,
+                1.4822
+            ],
+            "name": "45",
+            "mode": "table",
+            "id": "45",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.4822,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.941,
+                9.7405,
+                -0.041526
+            ],
+            "name": "46",
+            "mode": "table",
+            "id": "46",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -0.041526,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.887,
+                10.9,
+                1.3881
+            ],
+            "name": "47",
+            "mode": "table",
+            "id": "47",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.3881,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.879,
+                12.859,
+                1.3274
+            ],
+            "name": "48",
+            "mode": "table",
+            "id": "48",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.3274,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.437,
+                12.056,
+                1.9761
+            ],
+            "name": "49",
+            "mode": "table",
+            "id": "49",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.9761,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                13.936,
+                9.9615,
+                1.5451
+            ],
+            "name": "50",
+            "mode": "table",
+            "id": "50",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 1.5451,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.66871,
+                5.166,
+                -0.10267
+            ],
+            "name": "#FahrstuhlT2 2.OG",
+            "mode": "table",
+            "id": "#FahrstuhlT2 2.OG",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -0.10267,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                2.7521,
+                5.0671,
+                3.0514
+            ],
+            "name": "FahrstuhlT22.OG",
+            "mode": "table",
+            "id": "FahrstuhlT22.OG",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 3.0514,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.073147,
+                0.020959,
+                -0.027518
+            ],
+            "name": "Abholpunkt1",
+            "mode": "dining_outlet",
+            "id": "Abholpunkt1",
+            "group": "Abholpunkt1",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": -0.027518,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                15.150001525878906,
+                -2.6768226623535156,
+                0.0
+            ],
+            "id": "22",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                14.80000114440918,
+                -7.626822471618652,
+                0.0
+            ],
+            "id": "23",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                14.600000381469727,
+                12.223176956176758,
+                0.0
+            ],
+            "id": "24",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                14.25,
+                8.923177719116211,
+                0.0
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                11.5,
+                -2.3768224716186523,
+                0.0
+            ],
+            "id": "26",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                11.30000114440918,
+                -5.376822471618652,
+                0.0
+            ],
+            "id": "27",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                27.600000381469727,
+                -3.776822566986084,
+                0.0
+            ],
+            "id": "10",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                27.200002670288086,
+                -8.126822471618652,
+                0.0
+            ],
+            "id": "11",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                24.55000114440918,
+                11.773178100585938,
+                0.0
+            ],
+            "id": "12",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                24.100000381469727,
+                8.073177337646484,
+                0.0
+            ],
+            "id": "13",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                23.399999618530273,
+                -3.3768224716186523,
+                0.0
+            ],
+            "id": "14",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                23.100000381469727,
+                -6.176822662353516,
+                0.0
+            ],
+            "id": "15",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                20.750001907348633,
+                11.523178100585938,
+                0.0
+            ],
+            "id": "16",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                20.250001907348633,
+                8.423177719116211,
+                0.0
+            ],
+            "id": "17",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                19.899999618530273,
+                -3.0768227577209473,
+                0.0
+            ],
+            "id": "18",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                19.30000114440918,
+                -6.826822280883789,
+                0.0
+            ],
+            "id": "19",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                35.70000457763672,
+                8.523178100585938,
+                0.0
+            ],
+            "id": "0",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                34.0,
+                -5.376822471618652,
+                0.0
+            ],
+            "id": "1",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                32.70000457763672,
+                10.223176956176758,
+                0.0
+            ],
+            "id": "2",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                32.45000457763672,
+                7.373178482055664,
+                0.0
+            ],
+            "id": "3",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                31.950002670288086,
+                -4.176822662353516,
+                0.0
+            ],
+            "id": "4",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                31.750001907348633,
+                -7.026822566986084,
+                0.0
+            ],
+            "id": "5",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                30.55000114440918,
+                7.423177719116211,
+                0.0
+            ],
+            "id": "6",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                29.700002670288086,
+                -3.8268227577209473,
+                0.0
+            ],
+            "id": "7",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                28.399999618530273,
+                11.123178482055664,
+                0.0
+            ],
+            "id": "8",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                28.100000381469727,
+                7.723176956176758,
+                0.0
+            ],
+            "id": "9",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                18.399999618530273,
+                11.873178482055664,
+                0.0
+            ],
+            "id": "20",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "node",
+            "vector": [
+                17.950002670288086,
+                8.623178482055664,
+                0.0
+            ],
+            "id": "21",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "charging_pile",
+            "vector": [
+                -0.29728316981150227,
+                0.07681339726868523,
+                -0.09602063079068879
+            ],
+            "id": "Ladesäule",
+            "group": "Ladesäule",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true,
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        }
+    ]
+}
 
 export const pathDataTobitEG = {
     "elements": [
