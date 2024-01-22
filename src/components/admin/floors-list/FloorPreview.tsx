@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import DeckGL from '@deck.gl/react/typed';
@@ -14,6 +15,9 @@ import {
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
 import { TMapElement } from '../../../types/pudu-api/robotMap';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeInitialViewState } from '../../../redux-modules/map/actions';
+import { selectInitialViewStateByMapId } from '../../../redux-modules/map/selectors';
 
 type TGltfModel = {
     id: string,
@@ -31,7 +35,14 @@ const FloorPreview: FC<{
 }> = ({
     mapId,
 }) => {
-    const [viewState, setViewState] = useState<ViewState<any, any, any>>(INITIAL_VIEW_STATE);
+    const dispatch = useDispatch();
+    const initialViewState = useSelector(selectInitialViewStateByMapId(mapId))
+
+    const [viewState, setViewState] = useState<ViewState<any, any, any>>({
+        ...INITIAL_VIEW_STATE,
+        ...initialViewState,
+    });
+
     const [showPreview, setShowPreview] = useState(false);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
@@ -85,17 +96,25 @@ const FloorPreview: FC<{
                             position: 'absolute',
                             right: '10px',
                             top: '10px',
-                            zIndex: 1000,
+                            zIndex: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
                         }}
                     >
-                        <Button onClick={() => setViewState(INITIAL_VIEW_STATE)}>
+                        <Button
+                            onClick={() => {
+                                setViewState((prev) => ({
+                                    ...prev,
+                                    ...initialViewState,
+                                }))}
+                            }
+                        >
                             <i className="fa fa-location-crosshairs"></i>
                         </Button>
                     </div>
                     <DeckGL
                         viewState={{
                             ...viewState,
-                            minZoom: 19,
                         }}
                         layers={[
                             ...scenegraphLayers,

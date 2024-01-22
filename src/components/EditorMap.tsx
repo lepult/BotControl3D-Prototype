@@ -15,9 +15,11 @@ import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
 import { getModelsByMapId, getPathDataByMapId } from '../constants/puduData';
 import { ModelType } from '../constants/models';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeAdminModeType } from '../redux-modules/misc/actions';
 import { AdminModeType } from '../types/misc';
+import { selectInitialViewStateByMapId } from '../redux-modules/map/selectors';
+import { changeInitialViewState } from '../redux-modules/map/actions';
 
 type TGltfModel = {
     id: string,
@@ -48,7 +50,11 @@ const EditorMap: FC<{
 }) => {
     const dispatch = useDispatch();
 
-    const [viewState, setViewState] = useState<ViewState<any, any, any>>(INITIAL_VIEW_STATE);
+    const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
+    const [viewState, setViewState] = useState<ViewState<any, any, any>>({
+        ...INITIAL_VIEW_STATE,
+        ...initialViewState,
+    });
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     const [gltfModels, setGltfModels] = useState<ModelType[]>([]);
@@ -276,7 +282,7 @@ const EditorMap: FC<{
                     position: 'absolute',
                     right: '10px',
                     top: '10px',
-                    zIndex: 1000,
+                    zIndex: 2,
                     display: 'flex',
                     flexDirection: 'column',
                 }}
@@ -287,8 +293,44 @@ const EditorMap: FC<{
                 <Button onClick={() => console.log('Models', gltfModels)}>
                     <i className="fa fa-copy"></i>
                 </Button>
-                <Button onClick={() => setViewState(INITIAL_VIEW_STATE)}>
+                <Button onClick={() => setViewState((prev) => ({
+                    ...prev,
+                    ...initialViewState,
+                }))}>
                     <i className="fa fa-location-crosshairs"></i>
+                </Button>
+                <Button onClick={() => {
+                    console.log('new initial viewstate', mapId, {
+                        // @ts-ignore
+                        bearing: viewState.bearing,
+                        // @ts-ignore
+                        latitude: viewState.latitude,
+                        // @ts-ignore
+                        longitude: viewState.longitude,
+                        // @ts-ignore
+                        pitch: viewState.pitch,
+                        // @ts-ignore
+                        zoom: viewState.zoom,
+                    })
+                    dispatch(changeInitialViewState({
+                        mapId,
+                        viewState: {
+                            // @ts-ignore
+                            bearing: viewState.bearing,
+                            // @ts-ignore
+                            latitude: viewState.latitude,
+                            // @ts-ignore
+                            longitude: viewState.longitude,
+                            // @ts-ignore
+                            pitch: viewState.pitch,
+                            // @-ignore
+                            // eslint-disable-next-line @typescript-eslint/unbound-method
+                            zoom: viewState.zoom,
+                        }
+                    }))
+                    }}
+                >
+                    <i className="fa fa-crosshairs-simple"></i>
                 </Button>
             </div>
             <div
@@ -299,7 +341,7 @@ const EditorMap: FC<{
                     transform: 'translateX(-50%)',
                     display: 'flex',
                     flexDirection: 'row',
-                    zIndex: 1000,
+                    zIndex: 2,
                 }}
             >
                 <div style={{ padding: '10px' }}>

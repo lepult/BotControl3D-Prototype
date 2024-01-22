@@ -7,13 +7,13 @@ import { IIconData } from '../types/deckgl-map';
 import { svgToDataURL } from '../utils/marker';
 import { blueMarker } from '../assets/markers';
 
-export const INITIAL_VIEW_STATE: ViewState<any, any, any> = {
+export const INITIAL_VIEW_STATE = {
     longitude: 0,
     latitude: 0,
     // @ts-ignore
     zoom: 21,
     maxZoom: 25,
-    minZoom: 20,
+    minZoom: 18,
     pitch: 0,
     bearing: 0,
     rotationX: 0,

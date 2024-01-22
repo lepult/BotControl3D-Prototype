@@ -41,3 +41,11 @@ export type TLayers = (IconLayer<IIconData, NonNullable<unknown>>
     | PathLayer<IPathData, NonNullable<unknown>>
     | ScenegraphLayer<ISceneGraphData, NonNullable<unknown>>
     | PolygonLayer<IPolygonData, NonNullable<unknown>>)[];
+
+export type TViewState = {
+    bearing: number,
+    latitude: number,
+    longitude: number,
+    pitch: number,
+    zoom: number
+}
