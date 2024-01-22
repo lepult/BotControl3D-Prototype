@@ -2,7 +2,10 @@
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import { ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
-import { PathLayer } from '@deck.gl/layers/typed';
+import { IconLayerProps, PathLayerProps } from '@deck.gl/layers/typed';
+import { IIconData } from '../types/deckgl-map';
+import { svgToDataURL } from '../utils/marker';
+import { blueMarker } from '../assets/markers';
 
 export const INITIAL_VIEW_STATE: ViewState<any, any, any> = {
     longitude: 0,
@@ -14,7 +17,7 @@ export const INITIAL_VIEW_STATE: ViewState<any, any, any> = {
     pitch: 0,
     bearing: 0,
     rotationX: 0,
-    maxPitch: 85,
+    maxPitch: 80,
     minPitch: 0,
 };
 
@@ -24,15 +27,30 @@ export const scenegraphLayerDefaults: Partial<ScenegraphLayerProps> = {
     pickable: true,
     sizeScale: 1,
     _lighting: 'pbr',
-}
+};
 
-export const pathLayerDefaults: Partial<PathLayer> = {
+export const pathLayerDefaults: Partial<PathLayerProps> = {
     id: 'path-layer-track',
-    // @ts-ignore
     coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
     pickable: true,
     widthScale: 0.05,
     getWidth: 1,
     widthMinPixels: 2,
     getColor: (d: { color: [number, number, number] }) => d.color || [0, 0, 0],
+};
+
+export const iconLayerDefaults: Partial<IconLayerProps> = {
+    id: 'icon-layer',
+    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+    pickable: true,
+    sizeScale: 3,
+    getSize: 1,
+    sizeUnits: 'meters',
+    getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
+    getIcon: () => ({
+        url: svgToDataURL(blueMarker()),
+        height: 128,
+        width: 128,
+    }),
+    getColor: (d: IIconData) => d.color || [0, 0, 0],
 }

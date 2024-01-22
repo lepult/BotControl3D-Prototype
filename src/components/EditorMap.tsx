@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+// @ts-ignore
 import { Button } from 'chayns-components';
 import DeckGL from '@deck.gl/react/typed';
 import ViewState from '@deck.gl/core/typed/controllers/view-state';
@@ -14,7 +15,7 @@ import { svgToDataURL } from '../utils/marker';
 import { blueMarker } from '../assets/markers';
 import { IIconData } from '../types/deckgl-map';
 import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
-import { INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
+import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
 
 type TGltfModel = {
     id: string,
@@ -71,21 +72,9 @@ const EditorMap: FC<{
 
     const iconData = useMemo(() => mapRobotElementsToIconData(map.elements), [map]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
-        id: 'icon-layer',
-        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-        pickable: true,
+        ...iconLayerDefaults,
         data: iconData,
-        sizeScale: 3,
-        getSize: 1,
-        sizeUnits: 'meters',
-        getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
-        getIcon: () => ({
-            url: svgToDataURL(blueMarker()),
-            height: 128,
-            width: 128,
-        }),
-        getColor: (d: IIconData) => d.color || [0, 0, 0],
-    }), [iconData])
+    }), [iconData]);
 
     const rotateModel = useCallback((info: PickingInfo, gltfModel: TGltfModel) => {
         const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
