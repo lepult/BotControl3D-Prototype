@@ -29,7 +29,7 @@ const AdminMode = () => {
                 Verwaltung
             </h1>
             <p>
-                Mit dieser Ansicht kannst du die Roboter und die Übersicht verwalten.
+                Mit dieser Ansicht kannst du die Roboter und die Übersicht verwalten. Die Roboter können in dieser Ansicht nicht gesteuert werden.
             </p>
             <FloorsList/>
         </div>

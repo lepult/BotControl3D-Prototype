@@ -101,6 +101,7 @@ const FloorItem: FC<{
                     mapId={mapId}
                     customTypes={locationType.customTypes}
                     name={locationType.name}
+                    defaultOpened={locationType.type === LocationType.target}
                     dataGroup="customTypes"
                 />
             ))}

@@ -11,11 +11,13 @@ const LocationList: FC<{
     customTypes: (CustomDestinationType | undefined)[],
     name: string,
     dataGroup: string,
+    defaultOpened: boolean,
 }> = ({
     mapId,
     customTypes,
     name,
     dataGroup,
+    defaultOpened,
 }) => {
     const allDestinationsOfMap = useSelector(selectDestinationIdsByMapId(mapId));
     const allDestinationEntities = useSelector(selectDestinationEntities);
@@ -27,6 +29,7 @@ const LocationList: FC<{
             head={name}
             isWrapped
             dataGroup={dataGroup}
+            defaultOpened={defaultOpened}
         >
             <div
                 className="accordion__content"
