@@ -287,7 +287,17 @@ const EditorMap: FC<{
                     flexDirection: 'column',
                 }}
             >
-                <Button onClick={() => console.log('Click')}>
+                <Button onClick={() => {
+                    let input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.glb';
+                    input.onchange = _ => {
+                        // you can use this method to get file and perform respective operations
+                        let files =   Array.from(input.files);
+                        console.log(files);
+                    };
+                    input.click();
+                }}>
                     <i className="fa fa-file-arrow-up"></i>
                 </Button>
                 <Button onClick={() => console.log('Models', gltfModels)}>
@@ -300,18 +310,6 @@ const EditorMap: FC<{
                     <i className="fa fa-location-crosshairs"></i>
                 </Button>
                 <Button onClick={() => {
-                    console.log('new initial viewstate', mapId, {
-                        // @ts-ignore
-                        bearing: viewState.bearing,
-                        // @ts-ignore
-                        latitude: viewState.latitude,
-                        // @ts-ignore
-                        longitude: viewState.longitude,
-                        // @ts-ignore
-                        pitch: viewState.pitch,
-                        // @ts-ignore
-                        zoom: viewState.zoom,
-                    })
                     dispatch(changeInitialViewState({
                         mapId,
                         viewState: {

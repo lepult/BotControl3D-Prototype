@@ -12,7 +12,6 @@ const AdminMode = () => {
     const editingMapId = useSelector(selectEditingMapId);
 
     useEffect(() => {
-        console.log('adminModeType', adminModeType);
         if (adminModeType === AdminModeType.default) {
             updateChaynsViewmode(ChaynsViewMode.exclusive);
         }

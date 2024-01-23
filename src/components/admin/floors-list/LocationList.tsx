@@ -5,6 +5,7 @@ import { Accordion, Badge } from 'chayns-components';
 import { CustomDestinationType } from '../../../types/api/destination';
 import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
 import LocationItem from './LocationItem';
+import './locationList.scss';
 
 const LocationList: FC<{
     mapId: number
@@ -33,17 +34,15 @@ const LocationList: FC<{
             dataGroup={dataGroup}
             defaultOpened={defaultOpened}
             right={<Badge>{filteredDestinationIds.length}</Badge>}
+            disabled={filteredDestinationIds.length === 0}
         >
-            <div
-                className="accordion__content"
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                }}
-            >
+            <div className="accordion__content location-list-content">
                 {filteredDestinationIds.map((destinationId) => (
-                    <LocationItem key={destinationId} destinationId={destinationId}/>
+                    <LocationItem
+                        key={destinationId}
+                        destinationId={destinationId}
+                        mapId={mapId}
+                    />
                 ))}
             </div>
         </Accordion>

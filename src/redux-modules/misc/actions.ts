@@ -6,4 +6,12 @@ type TChangeAdminModeType = {
     editingMapId?: number,
 }
 
-export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType')
+type TChangeSelectedDestination = {
+    mapId: number,
+    destinationId: number,
+    name: string,
+}
+
+export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType');
+
+export const changeSelectedDestination = createAction<TChangeSelectedDestination | undefined>('misc/changeSelectedDestination');

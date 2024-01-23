@@ -18,10 +18,8 @@ const FloorItem: FC<{
     const dispatch = useDispatch();
 
     const map = useSelector(selectMapById(mapId));
-    console.log('map', mapId, map);
     const destinations = useSelector(selectDestinationIdsByMapId(mapId));
     const editingMapId = useSelector(selectEditingMapId);
-    console.log('destinations', mapId, destinations);
 
     if (map.hidden === 1) {
         return null;

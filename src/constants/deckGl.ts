@@ -5,7 +5,7 @@ import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { IconLayerProps, PathLayerProps } from '@deck.gl/layers/typed';
 import { IIconData } from '../types/deckgl-map';
 import { svgToDataURL } from '../utils/marker';
-import { blueMarker } from '../assets/markers';
+import { blueMarker, redMarker } from '../assets/markers';
 
 export const INITIAL_VIEW_STATE = {
     longitude: 0,
@@ -47,8 +47,8 @@ export const iconLayerDefaults: Partial<IconLayerProps> = {
     getSize: 1,
     sizeUnits: 'meters',
     getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
-    getIcon: () => ({
-        url: svgToDataURL(blueMarker()),
+    getIcon: (d: IIconData) => ({
+        url: svgToDataURL(d.selected ? redMarker() : blueMarker()),
         height: 128,
         width: 128,
     }),

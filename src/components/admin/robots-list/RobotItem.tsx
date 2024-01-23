@@ -7,41 +7,37 @@ import FloorPreview from '../floors-list/FloorPreview';
 import FloorLocations from '../floors-list/FloorLocations';
 
 const CONTEXT_MENU_ITEMS = [{
-    text: 'Nutzerkarte öffnen',
-    icon: 'fa fa-map',
-    onClick: () => console.log('Name ändern'),
-}, {
     text: 'Name ändern',
     icon: 'fa fa-pencil',
     onClick: () => console.log('Name ändern'),
 }, {
     text: 'Roboter-Typ ändern',
     icon: 'fa fa-pencil',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Roboter-Typ ändern'),
 }, {
     text: 'Neustart-Zeit ändern',
     icon: 'fa fa-power-off',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Neustart-Zeit ändern'),
 }, {
     text: 'Calling Code anpassen',
     icon: 'fa fa-qrcode',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Calling Code anpassen'),
 }, {
     text: 'Modus ändern',
     icon: 'fa fa-gear',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Modus ändern'),
 }, {
     text: 'Ausgabepunkt ändern',
     icon: 'fa fa-location-dot',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Ausgabepunkt ändern'),
 }, {
     text: 'Ladestation ändern',
     icon: 'fa fa-charging-station',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Ladestation ändern'),
 }, {
     text: 'Homebase ändern',
     icon: 'fa fa-house',
-    onClick: () => console.log('Name ändern'),
+    onClick: () => console.log('Homebase ändern'),
 }];
 
 const RobotItem: FC<{

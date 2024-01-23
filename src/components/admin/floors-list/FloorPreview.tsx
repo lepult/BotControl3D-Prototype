@@ -18,6 +18,10 @@ import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduDat
 import { useDispatch, useSelector } from 'react-redux';
 import { changeInitialViewState } from '../../../redux-modules/map/actions';
 import { selectInitialViewStateByMapId } from '../../../redux-modules/map/selectors';
+import { selectSelectedDestination } from '../../../redux-modules/misc/selectors';
+import { coordinateToMeter, meterToCoordinate } from '../../../utils/deckGlHelpers';
+import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
+import { IIconData } from '../../../types/deckgl-map';
 
 type TGltfModel = {
     id: string,
@@ -36,8 +40,9 @@ const FloorPreview: FC<{
     mapId,
 }) => {
     const dispatch = useDispatch();
-    const initialViewState = useSelector(selectInitialViewStateByMapId(mapId))
+    const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
 
+    const selectedDestination = useSelector(selectSelectedDestination(mapId));
     const [viewState, setViewState] = useState<ViewState<any, any, any>>({
         ...INITIAL_VIEW_STATE,
         ...initialViewState,
@@ -47,12 +52,31 @@ const FloorPreview: FC<{
     const [showPreview, setShowPreview] = useState(false);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-    const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements), [mapId]);
+    const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements, selectedDestination?.name),
+        [mapId, selectedDestination]);
+
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,
         data: iconData,
-    }), [iconData]);
+        onClick: (pickingInfo, event) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (selectedDestination?.name === pickingInfo.object.id) {
+                dispatch(changeSelectedDestination(undefined));
+            } else {
+                dispatch(changeSelectedDestination({
+                    // TODO Get destinationId
+                    destinationId: undefined,
+                    mapId,
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    name: pickingInfo.object.id,
+                }));
+            }
+        },
+        updateTriggers: {
+            getPosition: [selectedDestination]
+        }
+    }), [iconData, selectedDestination, mapId]);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     const pathData = useMemo(() => mapRobotElementsToPathData(getPathDataByMapId(mapId).elements), [mapId]);
@@ -61,7 +85,7 @@ const FloorPreview: FC<{
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         id: `path-layer__${mapId}`,
         data: pathData,
-    }), [pathData]);
+    }), [pathData, mapId]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
@@ -80,6 +104,21 @@ const FloorPreview: FC<{
             setShowPreview(true);
         }, 1000)
     }, []);
+
+    useEffect(() => {
+        if (selectedDestination?.name) {
+            const selectedIcon = iconData.find((icon) => icon.id === selectedDestination.name);
+            if (selectedIcon) {
+                const newPosition = meterToCoordinate([selectedIcon.position[0], selectedIcon.position[1]])
+                setViewState((prev) => ({
+                    ...prev,
+                    longitude: newPosition[0],
+                    latitude: newPosition[1],
+                    zoom: 21
+                }));
+            }
+        }
+    }, [selectedDestination]);
 
     return (
         <div

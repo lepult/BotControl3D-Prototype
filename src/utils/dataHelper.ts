@@ -60,7 +60,7 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
  * @param elements
  * @param destinations
  */
-export const mapRobotElementsToIconData = (elements: Array<TMapElement>/* , destinations?: Array<TDestination> */): Array<IIconData> => {
+export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string): Array<IIconData> => {
     const iconData: Array<IIconData> = [];
     elements.forEach((element) => {
         if (element.type === MapElementType.source || element.type === MapElementType.chargingPile) {
@@ -82,7 +82,8 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>/* , dest
                 position,
                 color: element.mode === DestinationType.diningOutlet || element.type === MapElementType.chargingPile
                     ? [0, 255, 0]
-                    : [0, 0, 255]
+                    : [0, 0, 255],
+                selected: element.id === selectedDestination,
             });
         }
     });

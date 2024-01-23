@@ -21,7 +21,7 @@ export const redMarker = () => `
     >
         <path
             d="m 70 930 a 640 640 0 1 1 1140 0 l -570 1118"
-            fill="#003562"
+            fill="#9d0000"
         />
     </svg>
 `;

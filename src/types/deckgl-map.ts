@@ -10,6 +10,7 @@ export interface IIconData extends IMergedMapElement {
     position: Position;
     color?: Color;
     angle?: number;
+    selected?: boolean;
 }
 
 export interface IPathData extends IMergedMapElement {
