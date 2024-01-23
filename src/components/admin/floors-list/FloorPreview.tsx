@@ -50,6 +50,7 @@ const FloorPreview: FC<{
     const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements), [mapId]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
+        id: `icon-layer__${mapId}`,
         data: iconData,
     }), [iconData]);
 
@@ -58,12 +59,13 @@ const FloorPreview: FC<{
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
         ...pathLayerDefaults,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+        id: `path-layer__${mapId}`,
         data: pathData,
     }), [pathData]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
-        id: floorModel.id,
+        id: `scenegraph-layer__${mapId}__${floorModel.id}`,
         data: [{
             position: floorModel.position,
             orientation: floorModel.orientation,

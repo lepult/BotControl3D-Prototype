@@ -3,12 +3,14 @@ import { counterReducer } from './counter/reducer';
 import mapReducer from './map/reducer';
 import destinationReducer from './destination/reducer';
 import miscReducer from './misc/reducer';
+import { robotStatusName, robotStatusReducer } from './robot-status/slice';
 
 const rootReducer = combineReducers({
     counter: counterReducer,
     map: mapReducer,
     destination: destinationReducer,
     misc: miscReducer,
+    [robotStatusName]: robotStatusReducer,
 });
 
 const Store = configureStore({

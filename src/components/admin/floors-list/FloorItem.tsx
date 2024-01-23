@@ -3,55 +3,12 @@ import React, { FC } from 'react';
 import { Accordion, ContextMenu } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import FloorPreview from './FloorPreview';
-import LocationList from './LocationList';
 import { selectMapById } from '../../../redux-modules/map/selectors';
 import { selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
-import { CustomDestinationType } from '../../../types/api/destination';
 import { changeAdminModeType } from '../../../redux-modules/misc/actions';
 import { AdminModeType } from '../../../types/misc';
 import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
-
-enum LocationType {
-    target,
-    diningOutlet,
-    chargingStation,
-    door,
-    elevator,
-    misc,
-}
-
-const LOCATION_TYPES = [{
-    customTypes: [CustomDestinationType.target],
-    name: 'Lieferpunkte',
-    type: LocationType.target,
-}, {
-    customTypes: [CustomDestinationType.diningOutlet],
-    name: 'Ausgabepunkte',
-    type: LocationType.diningOutlet,
-}, {
-    customTypes: [CustomDestinationType.chargingStation],
-    name: 'Ladestationen',
-    type: LocationType.chargingStation,
-}, {
-    customTypes: [
-        CustomDestinationType.openDoor,
-        CustomDestinationType.closeDoor
-    ],
-    name: 'Türen',
-    type: LocationType.door,
-}, {
-    customTypes: [
-        CustomDestinationType.elevator,
-        CustomDestinationType.inFrontOfElevator,
-        CustomDestinationType.behindElevator
-    ],
-    name: 'Fahrstühle',
-    type: LocationType.elevator,
-}, {
-    customTypes: [CustomDestinationType.intermediate,],
-    name: 'Unzugeordnet',
-    type: LocationType.misc,
-}]
+import FloorLocations from './FloorLocations';
 
 const FloorItem: FC<{
     mapId: number
@@ -61,9 +18,14 @@ const FloorItem: FC<{
     const dispatch = useDispatch();
 
     const map = useSelector(selectMapById(mapId));
+    console.log('map', mapId, map);
     const destinations = useSelector(selectDestinationIdsByMapId(mapId));
     const editingMapId = useSelector(selectEditingMapId);
     console.log('destinations', mapId, destinations);
+
+    if (map.hidden === 1) {
+        return null;
+    }
 
     return (
         <Accordion
@@ -85,48 +47,9 @@ const FloorItem: FC<{
             )}
         >
             <div className="accordion__content">
-                <FloorPreview
-                    mapId={mapId}
-                />
+                <FloorPreview mapId={mapId}/>
             </div>
-            {LOCATION_TYPES
-                .filter((locationType) => [
-                    LocationType.target,
-                    LocationType.diningOutlet,
-                    LocationType.chargingStation
-                ].includes(locationType.type))
-                .map((locationType) => (
-                <LocationList
-                    key={locationType.type}
-                    mapId={mapId}
-                    customTypes={locationType.customTypes}
-                    name={locationType.name}
-                    defaultOpened={locationType.type === LocationType.target}
-                    dataGroup="customTypes"
-                />
-            ))}
-            <Accordion
-                head="Zwischenpunkte"
-                isWrapped
-                dataGroup="customTypes"
-            >
-                {LOCATION_TYPES
-                    .filter((locationType) => [
-                        LocationType.door,
-                        LocationType.elevator,
-                        LocationType.misc
-                    ].includes(locationType.type))
-                    .map((locationType) => (
-                    <LocationList
-                        key={locationType.type}
-                        mapId={mapId}
-                        customTypes={locationType.customTypes}
-                        name={locationType.name}
-                        dataGroup="customTypes-intermediate"
-                    />
-                ))}
-            </Accordion>
-
+            <FloorLocations mapId={mapId}/>
         </Accordion>
     );
 }

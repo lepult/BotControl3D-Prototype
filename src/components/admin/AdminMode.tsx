@@ -5,6 +5,7 @@ import { selectAdminModeType, selectEditingMapId } from '../../redux-modules/mis
 import EditorMap from '../EditorMap';
 import { AdminModeType } from '../../types/misc';
 import { ChaynsViewMode, updateChaynsViewmode } from '../../utils/pageSizeHelper';
+import RobotsList from './robots-list/RobotsList';
 
 const AdminMode = () => {
     const adminModeType = useSelector(selectAdminModeType);
@@ -31,6 +32,7 @@ const AdminMode = () => {
             <p>
                 Mit dieser Ansicht kannst du die Roboter und die Übersicht verwalten. Die Roboter können in dieser Ansicht nicht gesteuert werden.
             </p>
+            <RobotsList/>
             <FloorsList/>
         </div>
     );

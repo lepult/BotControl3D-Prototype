@@ -1,39 +1,40 @@
 import React, { useEffect } from 'react';
 import { useIsAdminMode } from 'chayns-api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThunkDispatch } from '@reduxjs/toolkit';
 import AdminMode from './admin/AdminMode';
 import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { getAllMapsAction } from '../redux-modules/map/actions';
 import { getAllDestinationsAction } from '../redux-modules/destination/actions';
+import { selectRobotIds, selectRobotStatus } from '../redux-modules/robot-status/selectors';
+import { getDevicesDataAction, getRobotDataAction } from '../redux-modules/robot-status/actions';
 
 const App = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const isAdminMode = useIsAdminMode();
+
+    const robotStatus = useSelector(selectRobotStatus);
+    const robotIds = useSelector(selectRobotIds);
+
+    console.log('robotStatus', robotStatus);
 
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.exclusive);
-        // @ts-ignore
-        dispatch(getAllMapsAction());
-        // @ts-ignore
-        dispatch(getAllDestinationsAction());
+        void dispatch(getAllMapsAction());
+        void dispatch(getAllDestinationsAction());
+        void dispatch(getDevicesDataAction());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (robotIds.length > 0) {
+            robotIds.forEach((id) => {
+                void dispatch(getRobotDataAction({ robotId: id as string }));
+            });
+        }
+    }, [dispatch, robotIds]);
 
     return isAdminMode ? (
         <AdminMode/>
-        // <EditorMap
-        //     gltfModelsProp={[{
-        //         id: 'scenegraphLayer-1',
-        //         url: 'https://w-lpinkernell-z.tobit.ag/models/Gross.glb',
-        //         position: [23.65, 12.2, 0],
-        //         orientation: [0, -5, 90]
-        //     }, {
-        //         id: 'scenegraphLayer-2',
-        //         url: 'https://w-lpinkernell-z.tobit.ag/models/Gltf-Test.glb',
-        //         position: [0.6, 1.3, 0],
-        //         orientation: [0, 122, 90]
-        //     }]}
-        //     map={pathDataT21OG}
-        // />
     ) : 'Nutzermodus'
 };
 

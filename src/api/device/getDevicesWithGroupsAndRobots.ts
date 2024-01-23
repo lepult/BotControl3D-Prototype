@@ -1,10 +1,12 @@
+// region Imports
 import { PUDU_API_URL } from '../url';
 import { getDefaultHeaders } from '../helpers';
 import { BadResponseCodeError } from '../../utils/error';
-import { TMap } from '../../types/api/map';
+import { TDevicesData } from '../../types/api/device';
+// endregion
 
-export const getAllMapsFetch = async (): Promise<TMap[]> => {
-    const response = await fetch(`${PUDU_API_URL}/Map?filterHiddenMaps=false`, {
+export const getDevicesWithGroupsAndRobotsFetch = async (): Promise<TDevicesData> => {
+    const response = await fetch(`${PUDU_API_URL}/Device`, {
         method: 'GET',
         headers: await getDefaultHeaders(),
     }).catch((error) => {
@@ -13,9 +15,9 @@ export const getAllMapsFetch = async (): Promise<TMap[]> => {
     });
 
     if (response.ok) {
-        return (await response.json()) as TMap[];
+        return (await response.json()) as TDevicesData;
     }
 
     console.log('bad response status', response.status)
     throw new BadResponseCodeError(response.status);
-}
+};
