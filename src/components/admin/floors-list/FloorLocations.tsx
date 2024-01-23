@@ -42,7 +42,7 @@ const LOCATION_TYPES = [{
     type: LocationType.elevator,
 }, {
     customTypes: [CustomDestinationType.intermediate,],
-    name: 'Unzugeordnet',
+    name: 'Unzugeordnete Zwischenpunkte',
     type: LocationType.misc,
 }]
 
@@ -52,43 +52,16 @@ const FloorLocations: FC<{
     mapId,
 }) => (
     <div>
-        {LOCATION_TYPES
-            .filter((locationType) => [
-                LocationType.target,
-                LocationType.diningOutlet,
-                LocationType.chargingStation
-            ].includes(locationType.type))
-            .map((locationType) => (
-                <LocationList
-                    key={locationType.type}
-                    mapId={mapId}
-                    customTypes={locationType.customTypes}
-                    name={locationType.name}
-                    defaultOpened={locationType.type === LocationType.target}
-                    dataGroup="customTypes"
-                />
-            ))}
-        <Accordion
-            head="Zwischenpunkte"
-            isWrapped
-            dataGroup="customTypes"
-        >
-            {LOCATION_TYPES
-                .filter((locationType) => [
-                    LocationType.door,
-                    LocationType.elevator,
-                    LocationType.misc
-                ].includes(locationType.type))
-                .map((locationType) => (
-                    <LocationList
-                        key={locationType.type}
-                        mapId={mapId}
-                        customTypes={locationType.customTypes}
-                        name={locationType.name}
-                        dataGroup="customTypes-intermediate"
-                    />
-                ))}
-        </Accordion>
+        {LOCATION_TYPES.map((locationType) => (
+            <LocationList
+                key={locationType.type}
+                mapId={mapId}
+                customTypes={locationType.customTypes}
+                name={locationType.name}
+                defaultOpened={locationType.type === LocationType.target}
+                dataGroup="customTypes"
+            />
+        ))}
     </div>
 );
 

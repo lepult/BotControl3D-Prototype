@@ -115,6 +115,13 @@ const FloorPreview: FC<{
                         >
                             <i className="fa fa-location-crosshairs"></i>
                         </Button>
+                        <Button
+                            onClick={() => {
+                                console.log('Switch to user map')
+                            }}
+                        >
+                            <i className="fa fa-map"></i>
+                        </Button>
                     </div>
                     <DeckGL
                         viewState={{

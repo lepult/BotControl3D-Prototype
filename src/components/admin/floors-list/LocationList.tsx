@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Accordion } from 'chayns-components';
+import { Accordion, Badge } from 'chayns-components';
 import { CustomDestinationType } from '../../../types/api/destination';
 import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
 import LocationItem from './LocationItem';
@@ -21,7 +21,9 @@ const LocationList: FC<{
 }) => {
     const allDestinationsOfMap = useSelector(selectDestinationIdsByMapId(mapId));
     const allDestinationEntities = useSelector(selectDestinationEntities);
-    const filteredDestinationIds = useMemo(() => allDestinationsOfMap.filter((destinationId) => customTypes.includes(allDestinationEntities[destinationId].customType)),
+    const filteredDestinationIds = useMemo(() => allDestinationsOfMap
+            ? allDestinationsOfMap.filter((destinationId) => customTypes.includes(allDestinationEntities[destinationId].customType))
+            : [],
         [allDestinationsOfMap, allDestinationEntities, customTypes]);
 
     return (
@@ -30,6 +32,7 @@ const LocationList: FC<{
             isWrapped
             dataGroup={dataGroup}
             defaultOpened={defaultOpened}
+            right={<Badge>{filteredDestinationIds.length}</Badge>}
         >
             <div
                 className="accordion__content"
