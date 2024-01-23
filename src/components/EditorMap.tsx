@@ -7,6 +7,7 @@ import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { PickingInfo } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
+import { useDispatch, useSelector } from 'react-redux';
 import { demoPolygonLayer } from '../constants/layers';
 import { coordinateToMeter } from '../utils/deckGlHelpers';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../utils/dataHelper';
@@ -15,7 +16,6 @@ import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
 import { getModelsByMapId, getPathDataByMapId } from '../constants/puduData';
 import { ModelType } from '../constants/models';
-import { useDispatch, useSelector } from 'react-redux';
 import { changeAdminModeType } from '../redux-modules/misc/actions';
 import { AdminModeType } from '../types/misc';
 import { selectInitialViewStateByMapId } from '../redux-modules/map/selectors';
@@ -307,7 +307,7 @@ const EditorMap: FC<{
                     ...prev,
                     ...initialViewState,
                 }))}>
-                    <i className="fa fa-location-crosshairs"></i>
+                    <i className="fa fa-location-crosshairs"/>
                 </Button>
                 <Button onClick={() => {
                     dispatch(changeInitialViewState({

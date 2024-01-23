@@ -8,8 +8,7 @@ type TChangeAdminModeType = {
 
 type TChangeSelectedDestination = {
     mapId: number,
-    destinationId: number,
-    name: string,
+    destinationName: string,
 }
 
 export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType');

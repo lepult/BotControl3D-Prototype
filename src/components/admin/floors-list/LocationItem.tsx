@@ -16,30 +16,29 @@ const LocationItem: FC<{
     const dispatch = useDispatch();
 
     const destination = useSelector(selectDestinationById(destinationId));
-    const destinationName = useMemo(() => destination.chaynsUser
+    const destinationFullName = useMemo(() => destination.chaynsUser
         ? `${destination.chaynsUser.name}`
         : destination.name, [destination]);
 
     const selectedDestination = useSelector(selectSelectedDestination(mapId));
 
     const handleClick = useCallback(() => {
-        if (selectedDestination?.destinationId === destinationId) {
+        if (selectedDestination?.destinationName === destination.name) {
             dispatch(changeSelectedDestination(undefined));
         } else {
             dispatch(changeSelectedDestination({
-                destinationId,
                 mapId,
-                name: destination.name,
+                destinationName: destination.name,
             }));
         }
     }, [selectedDestination, destinationId, mapId, destination, dispatch]);
 
     return (
         <Button
-            className={`destination-button${selectedDestination?.destinationId === destinationId ? '' : ' button--secondary'}`}
+            className={`destination-button${selectedDestination?.destinationName === destination.name ? '' : ' button--secondary'}`}
             onClick={() => handleClick()}
         >
-            {destinationName}
+            {destinationFullName}
         </Button>
     );
 };

@@ -4,6 +4,7 @@ import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
+import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import { SmallWaitCursor, Button } from 'chayns-components';
 import {
@@ -15,13 +16,10 @@ import {
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
 import { TMapElement } from '../../../types/pudu-api/robotMap';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeInitialViewState } from '../../../redux-modules/map/actions';
 import { selectInitialViewStateByMapId } from '../../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../../redux-modules/misc/selectors';
-import { coordinateToMeter, meterToCoordinate } from '../../../utils/deckGlHelpers';
+import { meterToCoordinate } from '../../../utils/deckGlHelpers';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { IIconData } from '../../../types/deckgl-map';
 
 type TGltfModel = {
     id: string,
@@ -54,29 +52,27 @@ const FloorPreview: FC<{
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements, selectedDestination?.name),
         [mapId, selectedDestination]);
-
+    console.log('iconData', iconData);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,
         data: iconData,
         onClick: (pickingInfo, event) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            if (selectedDestination?.name === pickingInfo.object.id) {
+            if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
                 dispatch(changeSelectedDestination(undefined));
             } else {
                 dispatch(changeSelectedDestination({
-                    // TODO Get destinationId
-                    destinationId: undefined,
                     mapId,
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    name: pickingInfo.object.id,
+                    destinationName: pickingInfo.object.name as string || pickingInfo.object.id as string,
                 }));
             }
         },
         updateTriggers: {
             getPosition: [selectedDestination]
         }
-    }), [iconData, selectedDestination, mapId]);
+    }), [iconData, selectedDestination, mapId, dispatch]);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     const pathData = useMemo(() => mapRobotElementsToPathData(getPathDataByMapId(mapId).elements), [mapId]);
@@ -106,8 +102,8 @@ const FloorPreview: FC<{
     }, []);
 
     useEffect(() => {
-        if (selectedDestination?.name) {
-            const selectedIcon = iconData.find((icon) => icon.id === selectedDestination.name);
+        if (selectedDestination?.destinationName) {
+            const selectedIcon = iconData.find((icon) => icon.name === selectedDestination.destinationName || icon.id === selectedDestination.name);
             if (selectedIcon) {
                 const newPosition = meterToCoordinate([selectedIcon.position[0], selectedIcon.position[1]])
                 setViewState((prev) => ({

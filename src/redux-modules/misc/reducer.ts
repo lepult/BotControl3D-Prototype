@@ -8,8 +8,7 @@ const initialState: {
     editingMapId: number | undefined,
     selectedDestination: {
         mapId: number,
-        destinationId: number,
-        name: string,
+        destinationName: string,
     } | undefined,
 } = {
     adminModeType: AdminModeType.default,

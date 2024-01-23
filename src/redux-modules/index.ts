@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
 
 const Store = configureStore({
     reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware(),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
