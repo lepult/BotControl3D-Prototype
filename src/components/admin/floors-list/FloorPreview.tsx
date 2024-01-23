@@ -41,6 +41,7 @@ const FloorPreview: FC<{
     const [viewState, setViewState] = useState<ViewState<any, any, any>>({
         ...INITIAL_VIEW_STATE,
         ...initialViewState,
+        zoom: initialViewState.zoom - 2,
     });
 
     const [showPreview, setShowPreview] = useState(false);
@@ -106,6 +107,7 @@ const FloorPreview: FC<{
                                 setViewState((prev) => ({
                                     ...prev,
                                     ...initialViewState,
+                                    zoom: initialViewState.zoom - 2,
                                 }))}
                             }
                         >
