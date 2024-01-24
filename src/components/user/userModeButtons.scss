@@ -4,11 +4,15 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    width: 100px;
 
     .map-button {
       margin-top: 5px;
+      width: 100px;
     }
+  }
+
+  .map-buttons-row {
+    flex-direction: row;
   }
 
   .position-right {

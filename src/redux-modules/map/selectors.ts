@@ -5,3 +5,4 @@ export const selectMapById = (mapId: number) => (state: RootState) => state.map.
 export const selectMapsFetchState = (state: RootState) => state.map.fetchState;
 export const selectInitialViewStateByMapId = (mapId: number) => (state: RootState) => state.map.initialViewStateById[mapId] || {};
 export const selectSelectedMap = (state: RootState) => state.map.selectedMap;
+export const selectSelectedRobot = (state: RootState) => state.map.selectedRobot;

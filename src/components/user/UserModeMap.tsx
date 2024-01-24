@@ -15,7 +15,7 @@ import {
 } from '../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
-import { selectInitialViewStateByMapId } from '../../redux-modules/map/selectors';
+import { selectInitialViewStateByMapId, selectSelectedRobot } from '../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../redux-modules/misc/actions';
 import { IIconData, TViewState } from '../../types/deckgl-map';
@@ -26,7 +26,7 @@ import {
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { svgToDataURL } from '../../utils/marker';
-import { blueMarker, redMarker } from '../../assets/markers';
+import { blueMarker, greenMarker, redMarker } from '../../assets/markers';
 import { OBJLoader } from '@loaders.gl/obj';
 
 type TGltfModel = {
@@ -49,6 +49,7 @@ const UserModeMap: FC<{
     const dispatch = useDispatch();
 
     const selectedDestination = useSelector(selectSelectedDestination(mapId));
+    const selectedRobot = useSelector(selectSelectedRobot);
 
     const robotIds = useSelector(selectRobotIds);
     const robotEntities = useSelector(selectRobotEntities);
@@ -62,6 +63,7 @@ const UserModeMap: FC<{
         .map((robot) => ({
             ...robot?.puduRobotStatus,
             name: robot?.robotStatus?.robotName,
+            id: robot?.robotStatus?.robotId,
         })),
         [robots]);
 
@@ -83,11 +85,11 @@ const UserModeMap: FC<{
         new IconLayer({
             ...iconLayerDefaults,
             id: `robot-icon-layer-${mapId}`,
-            data: robotsPositionsLayerData,
+            sizeScale: 5,
+            data: robotsPositionsLayerData.filter((data) => data.id === selectedRobot),
             getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 1.5],
-            transitions: { getPosition: 2000 },
             getIcon: () => ({
-                url: svgToDataURL(redMarker()),
+                url: svgToDataURL(greenMarker()),
                 height: 128,
                 width: 128,
             }),
@@ -101,11 +103,14 @@ const UserModeMap: FC<{
             sizeScale: 1,
             getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
             getOrientation: (i: TPuduApiRobotStatus) => [0, radiansToDegrees(i.robotPose?.angle || 0) + 90, 90],
-            getColor: () => [255, 0, 0],
+            getColor: (i: TPuduApiRobotStatus) => i.id === selectedRobot ? [0, 157, 0] : [157, 0, 0],
             getScale: () => [1, 1, 1],
             transitions: { getPosition: 2000 },
+            updateTriggers: {
+                getColor: [selectedRobot]
+            }
         }),
-    ], [robotsPositionsLayerData, mapId]);
+    ], [robotsPositionsLayerData, mapId, selectedRobot]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,

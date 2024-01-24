@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer, current } from '@reduxjs/toolkit';
-import { changeInitialViewState, changeSelectedMap, getAllMapsAction } from './actions';
+import { changeInitialViewState, changeSelectedMap, changeSelectedRobot, getAllMapsAction } from './actions';
 import { FetchState } from '../../types/fetch';
 import { TMap } from '../../types/api/map';
 import { TViewState } from '../../types/deckgl-map';
@@ -13,6 +13,7 @@ const initialState: {
     ids: number[],
     initialViewStateById: { [key: number]: TViewState },
     selectedMap?: number,
+    selectedRobot?: string,
 } = {
     fetchState: FetchState.initial,
     entities: {},
@@ -55,6 +56,7 @@ const initialState: {
         },
     },
     selectedMap: undefined,
+    selectedRobot: undefined,
 };
 
 
@@ -91,6 +93,11 @@ const reducer = createReducer(initialState, (builder) => {
     builder.addCase(changeSelectedMap, (draft, { payload }) => ({
         ...draft,
         selectedMap: payload.mapId,
+    }));
+
+    builder.addCase(changeSelectedRobot, (draft, { payload }) => ({
+        ...draft,
+        selectedRobot: payload.robotId,
     }));
 });
 
