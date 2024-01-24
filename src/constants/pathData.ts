@@ -3,6 +3,2950 @@ import { TRobotMap } from '../types/pudu-api/robotMap';
 // Path Data T1 2.OG
 export const pathDataT12OG: TRobotMap = {"elements":[{"type":"track","vector":[1.0024,-2.5456,0.63583,6.0295],"id":"0","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[1.0838,-4.2281,1.0024,-2.5456],"id":"1","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[11.73,-3.7604,1.0838,-4.2281],"id":"2","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[-1.3,-2.5,1.0024,-2.5456],"id":"3","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[-1.3,-2.5,-1.6,1.75],"id":"4","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[-1.6,1.75,-1.8,5.85],"id":"4","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[-1.8,5.85,0.63583,6.0295],"id":"4","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[11.85,-1.6,11.73,-3.7604],"id":"5","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[12.05,-8.8,11.73,-3.7604],"id":"6","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[0.55638,7.6545,0.63583,6.0295],"id":"7","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[-0.15884,22.283,10.85,22.8],"id":"8","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[14.2,24.2,10.85,22.8],"id":"9","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[11.22,14.22,10.85,22.8],"id":"10","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[11.4,10.05,11.22,14.22],"id":"11","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[14.7,10.45,11.4,10.05],"id":"12","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[11.5,6.5,11.85,-1.6],"id":"13","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[11.5,6.5,11.4,10.05],"id":"14","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[13.55,6.65,11.5,6.5],"id":"15","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[13.45,-1.65,11.85,-1.6],"id":"16","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":true},{"type":"track","vector":[2.85,6.05,11.5,6.5],"id":"17","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[2.85,6.05,0.63583,6.0295],"id":"18","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[2.9157,5.0421,2.85,6.05],"id":"19","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[-0.85204,-7.4336,0.43266,-7.3947],"id":"20","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[0.43266,-7.3947,0.45862,-5.955],"id":"20","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[0.45862,-5.955,0.49755,-4.2169],"id":"20","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[0.49755,-4.2169,1.0838,-4.2281],"id":"20","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[13.644,14.333,11.22,14.22],"id":"21","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[-0.2187,23.807,-0.15884,22.283],"id":"22","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[0.12179,16.543,-0.15884,22.283],"id":"23","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[0.28133,13.28,0.12179,16.543],"id":"24","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[0.28133,13.28,0.55638,7.6545],"id":"25","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[-2.0127,16.43,0.12179,16.543],"id":"26","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[-1.6524,13.208,0.28133,13.28],"id":"27","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"track","vector":[-0.43893,7.5981,0.55638,7.6545],"id":"28","width":0.0,"maxSpeed":0.0,"dualWidth":0.0,"leftMode":false,"middleMode":false},{"type":"node","vector":[14.7,10.45,0.0],"id":"0"},{"type":"node","vector":[14.2,24.2,0.0],"id":"1"},{"type":"node","vector":[13.55,6.65,0.0],"id":"2"},{"type":"node","vector":[13.45,-1.65,0.0],"id":"3"},{"type":"node","vector":[12.05,-8.8,0.0],"id":"4"},{"type":"node","vector":[11.85,-1.6,0.0],"id":"5"},{"type":"node","vector":[11.73,-3.7604,0.0],"id":"6"},{"type":"node","vector":[1.0838,-4.2281,0.0],"id":"7"},{"type":"node","vector":[0.63583,6.0295,0.0],"id":"8"},{"type":"node","vector":[11.4,10.05,0.0],"id":"9"},{"type":"node","vector":[10.85,22.8,0.0],"id":"10"},{"type":"node","vector":[11.5,6.5,0.0],"id":"11"},{"type":"node","vector":[2.9157,5.0421,0.0],"id":"12"},{"type":"node","vector":[-1.3,-2.5,0.0],"id":"13"},{"type":"node","vector":[1.0024,-2.5456,0.0],"id":"14"},{"type":"node","vector":[-0.85204,-7.4336,0.0],"id":"15"},{"type":"node","vector":[2.85,6.05,0.0],"id":"16"},{"type":"node","vector":[13.644,14.333,0.0],"id":"17"},{"type":"node","vector":[11.22,14.22,0.0],"id":"18"},{"type":"node","vector":[-0.2187,23.807,0.0],"id":"19"},{"type":"node","vector":[-0.15884,22.283,0.0],"id":"20"},{"type":"node","vector":[-1.6524,13.208,0.0],"id":"21"},{"type":"node","vector":[-2.0127,16.43,0.0],"id":"22"},{"type":"node","vector":[0.12179,16.543,0.0],"id":"23"},{"type":"node","vector":[0.28133,13.28,0.0],"id":"24"},{"type":"node","vector":[-0.43893,7.5981,0.0],"id":"25"},{"type":"node","vector":[0.55638,7.6545,0.0],"id":"26"},{"type":"source","vector":[0.026561,0.13356,0.038923],"name":"01","mode":"table","id":"01","dir":0.038923,"dirMode":2,"doubleDir":0},{"type":"source","vector":[2.9669,5.3503,-1.5454],"name":"#Fahrstuhl","mode":"table","id":"#Fahrstuhl","dir":-1.5454,"dirMode":2,"doubleDir":0},{"type":"source","vector":[2.9094,5.6257,1.4981],"name":"$Fahrstuhl","mode":"table","id":"$Fahrstuhl","dir":1.4981,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-2.8617,6.4258,-1.581],"name":"Claire","mode":"table","id":"Claire","dir":-1.581,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-2.3368,13.166,2.1213],"name":"Corinna","mode":"table","id":"Corinna","dir":2.1213,"dirMode":2,"doubleDir":0},{"type":"source","vector":[15.077,6.6286,-1.6848],"name":"Dieter","mode":"table","id":"Dieter","dir":-1.6848,"dirMode":2,"doubleDir":0},{"type":"source","vector":[13.057,-2.7056,0.44937],"name":"Emely","mode":"table","id":"Emely","dir":0.44937,"dirMode":2,"doubleDir":0},{"type":"source","vector":[2.9503,3.441,1.5984],"name":"Fahrstuhl 2.OG","mode":"table","id":"Fahrstuhl 2.OG","dir":1.5984,"dirMode":2,"doubleDir":0},{"type":"source","vector":[14.078,-0.76676,-0.023995],"name":"Fred","mode":"table","id":"Fred","dir":-0.023995,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-3.1489,-7.3817,1.5919],"name":"Jan","mode":"table","id":"Jan","dir":1.5919,"dirMode":2,"doubleDir":0},{"type":"source","vector":[14.883,8.3005,0.0],"name":"Kirsten","mode":"table","id":"Kirsten","dir":0.0,"dirMode":2,"doubleDir":0},{"type":"source","vector":[10.118,1.572,0.89809],"name":"Küche","mode":"table","id":"Küche","dir":0.89809,"dirMode":2,"doubleDir":0},{"type":"source","vector":[15.011,14.497,-0.023642],"name":"Ludwig","mode":"table","id":"Ludwig","dir":-0.023642,"dirMode":2,"doubleDir":0},{"type":"source","vector":[14.977,20.062,2.6177],"name":"Luisa","mode":"table","id":"Luisa","dir":2.6177,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-3.2937,2.125,0.96495],"name":"Mareike","mode":"table","id":"Mareike","dir":0.96495,"dirMode":2,"doubleDir":0},{"type":"source","vector":[13.823,-5.5655,0.79256],"name":"Maria","mode":"table","id":"Maria","dir":0.79256,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-3.2651,16.414,-2.665],"name":"Markus","mode":"table","id":"Markus","dir":-2.665,"dirMode":2,"doubleDir":0},{"type":"source","vector":[13.723,2.1053,2.1825],"name":"Marvin","mode":"table","id":"Marvin","dir":2.1825,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-2.8895,-2.3605,1.6421],"name":"Mathias","mode":"table","id":"Mathias","dir":1.6421,"dirMode":2,"doubleDir":0},{"type":"source","vector":[9.6618,2.608,0.84153],"name":"Meetingpoint Küche","mode":"table","id":"Meetingpoint Küche","dir":0.84153,"dirMode":2,"doubleDir":0},{"type":"source","vector":[14.795,-7.752,-1.637],"name":"Meetingpoint Nord","mode":"table","id":"Meetingpoint Nord","dir":-1.637,"dirMode":2,"doubleDir":0},{"type":"source","vector":[13.253,25.31,-0.45414],"name":"Meetingpoint Süd","mode":"table","id":"Meetingpoint Süd","dir":-0.45414,"dirMode":2,"doubleDir":0},{"type":"source","vector":[12.923,21.023,-1.2405],"name":"Melanie","mode":"table","id":"Melanie","dir":-1.2405,"dirMode":2,"doubleDir":0},{"type":"source","vector":[15.893,2.0726,2.36],"name":"Peter","mode":"table","id":"Peter","dir":2.36,"dirMode":2,"doubleDir":0},{"type":"source","vector":[12.232,13.279,0.0],"name":"Randi","mode":"table","id":"Randi","dir":0.0,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-1.3322,-7.4336,1.5934],"name":"Rudi","mode":"table","id":"Rudi","dir":1.5934,"dirMode":2,"doubleDir":0},{"type":"source","vector":[15.245,10.47,1.9215],"name":"Saskia","mode":"table","id":"Saskia","dir":1.9215,"dirMode":2,"doubleDir":0},{"type":"source","vector":[7.484,22.899,1.1424],"name":"Tobias","mode":"table","id":"Tobias","dir":1.1424,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-1.4859,7.6767,0.56841],"name":"Vroni","mode":"table","id":"Vroni","dir":0.56841,"dirMode":2,"doubleDir":0},{"type":"source","vector":[5.311,-4.5784,-1.5583],"name":"Werkstatt","mode":"table","id":"Werkstatt","dir":-1.5583,"dirMode":2,"doubleDir":0},{"type":"source","vector":[-0.18005,0.17,0.016283],"name":"idle position","mode":"dining_outlet","id":"idle position","group":"idle position","dir":0.016283,"dirMode":2,"doubleDir":0},{"type":"circle","vector":[10.0,18.0,9.0,11.0,16.0,8.0,26.0,24.0,23.0,20.0,10.0,20.0,23.0,24.0,26.0,8.0,16.0,11.0,9.0,18.0,10.0],"id":"0"},{"type":"charging_pile","vector":[10.875,-0.69623,0.0],"id":"Ladestation","group":"Ladestation"}]};
 
+// Path Data Atrium & Dome
+export const pathDataAtriumDome: TRobotMap = {
+    "elements": [
+        {
+            "type": "track",
+            "vector": [
+                -0.69346,
+                20.036,
+                0.28574,
+                19.355
+            ],
+            "id": "0",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -8.9193,
+                8.8285,
+                -9.796,
+                7.6781
+            ],
+            "id": "1",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -6.4114,
+                11.785,
+                -8.9193,
+                8.8285
+            ],
+            "id": "2",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -36.491,
+                -13.528,
+                -37.845,
+                -12.414
+            ],
+            "id": "3",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -32.859,
+                -9.1376,
+                -36.491,
+                -13.528
+            ],
+            "id": "4",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -37.781,
+                -15.039,
+                -36.491,
+                -13.528
+            ],
+            "id": "5",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -2.8415,
+                -2.2696,
+                -2.4553,
+                0.25518
+            ],
+            "id": "6",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -4.3625,
+                1.6076,
+                -2.4553,
+                0.25518
+            ],
+            "id": "7",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -4.9069,
+                0.55239,
+                -4.3625,
+                1.6076
+            ],
+            "id": "8",
+            "width": 1.2,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -4.3958,
+                14.046,
+                -6.4114,
+                11.785
+            ],
+            "id": "9",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -5.1536,
+                14.716,
+                -4.3958,
+                14.046
+            ],
+            "id": "10",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                2.4035,
+                11.782,
+                1.6733,
+                12.304
+            ],
+            "id": "11",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -7.7947,
+                12.945,
+                -6.4114,
+                11.785
+            ],
+            "id": "12",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                4.1536,
+                15.159,
+                1.9086,
+                12.575
+            ],
+            "id": "13",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                1.9086,
+                12.575,
+                1.6733,
+                12.304
+            ],
+            "id": "13",
+            "width": 1.2,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                4.7299,
+                14.657,
+                4.1536,
+                15.159
+            ],
+            "id": "14",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                5.8064,
+                21.825,
+                5.7497,
+                23.061
+            ],
+            "id": "15",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                11.612,
+                26.235,
+                7.5554,
+                21.414
+            ],
+            "id": "16",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                7.5554,
+                21.414,
+                5.8064,
+                21.825
+            ],
+            "id": "16",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                5.1209,
+                21.007,
+                5.8064,
+                21.825
+            ],
+            "id": "17",
+            "width": 0.0,
+            "maxSpeed": 0.8,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                3.0177,
+                18.487,
+                1.9442,
+                19.407
+            ],
+            "id": "18",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                1.9442,
+                19.407,
+                1.0459,
+                20.224
+            ],
+            "id": "18",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                1.0459,
+                20.224,
+                0.28574,
+                19.355
+            ],
+            "id": "18",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                3.0177,
+                18.487,
+                4.2364,
+                17.413
+            ],
+            "id": "19",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                4.2364,
+                17.413,
+                5.2525,
+                16.424
+            ],
+            "id": "19",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                5.2525,
+                16.424,
+                4.1536,
+                15.159
+            ],
+            "id": "19",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                3.0177,
+                18.487,
+                5.1209,
+                21.007
+            ],
+            "id": "20",
+            "width": 0.0,
+            "maxSpeed": 0.9,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -2.3796,
+                16.307,
+                0.28574,
+                19.355
+            ],
+            "id": "21",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -2.3796,
+                16.307,
+                -4.3958,
+                14.046
+            ],
+            "id": "22",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -10.671,
+                6.5299,
+                -9.796,
+                7.6781
+            ],
+            "id": "23",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -5.2916,
+                2.3249,
+                -4.3625,
+                1.6076
+            ],
+            "id": "24",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -5.2916,
+                2.3249,
+                -5.9881,
+                2.8626
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -5.9881,
+                2.8626,
+                -6.1827,
+                3.015
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -6.1827,
+                3.015,
+                -7.3608,
+                3.9377
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -7.3608,
+                3.9377,
+                -8.8454,
+                5.1003
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -8.8454,
+                5.1003,
+                -10.671,
+                6.5299
+            ],
+            "id": "25",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -3.4611,
+                17.284,
+                -2.3796,
+                16.307
+            ],
+            "id": "26",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                14.271,
+                29.489,
+                11.612,
+                26.235
+            ],
+            "id": "27",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                11.436,
+                31.816,
+                14.271,
+                29.489
+            ],
+            "id": "28",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                15.794,
+                31.273,
+                14.878,
+                30.182
+            ],
+            "id": "29",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                14.878,
+                30.182,
+                14.271,
+                29.489
+            ],
+            "id": "29",
+            "width": 1.2,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -17.868,
+                8.7862,
+                -13.473,
+                8.7242
+            ],
+            "id": "30",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -13.473,
+                8.7242,
+                -10.671,
+                6.5299
+            ],
+            "id": "30",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -16.728,
+                10.037,
+                -17.868,
+                8.7862
+            ],
+            "id": "31",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -19.276,
+                7.1369,
+                -19.067,
+                7.3816
+            ],
+            "id": "32",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -19.067,
+                7.3816,
+                -17.868,
+                8.7862
+            ],
+            "id": "32",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -20.853,
+                5.2906,
+                -19.276,
+                7.1369
+            ],
+            "id": "33",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -22.452,
+                3.4175,
+                -20.853,
+                5.2906
+            ],
+            "id": "34",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -23.376,
+                2.2795,
+                -22.452,
+                3.4175
+            ],
+            "id": "35",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -23.829,
+                4.4658,
+                -22.452,
+                3.4175
+            ],
+            "id": "36",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                19.488,
+                35.76,
+                17.597,
+                33.418
+            ],
+            "id": "37",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                17.597,
+                33.418,
+                15.794,
+                31.273
+            ],
+            "id": "37",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                20.56,
+                35.034,
+                19.488,
+                35.76
+            ],
+            "id": "38",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -22.299,
+                1.3295,
+                -23.376,
+                2.2795
+            ],
+            "id": "39",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -24.702,
+                0.66971,
+                -23.376,
+                2.2795
+            ],
+            "id": "40",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                20.059,
+                36.463,
+                19.488,
+                35.76
+            ],
+            "id": "41",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -17.019,
+                5.3365,
+                -19.276,
+                7.1369
+            ],
+            "id": "42",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -34.199,
+                -7.9631,
+                -32.859,
+                -9.1376
+            ],
+            "id": "43",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -28.463,
+                -3.8598,
+                -29.181,
+                -4.6911
+            ],
+            "id": "44",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -29.181,
+                -4.6911,
+                -32.859,
+                -9.1376
+            ],
+            "id": "44",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -28.463,
+                -3.8598,
+                -28.263,
+                -3.6289
+            ],
+            "id": "45",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -28.263,
+                -3.6289,
+                -27.475,
+                -2.7168
+            ],
+            "id": "45",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -27.475,
+                -2.7168,
+                -24.702,
+                0.66971
+            ],
+            "id": "45",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -26.213,
+                2.1069,
+                -24.702,
+                0.66971
+            ],
+            "id": "46",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                10.476,
+                27.235,
+                11.612,
+                26.235
+            ],
+            "id": "47",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                21.945,
+                38.741,
+                20.059,
+                36.463
+            ],
+            "id": "48",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                23.35,
+                40.421,
+                21.945,
+                38.741
+            ],
+            "id": "49",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                24.48,
+                39.553,
+                23.35,
+                40.421
+            ],
+            "id": "50",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                17.325,
+                38.514,
+                20.059,
+                36.463
+            ],
+            "id": "51",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                17.325,
+                38.514,
+                16.266,
+                37.28
+            ],
+            "id": "52",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                16.266,
+                37.28,
+                15.074,
+                35.89
+            ],
+            "id": "52",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                15.074,
+                35.89,
+                13.03,
+                33.553
+            ],
+            "id": "52",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                13.03,
+                33.553,
+                15.794,
+                31.273
+            ],
+            "id": "52",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                19.232,
+                40.755,
+                17.325,
+                38.514
+            ],
+            "id": "53",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                19.232,
+                40.755,
+                21.945,
+                38.741
+            ],
+            "id": "54",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -26.788,
+                -5.3168,
+                -28.463,
+                -3.8598
+            ],
+            "id": "55",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                20.661,
+                42.48,
+                19.232,
+                40.755
+            ],
+            "id": "56",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                20.661,
+                42.48,
+                23.35,
+                40.421
+            ],
+            "id": "57",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                19.396,
+                43.327,
+                20.661,
+                42.48
+            ],
+            "id": "58",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                6.6694,
+                20.017,
+                5.1209,
+                21.007
+            ],
+            "id": "59",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                3.9475,
+                22.074,
+                5.1209,
+                21.007
+            ],
+            "id": "60",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                0.65825,
+                -0.75784,
+                0.023287,
+                -1.6811
+            ],
+            "id": "61",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                0.023287,
+                -1.6811,
+                -2.4553,
+                0.25518
+            ],
+            "id": "61",
+            "width": 1.2,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -1.0728,
+                7.2823,
+                -1.9921,
+                8.071
+            ],
+            "id": "62",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -1.9921,
+                8.071,
+                -1.7848,
+                8.3242
+            ],
+            "id": "62",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -1.7848,
+                8.3242,
+                1.6733,
+                12.304
+            ],
+            "id": "62",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                0.1006,
+                6.2757,
+                -1.0728,
+                7.2823
+            ],
+            "id": "63",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -4.3333,
+                3.4595,
+                -5.2916,
+                2.3249
+            ],
+            "id": "64",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -4.3333,
+                3.4595,
+                -1.0728,
+                7.2823
+            ],
+            "id": "65",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -4.3333,
+                3.4595,
+                -5.2465,
+                4.1273
+            ],
+            "id": "66",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -5.2465,
+                4.1273,
+                -9.796,
+                7.6781
+            ],
+            "id": "66",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": true
+        },
+        {
+            "type": "track",
+            "vector": [
+                -11.143,
+                11.191,
+                -8.9193,
+                8.8285
+            ],
+            "id": "67",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -19.546,
+                4.2029,
+                -20.853,
+                5.2906
+            ],
+            "id": "68",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "track",
+            "vector": [
+                -34.947,
+                -14.472,
+                -36.491,
+                -13.528
+            ],
+            "id": "69",
+            "width": 0.0,
+            "maxSpeed": 0.0,
+            "dualWidth": 0.0,
+            "leftMode": false,
+            "middleMode": false
+        },
+        {
+            "type": "node",
+            "vector": [
+                0.65825,
+                -0.75784,
+                0.0
+            ],
+            "id": "0"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -0.69346,
+                20.036,
+                0.0
+            ],
+            "id": "1"
+        },
+        {
+            "type": "node",
+            "vector": [
+                3.9475,
+                22.074,
+                0.0
+            ],
+            "id": "2"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -5.2916,
+                2.3249,
+                0.0
+            ],
+            "id": "3"
+        },
+        {
+            "type": "node",
+            "vector": [
+                19.232,
+                40.755,
+                0.0
+            ],
+            "id": "4"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -36.491,
+                -13.528,
+                0.0
+            ],
+            "id": "5"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -2.8415,
+                -2.2696,
+                0.0
+            ],
+            "id": "6"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -2.4553,
+                0.25518,
+                0.0
+            ],
+            "id": "7"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -4.9069,
+                0.55239,
+                0.0
+            ],
+            "id": "8"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -5.1536,
+                14.716,
+                0.0
+            ],
+            "id": "9"
+        },
+        {
+            "type": "node",
+            "vector": [
+                2.4035,
+                11.782,
+                0.0
+            ],
+            "id": "10"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -7.7947,
+                12.945,
+                0.0
+            ],
+            "id": "11"
+        },
+        {
+            "type": "node",
+            "vector": [
+                4.7299,
+                14.657,
+                0.0
+            ],
+            "id": "12"
+        },
+        {
+            "type": "node",
+            "vector": [
+                5.8064,
+                21.825,
+                0.0
+            ],
+            "id": "13"
+        },
+        {
+            "type": "node",
+            "vector": [
+                24.48,
+                39.553,
+                0.0
+            ],
+            "id": "14"
+        },
+        {
+            "type": "node",
+            "vector": [
+                5.7497,
+                23.061,
+                0.0
+            ],
+            "id": "15"
+        },
+        {
+            "type": "node",
+            "vector": [
+                0.28574,
+                19.355,
+                0.0
+            ],
+            "id": "16"
+        },
+        {
+            "type": "node",
+            "vector": [
+                1.6733,
+                12.304,
+                0.0
+            ],
+            "id": "17"
+        },
+        {
+            "type": "node",
+            "vector": [
+                4.1536,
+                15.159,
+                0.0
+            ],
+            "id": "18"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -17.868,
+                8.7862,
+                0.0
+            ],
+            "id": "19"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -10.671,
+                6.5299,
+                0.0
+            ],
+            "id": "20"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -3.4611,
+                17.284,
+                0.0
+            ],
+            "id": "21"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -20.853,
+                5.2906,
+                0.0
+            ],
+            "id": "22"
+        },
+        {
+            "type": "node",
+            "vector": [
+                23.35,
+                40.421,
+                0.0
+            ],
+            "id": "23"
+        },
+        {
+            "type": "node",
+            "vector": [
+                19.396,
+                43.327,
+                0.0
+            ],
+            "id": "24"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -28.463,
+                -3.8598,
+                0.0
+            ],
+            "id": "25"
+        },
+        {
+            "type": "node",
+            "vector": [
+                11.436,
+                31.816,
+                0.0
+            ],
+            "id": "26"
+        },
+        {
+            "type": "node",
+            "vector": [
+                14.271,
+                29.489,
+                0.0
+            ],
+            "id": "27"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -1.0728,
+                7.2823,
+                0.0
+            ],
+            "id": "28"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -11.143,
+                11.191,
+                0.0
+            ],
+            "id": "29"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -22.452,
+                3.4175,
+                0.0
+            ],
+            "id": "30"
+        },
+        {
+            "type": "node",
+            "vector": [
+                15.794,
+                31.273,
+                0.0
+            ],
+            "id": "31"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -4.3958,
+                14.046,
+                0.0
+            ],
+            "id": "32"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -6.4114,
+                11.785,
+                0.0
+            ],
+            "id": "33"
+        },
+        {
+            "type": "node",
+            "vector": [
+                6.6694,
+                20.017,
+                0.0
+            ],
+            "id": "34"
+        },
+        {
+            "type": "node",
+            "vector": [
+                20.059,
+                36.463,
+                0.0
+            ],
+            "id": "35"
+        },
+        {
+            "type": "node",
+            "vector": [
+                20.56,
+                35.034,
+                0.0
+            ],
+            "id": "36"
+        },
+        {
+            "type": "node",
+            "vector": [
+                3.0177,
+                18.487,
+                0.0
+            ],
+            "id": "37"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -23.376,
+                2.2795,
+                0.0
+            ],
+            "id": "38"
+        },
+        {
+            "type": "node",
+            "vector": [
+                19.488,
+                35.76,
+                0.0
+            ],
+            "id": "39"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -22.299,
+                1.3295,
+                0.0
+            ],
+            "id": "40"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -17.019,
+                5.3365,
+                0.0
+            ],
+            "id": "41"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -2.3796,
+                16.307,
+                0.0
+            ],
+            "id": "42"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -19.276,
+                7.1369,
+                0.0
+            ],
+            "id": "43"
+        },
+        {
+            "type": "node",
+            "vector": [
+                20.661,
+                42.48,
+                0.0
+            ],
+            "id": "44"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -9.796,
+                7.6781,
+                0.0
+            ],
+            "id": "45"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -37.845,
+                -12.414,
+                0.0
+            ],
+            "id": "46"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -34.199,
+                -7.9631,
+                0.0
+            ],
+            "id": "47"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -32.859,
+                -9.1376,
+                0.0
+            ],
+            "id": "48"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -26.788,
+                -5.3168,
+                0.0
+            ],
+            "id": "49"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -37.781,
+                -15.039,
+                0.0
+            ],
+            "id": "50"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -23.829,
+                4.4658,
+                0.0
+            ],
+            "id": "51"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -26.213,
+                2.1069,
+                0.0
+            ],
+            "id": "52"
+        },
+        {
+            "type": "node",
+            "vector": [
+                0.1006,
+                6.2757,
+                0.0
+            ],
+            "id": "53"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -24.702,
+                0.66971,
+                0.0
+            ],
+            "id": "54"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -4.3625,
+                1.6076,
+                0.0
+            ],
+            "id": "55"
+        },
+        {
+            "type": "node",
+            "vector": [
+                10.476,
+                27.235,
+                0.0
+            ],
+            "id": "56"
+        },
+        {
+            "type": "node",
+            "vector": [
+                21.945,
+                38.741,
+                0.0
+            ],
+            "id": "57"
+        },
+        {
+            "type": "node",
+            "vector": [
+                11.612,
+                26.235,
+                0.0
+            ],
+            "id": "58"
+        },
+        {
+            "type": "node",
+            "vector": [
+                5.1209,
+                21.007,
+                0.0
+            ],
+            "id": "59"
+        },
+        {
+            "type": "node",
+            "vector": [
+                17.325,
+                38.514,
+                0.0
+            ],
+            "id": "60"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -4.3333,
+                3.4595,
+                0.0
+            ],
+            "id": "61"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -16.728,
+                10.037,
+                0.0
+            ],
+            "id": "62"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -8.9193,
+                8.8285,
+                0.0
+            ],
+            "id": "63"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -19.546,
+                4.2029,
+                0.0
+            ],
+            "id": "64"
+        },
+        {
+            "type": "node",
+            "vector": [
+                -34.947,
+                -14.472,
+                0.0
+            ],
+            "id": "65"
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.032623,
+                6.5547,
+                -1.3943
+            ],
+            "name": "01",
+            "mode": "table",
+            "id": "01",
+            "group": "Atrium",
+            "dir": -1.3943,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -3.7985,
+                7.4777,
+                1.0032
+            ],
+            "name": "10",
+            "mode": "table",
+            "id": "10",
+            "group": "Atrium",
+            "dir": 1.0032,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -2.4412,
+                9.0587,
+                1.0957
+            ],
+            "name": "11",
+            "mode": "table",
+            "id": "11",
+            "group": "Atrium",
+            "dir": 1.0957,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -1.1464,
+                10.559,
+                1.0756
+            ],
+            "name": "12",
+            "mode": "table",
+            "id": "12",
+            "group": "Atrium",
+            "dir": 1.0756,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.57101,
+                12.614,
+                1.1914
+            ],
+            "name": "13",
+            "mode": "table",
+            "id": "13",
+            "group": "Atrium",
+            "dir": 1.1914,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                1.9679,
+                14.277,
+                1.1165
+            ],
+            "name": "14",
+            "mode": "table",
+            "id": "14",
+            "group": "Atrium",
+            "dir": 1.1165,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                3.2004,
+                15.735,
+                1.0729
+            ],
+            "name": "15",
+            "mode": "table",
+            "id": "15",
+            "group": "Atrium",
+            "dir": 1.0729,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -6.522,
+                9.9965,
+                -1.9872
+            ],
+            "name": "20",
+            "mode": "table",
+            "id": "20",
+            "group": "Atrium",
+            "dir": -1.9872,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -5.2183,
+                11.533,
+                -1.9874
+            ],
+            "name": "21",
+            "mode": "table",
+            "id": "21",
+            "group": "Atrium",
+            "dir": -1.9874,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -4.0128,
+                12.998,
+                -1.964
+            ],
+            "name": "22",
+            "mode": "table",
+            "id": "22",
+            "group": "Atrium",
+            "dir": -1.964,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -2.2715,
+                15.025,
+                -1.962
+            ],
+            "name": "23",
+            "mode": "table",
+            "id": "23",
+            "group": "Atrium",
+            "dir": -1.962,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -1.036,
+                16.659,
+                -1.8384
+            ],
+            "name": "24",
+            "mode": "table",
+            "id": "24",
+            "group": "Atrium",
+            "dir": -1.8384,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.36273,
+                18.258,
+                -1.8904
+            ],
+            "name": "25",
+            "mode": "table",
+            "id": "25",
+            "group": "Atrium",
+            "dir": -1.8904,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -4.3309,
+                -0.35102,
+                -2.4741
+            ],
+            "name": "30",
+            "mode": "table",
+            "id": "30",
+            "dir": -2.4741,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -5.9167,
+                0.96278,
+                -2.3052
+            ],
+            "name": "31",
+            "mode": "table",
+            "id": "31",
+            "dir": -2.3052,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -7.2411,
+                1.9165,
+                -2.2151
+            ],
+            "name": "32",
+            "mode": "table",
+            "id": "32",
+            "dir": -2.2151,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -8.6225,
+                3.0409,
+                -2.1833
+            ],
+            "name": "33",
+            "mode": "table",
+            "id": "33",
+            "dir": -2.1833,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -10.089,
+                4.1085,
+                -2.2434
+            ],
+            "name": "34",
+            "mode": "table",
+            "id": "34",
+            "dir": -2.2434,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -11.485,
+                5.3184,
+                -2.3585
+            ],
+            "name": "35",
+            "mode": "table",
+            "id": "35",
+            "dir": -2.3585,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -12.809,
+                6.4002,
+                -2.3321
+            ],
+            "name": "36",
+            "mode": "table",
+            "id": "36",
+            "dir": -2.3321,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -4.2228,
+                6.0303,
+                -3.0202
+            ],
+            "name": "41",
+            "mode": "table",
+            "id": "41",
+            "dir": -3.0202,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -7.2177,
+                5.1109,
+                0.63763
+            ],
+            "name": "40",
+            "mode": "table",
+            "id": "40",
+            "dir": 0.63763,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -4.9301,
+                4.2597,
+                -2.9368
+            ],
+            "name": "42",
+            "mode": "table",
+            "id": "42",
+            "dir": -2.9368,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -11.748,
+                9.0345,
+                2.208
+            ],
+            "name": "43",
+            "mode": "table",
+            "id": "43",
+            "dir": 2.208,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -11.879,
+                11.544,
+                -3.1077
+            ],
+            "name": "44",
+            "mode": "table",
+            "id": "44",
+            "dir": -3.1077,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -33.82,
+                -15.387,
+                -0.51615
+            ],
+            "name": "50",
+            "mode": "table",
+            "id": "50",
+            "dir": -0.51615,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -35.146,
+                -15.488,
+                -1.9034
+            ],
+            "name": "51",
+            "mode": "table",
+            "id": "51",
+            "dir": -1.9034,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                16.302,
+                30.513,
+                -0.73513
+            ],
+            "name": "111",
+            "mode": "table",
+            "id": "111",
+            "dir": -0.73513,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                12.437,
+                32.807,
+                2.0893
+            ],
+            "name": "101",
+            "mode": "table",
+            "id": "101",
+            "dir": 2.0893,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                18.31,
+                32.831,
+                -0.50032
+            ],
+            "name": "112",
+            "mode": "table",
+            "id": "112",
+            "dir": -0.50032,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.768,
+                36.199,
+                2.3165
+            ],
+            "name": "102",
+            "mode": "table",
+            "id": "102",
+            "dir": 2.3165,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                20.416,
+                35.345,
+                -0.77792
+            ],
+            "name": "113",
+            "mode": "table",
+            "id": "113",
+            "dir": -0.77792,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                16.706,
+                38.609,
+                2.3486
+            ],
+            "name": "103",
+            "mode": "table",
+            "id": "103",
+            "dir": 2.3486,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                22.554,
+                38.262,
+                -0.62413
+            ],
+            "name": "114",
+            "mode": "table",
+            "id": "114",
+            "dir": -0.62413,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                19.452,
+                41.647,
+                2.5021
+            ],
+            "name": "104",
+            "mode": "table",
+            "id": "104",
+            "dir": 2.5021,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -18.926,
+                3.6825,
+                -1.7478
+            ],
+            "name": "48",
+            "mode": "table",
+            "id": "48",
+            "dir": -1.7478,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -14.631,
+                9.5797,
+                1.002
+            ],
+            "name": "45",
+            "mode": "table",
+            "id": "45",
+            "dir": 1.002,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -17.512,
+                3.2926,
+                -0.54591
+            ],
+            "name": "46",
+            "mode": "table",
+            "id": "46",
+            "dir": -0.54591,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -18.725,
+                5.1628,
+                -0.73344
+            ],
+            "name": "47",
+            "mode": "table",
+            "id": "47",
+            "dir": -0.73344,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                12.516,
+                31.485,
+                -2.2864
+            ],
+            "name": "100",
+            "mode": "table",
+            "id": "100",
+            "dir": -2.2864,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                -34.093,
+                -14.146,
+                -0.036786
+            ],
+            "name": "49",
+            "mode": "table",
+            "id": "49",
+            "dir": -0.036786,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                23.629,
+                40.705,
+                -0.5619
+            ],
+            "name": "115",
+            "mode": "table",
+            "id": "115",
+            "dir": -0.5619,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                21.844,
+                42.274,
+                2.544
+            ],
+            "name": "105",
+            "mode": "table",
+            "id": "105",
+            "dir": 2.544,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                14.951,
+                29.324,
+                -1.3766
+            ],
+            "name": "110",
+            "mode": "table",
+            "id": "110",
+            "dir": -1.3766,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                22.658,
+                39.862,
+                2.6061
+            ],
+            "name": "122",
+            "mode": "table",
+            "id": "122",
+            "dir": 2.6061,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                18.958,
+                35.381,
+                2.218
+            ],
+            "name": "120",
+            "mode": "table",
+            "id": "120",
+            "dir": 2.218,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                20.777,
+                37.695,
+                2.462
+            ],
+            "name": "121",
+            "mode": "table",
+            "id": "121",
+            "dir": 2.462,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                5.7184,
+                22.933,
+                0.89121
+            ],
+            "name": "#Fahrstuhl Atrium",
+            "mode": "table",
+            "id": "#Fahrstuhl Atrium",
+            "group": "Atrium",
+            "dir": 0.89121,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                5.5681,
+                22.427,
+                -1.5806
+            ],
+            "name": "$Fahrstuhl Atrium",
+            "mode": "table",
+            "id": "$Fahrstuhl Atrium",
+            "group": "Atrium",
+            "dir": -1.5806,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                6.7785,
+                24.061,
+                -2.3321
+            ],
+            "name": "Fahrstuhl",
+            "mode": "table",
+            "id": "Fahrstuhl",
+            "dir": -2.3321,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.29275,
+                -0.42677,
+                -2.9313
+            ],
+            "name": "Startpunkt",
+            "mode": "table",
+            "id": "Startpunkt",
+            "group": "Atrium",
+            "dir": -2.9313,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "name": "TABLE",
+            "mode": "table",
+            "id": "TABLE",
+            "dir": 0.0,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.98964,
+                5.5001,
+                -0.018313
+            ],
+            "name": "Theke",
+            "mode": "dining_outlet",
+            "id": "Theke",
+            "group": "Theke",
+            "dir": -0.018313,
+            "dirMode": 2,
+            "doubleDir": 1
+        },
+        {
+            "type": "source",
+            "vector": [
+                0.64914,
+                5.7096,
+                1.0201
+            ],
+            "name": "Theke2",
+            "mode": "dining_outlet",
+            "id": "Theke2",
+            "group": "Theke2",
+            "dir": 1.0201,
+            "dirMode": 2,
+            "doubleDir": 0
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                -4.6297,
+                6.9375,
+                -7.0581,
+                8.8428
+            ],
+            "id": "0"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                -7.0581,
+                8.8428,
+                1.4111,
+                19.062
+            ],
+            "id": "1"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                1.4111,
+                19.062,
+                3.9032,
+                16.917
+            ],
+            "id": "2"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                3.9032,
+                16.917,
+                -4.6297,
+                6.9375
+            ],
+            "id": "3"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                0.26953,
+                21.153,
+                -6.4031,
+                13.171
+            ],
+            "id": "4"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                -0.337,
+                8.5433,
+                6.272,
+                16.339
+            ],
+            "id": "5"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                6.272,
+                16.339,
+                6.4883,
+                16.575
+            ],
+            "id": "6"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                12.315,
+                29.598,
+                8.4684,
+                24.851
+            ],
+            "id": "7"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                -14.538,
+                15.292,
+                -23.455,
+                4.6906
+            ],
+            "id": "8"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                -26.738,
+                0.79851,
+                -45.675,
+                -21.392
+            ],
+            "id": "9"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                17.147,
+                33.574,
+                16.259,
+                32.478
+            ],
+            "id": "10"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                19.021,
+                35.974,
+                18.203,
+                34.964
+            ],
+            "id": "11"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                20.894,
+                38.345,
+                20.06,
+                37.368
+            ],
+            "id": "12"
+        },
+        {
+            "type": "virtual_wall",
+            "vector": [
+                22.723,
+                40.467,
+                22.015,
+                39.518
+            ],
+            "id": "13"
+        },
+        {
+            "type": "charging_pile",
+            "vector": [
+                0.7712,
+                6.9378,
+                -2.411
+            ],
+            "id": "Station West",
+            "group": "Station West"
+        },
+        {
+            "type": "charging_pile",
+            "vector": [
+                1.3245,
+                6.5601,
+                -2.3571
+            ],
+            "id": "Station Ost",
+            "group": "Station Ost"
+        }
+    ]
+};
+
 // Path Data T1 1.OG
 // export const pathDataT11OG: TRobotMap
 

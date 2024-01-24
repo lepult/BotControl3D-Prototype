@@ -1,4 +1,4 @@
-import { pathDataT21OG, pathDataTobitEG, pathDataT22OG, pathDataT12OG } from './pathData';
+import { pathDataT21OG, pathDataTobitEG, pathDataT22OG, pathDataT12OG, pathDataAtriumDome } from './pathData';
 import { floorModelsT22OG } from './models';
 import { TRobotMap } from '../types/pudu-api/robotMap';
 import { useProductionBackend } from './env';
@@ -14,6 +14,8 @@ export const getPathDataByMapId = (mapId: number): TRobotMap | null => {
                 return pathDataT22OG;
             case 23:
                 return pathDataT12OG;
+            case 27:
+                return pathDataAtriumDome;
             case 28:
             // return pathDataT11OG;
             default:

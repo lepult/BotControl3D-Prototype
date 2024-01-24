@@ -45,7 +45,14 @@ const initialState: {
             longitude: 0.0001394576258052846,
             pitch: 0,
             zoom: 21.861244231311016,
-        }
+        },
+        27: {
+            bearing: 130.28409512449852,
+            latitude: 0.000060266389528363424,
+            longitude: -0.000052157458068779457,
+            pitch: 0,
+            zoom: 20.944798650111323
+        },
     },
     selectedMap: undefined,
 };
