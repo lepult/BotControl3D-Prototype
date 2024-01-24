@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer, current } from '@reduxjs/toolkit';
-import { changeInitialViewState, changeSelectedMap, changeSelectedRobot, getAllMapsAction } from './actions';
+import { changeInitialViewState, changeSelectedMap, toggleSelectedRobot, getAllMapsAction } from './actions';
 import { FetchState } from '../../types/fetch';
 import { TMap } from '../../types/api/map';
 import { TViewState } from '../../types/deckgl-map';
@@ -95,9 +95,11 @@ const reducer = createReducer(initialState, (builder) => {
         selectedMap: payload.mapId,
     }));
 
-    builder.addCase(changeSelectedRobot, (draft, { payload }) => ({
+    builder.addCase(toggleSelectedRobot, (draft, { payload }) => ({
         ...draft,
-        selectedRobot: payload.robotId,
+        selectedRobot: payload.robotId === draft.selectedRobot
+            ? undefined
+            : payload.robotId,
     }));
 });
 

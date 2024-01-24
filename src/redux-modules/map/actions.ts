@@ -11,7 +11,7 @@ type TChangeSelectedMap = {
     mapId: number,
 }
 
-type TChangeSelectedRobot = {
+type TToggleSelectedRobot = {
     robotId: string | undefined,
 }
 
@@ -24,4 +24,4 @@ export const changeInitialViewState = createAction<TChangeInitialViewState>('map
 
 export const changeSelectedMap = createAction<TChangeSelectedMap>('map/changeSelectedMap');
 
-export const changeSelectedRobot = createAction<TChangeSelectedRobot>('map/changeSelectedRobot')
+export const toggleSelectedRobot = createAction<TToggleSelectedRobot>('map/toggleSelectedRobot')

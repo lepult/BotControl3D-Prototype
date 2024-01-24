@@ -28,6 +28,7 @@ import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { svgToDataURL } from '../../utils/marker';
 import { blueMarker, greenMarker, redMarker } from '../../assets/markers';
 import { OBJLoader } from '@loaders.gl/obj';
+import { toggleSelectedRobot } from '../../redux-modules/map/actions';
 
 type TGltfModel = {
     id: string,
@@ -40,6 +41,8 @@ const radiansToDegrees = (radians: number) => {
     let pi = Math.PI;
     return radians * (180/pi);
 }
+
+const TRANSITION_DURATION = 2000;
 
 const UserModeMap: FC<{
     mapId: number,
@@ -81,18 +84,29 @@ const UserModeMap: FC<{
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
 
+    const handleRobotClick = (robotId: string) => {
+        console.log('handleRobotClick', robotId);
+        dispatch(toggleSelectedRobot({ robotId }));
+    };
+
     const robotLayers = useMemo<[IconLayer, SimpleMeshLayer]>(() => [
         new IconLayer({
             ...iconLayerDefaults,
             id: `robot-icon-layer-${mapId}`,
             sizeScale: 5,
-            data: robotsPositionsLayerData.filter((data) => data.id === selectedRobot),
+            data: robotsPositionsLayerData,
             getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 1.5],
+            getSize: (i: TPuduApiRobotStatus) => i.id === selectedRobot ? 1 : 0,
             getIcon: () => ({
                 url: svgToDataURL(greenMarker()),
                 height: 128,
                 width: 128,
             }),
+            transitions: { getPosition: TRANSITION_DURATION },
+            updateTriggers: {
+                getSize: [selectedRobot]
+            },
+            onClick: (pickingInfo) => handleRobotClick(pickingInfo.object.id),
         }),
         new SimpleMeshLayer({
             coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
@@ -101,14 +115,16 @@ const UserModeMap: FC<{
             loaders: [OBJLoader],
             data: robotsPositionsLayerData,
             sizeScale: 1,
+            pickable: true,
             getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
             getOrientation: (i: TPuduApiRobotStatus) => [0, radiansToDegrees(i.robotPose?.angle || 0) + 90, 90],
             getColor: (i: TPuduApiRobotStatus) => i.id === selectedRobot ? [0, 157, 0] : [157, 0, 0],
             getScale: () => [1, 1, 1],
-            transitions: { getPosition: 2000 },
+            transitions: { getPosition: TRANSITION_DURATION },
             updateTriggers: {
                 getColor: [selectedRobot]
-            }
+            },
+            onClick: (pickingInfo) => handleRobotClick(pickingInfo.object.id),
         }),
     ], [robotsPositionsLayerData, mapId, selectedRobot]);
 

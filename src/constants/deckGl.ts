@@ -48,7 +48,6 @@ export const iconLayerDefaults: Partial<IconLayerProps> = {
     pickable: true,
     sizeScale: 3,
     getSize: 1,
-    sizeMinPixels: 100,
     sizeUnits: 'meters',
     alphaCutoff: 0.5,
     getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
