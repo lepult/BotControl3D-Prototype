@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
-import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
+import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
@@ -18,18 +18,27 @@ import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
 import { selectInitialViewStateByMapId } from '../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../redux-modules/misc/actions';
-import { TViewState } from '../../types/deckgl-map';
+import { IIconData, TViewState } from '../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
 } from '../../redux-modules/robot-status/selectors';
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
+import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
+import { svgToDataURL } from '../../utils/marker';
+import { blueMarker, redMarker } from '../../assets/markers';
+import { OBJLoader } from '@loaders.gl/obj';
 
 type TGltfModel = {
     id: string,
     url: string,
     position: [number, number, number],
     orientation: [number, number, number],
+}
+
+const radiansToDegrees = (radians: number) => {
+    let pi = Math.PI;
+    return radians * (180/pi);
 }
 
 const UserModeMap: FC<{
@@ -70,20 +79,31 @@ const UserModeMap: FC<{
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
 
-    // Without the icon layer, the robots won't be displayed after selecting a new map.
-    // The IconLayer shares its id with the ScenegraphLayer. This somehow prevents the robots from not being displayed.
-    const robotLayers = useMemo<[IconLayer, ScenegraphLayer]>(() => [
+    const robotLayers = useMemo<[IconLayer, SimpleMeshLayer]>(() => [
         new IconLayer({
-            id: `robots-positions-layer__${mapId}`,
-            data: [],
-        }),
-        new ScenegraphLayer({
-            ...scenegraphLayerDefaults,
-            id: `robots-positions-layer__${mapId}`,
+            ...iconLayerDefaults,
+            id: `robot-icon-layer-${mapId}`,
             data: robotsPositionsLayerData,
-            scenegraph: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.glb',
+            getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 1.5],
+            transitions: { getPosition: 2000 },
+            getIcon: () => ({
+                url: svgToDataURL(redMarker()),
+                height: 128,
+                width: 128,
+            }),
+        }),
+        new SimpleMeshLayer({
+            coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+            id: `robots-positions-layer123__${mapId}`,
+            mesh: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.obj',
+            loaders: [OBJLoader],
+            data: robotsPositionsLayerData,
+            sizeScale: 1,
             getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
-            getOrientation: (i: TPuduApiRobotStatus) => [0, i.robotPose?.angle || 0, 90],
+            getOrientation: (i: TPuduApiRobotStatus) => [0, radiansToDegrees(i.robotPose?.angle || 0) + 90, 90],
+            getColor: () => [255, 0, 0],
+            getScale: () => [1, 1, 1],
+            transitions: { getPosition: 2000 },
         }),
     ], [robotsPositionsLayerData, mapId]);
 

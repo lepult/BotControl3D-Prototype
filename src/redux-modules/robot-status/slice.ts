@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setWaitCursor } from 'chayns-api';
 import { TMapWithDestinations } from '../../types/api/map';
 import { TRobotMap } from '../../types/pudu-api/robotMap';
@@ -11,6 +11,7 @@ import { TSyncMapsData } from '../../types/websocket/syncMapsData';
 import { TNotifyGoStateData } from '../../types/websocket/notifyGoStateData';
 import { getDevicesDataAction, getRobotDataAction } from './actions';
 import { sortMapsAndDestinations } from '../../utils/sortHelper';
+import { TNotifyRobotPoseData } from '../../types/websocket/notifyRobotPoseData';
 
 type TInitialState = {
     fetchState: FetchState;
@@ -28,6 +29,11 @@ type TState = {
     goStateData?: TNotifyGoStateData;
 };
 
+export type TReducerAction<T> = {
+    robotId: string;
+    data: T;
+};
+
 export const robotStatusAdapter = createEntityAdapter<TState>({
     selectId: (model) => model.robotId,
     sortComparer: (a, b) => a.robotId.localeCompare(b.robotId)
@@ -40,7 +46,23 @@ const slice = createSlice({
         sendToDestinations: [],
     }),
     reducers: {
+        updateRobotPose: (draft, action: PayloadAction<TReducerAction<TNotifyRobotPoseData>>) => {
+            if (action.payload) {
+                const robot = draft.entities[action.payload.robotId];
 
+                if (robot) {
+                    robotStatusAdapter.updateOne(draft, {
+                        id: action.payload.robotId,
+                        changes: {
+                            puduRobotStatus: {
+                                ...robot.puduRobotStatus,
+                                robotPose: action.payload.data
+                            }
+                        }
+                    });
+                }
+            }
+        },
     },
     extraReducers: (builder) => {
         // region fetch initial data
@@ -129,18 +151,9 @@ const slice = createSlice({
     }
 });
 
-// export const {
-//     updateRobotStatus,
-//     updateRobotActivity,
-//     updateRobotAppErrorStatus,
-//     updatePuduApiStatus,
-//     updateRobotPower,
-//     updateRobotMoveState,
-//     updateRobotPose,
-//     syncMaps,
-//     updateSendToDestinations,
-//     updateGoStateData
-// } = slice.actions;
+export const {
+    updateRobotPose,
+} = slice.actions;
 
 export const robotStatusReducer = slice.reducer;
 export const robotStatusName = slice.name;
