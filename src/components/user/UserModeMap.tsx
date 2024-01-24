@@ -17,17 +17,12 @@ import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
 import { selectInitialViewStateByMapId } from '../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../redux-modules/misc/actions';
-import { IIconData, TViewState } from '../../types/deckgl-map';
+import { TViewState } from '../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
-    selectRobotsByCurrentMap
 } from '../../redux-modules/robot-status/selectors';
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
-import { robotStatusName } from '../../redux-modules/robot-status/slice';
-import { svgToDataURL } from '../../utils/marker';
-import { blueMarker, redMarker } from '../../assets/markers';
-import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 
 type TGltfModel = {
     id: string,
@@ -74,31 +69,22 @@ const UserModeMap: FC<{
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
 
-    const robotsPositionsLayer2 = useMemo<ScenegraphLayer>(() => new ScenegraphLayer({
-        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-        parameters: { cull: true },
-        pickable: true,
-        sizeScale: 1,
-        _lighting: 'pbr',        // sizeScale: 10,
-        // parameters: { cull: false },
-        id: `robots-positions-layer__${mapId}`,
-        data: robotsPositionsLayerData,
-        scenegraph: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.glb',
-        getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
-        getOrientation: (i: TPuduApiRobotStatus) => [0, i.robotPose?.angle || 0, 90],
-    }), [robotsPositionsLayerData, mapId]);
-
-    const robotsPositionsLayer = useMemo<IconLayer>(() => new IconLayer({
-        // ...iconLayerDefaults,
-        id: `robots-positions-layer__${mapId}`,
-        data: [], //robotsPositionsLayerData,
-        // getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
-        // getIcon: (d: IIconData) => ({
-        //     url: svgToDataURL(redMarker()),
-        //     height: 128,
-        //     width: 128,
-        // }),
-    }), [robotsPositionsLayerData, mapId]);
+    // Without the icon layer, the robots won't be displayed after selecting a new map.
+    // The IconLayer shares its id with the ScenegraphLayer. This somehow prevents the robots from not being displayed.
+    const robotLayers = useMemo<[IconLayer, ScenegraphLayer]>(() => [
+        new IconLayer({
+            id: `robots-positions-layer__${mapId}`,
+            data: [],
+        }),
+        new ScenegraphLayer({
+            ...scenegraphLayerDefaults,
+            id: `robots-positions-layer__${mapId}`,
+            data: robotsPositionsLayerData,
+            scenegraph: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.glb',
+            getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
+            getOrientation: (i: TPuduApiRobotStatus) => [0, i.robotPose?.angle || 0, 90],
+        }),
+    ], [robotsPositionsLayerData, mapId]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
@@ -111,19 +97,6 @@ const UserModeMap: FC<{
         getPosition: (m: TGltfModel) => m.position,
         getOrientation: (m: TGltfModel) => m.orientation,
     })), [mapId]);
-
-    useEffect(() => {
-        console.log('scenegraphLayers', scenegraphLayers);
-    }, [scenegraphLayers]);
-
-    useEffect(() => {
-        console.log('robotsPositionsLayerData', robotsPositionsLayerData);
-    }, [robotsPositionsLayerData]);
-
-    useEffect(() => {
-        console.log('robotsPositionsLayer', robotsPositionsLayer);
-    }, [robotsPositionsLayer]);
-
 
     const iconLayerData = useMemo(() => pathData
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName)
@@ -150,13 +123,6 @@ const UserModeMap: FC<{
         }
     }), [iconLayerData, selectedDestination, mapId, dispatch]);
 
-    useEffect(() => {
-        console.log('iconLayerData', iconLayerData);
-    }, [iconLayerData]);
-    useEffect(() => {
-        console.log('iconLayer', iconLayer);
-    }, [iconLayer]);
-
     const pathLayerData = useMemo(() => pathData
         ? mapRobotElementsToPathData(pathData.elements)
         : [],
@@ -168,10 +134,6 @@ const UserModeMap: FC<{
         data: pathLayerData,
     }), [pathLayerData, mapId]);
 
-    useEffect(() => {
-        console.log('pathLayer', pathLayer);
-    }, [pathLayer]);
-
     return (
         <div
             onContextMenu={(event) => event.preventDefault()}
@@ -182,11 +144,9 @@ const UserModeMap: FC<{
                 }}
                 layers={[
                     ...scenegraphLayers,
-                    // demoPolygonLayer,
                     pathLayer,
                     iconLayer,
-                    robotsPositionsLayer,
-                    robotsPositionsLayer2,
+                    ...robotLayers,
                 ]}
                 controller
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as TViewState)}
