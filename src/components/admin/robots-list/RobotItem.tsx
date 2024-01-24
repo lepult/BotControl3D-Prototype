@@ -46,7 +46,7 @@ const RobotItem: FC<{
     robotId,
 }) => {
     const robotStatus = useSelector(selectRobotStatusById(robotId));
-
+    console.log('robotStatus', robotStatus?.robotName, robotStatus)
     return (
         <Accordion
             head={robotStatus?.robotName || <SmallWaitCursor show/>}
@@ -62,56 +62,55 @@ const RobotItem: FC<{
                                 <FloorPreview mapId={robotStatus.currentMap.id}/>
                             </div>
                             <Accordion
-                                head="Status"
-                                defaultOpened
-                                isWrapped
-                                dataGroup="robot-item"
-                            >
-                                <div className="accordion__content">
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Roboter-Id</p>
-                                        <p>{robotId}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Position</p>
-                                        <p>{robotStatus.currentMap.showName || 'Unbekannt'}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Neustart-Zeit</p>
-                                        <p>{robotStatus.rebootTime || 'Unbekannt'}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Calling Code</p>
-                                        <p>{robotStatus.callingCode?.code || 'Unbekannt'}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Modus</p>
-                                        <p>{robotStatus.driveMode || 'Unbekannt'}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Ausgabepunkt</p>
-                                        <p>{robotStatus.diningOutlet?.name || 'Unbekannt'}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Ladestation</p>
-                                        <p>{robotStatus.chargingStation?.name || 'Unbekannt'}</p>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <p>Homebase</p>
-                                        <p>{robotStatus.homeBaseMap?.showName || 'Unbekannt'}</p>
-                                    </div>
-                                </div>
-                            </Accordion>
-                            <Accordion
                                 head="Standorte"
                                 isWrapped
                                 dataGroup="robot-item"
                             >
                                 <FloorLocations mapId={robotStatus.currentMap.id}/>
                             </Accordion>
-
                         </div>
                     )}
+                    <Accordion
+                        head="Status"
+                        defaultOpened
+                        isWrapped
+                        dataGroup="robot-item"
+                    >
+                        <div className="accordion__content">
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Roboter-Id</p>
+                                <p>{robotId}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Position</p>
+                                <p>{robotStatus.currentMap?.showName || 'Unbekannt'}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Neustart-Zeit</p>
+                                <p>{robotStatus.rebootTime || 'Unbekannt'}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Calling Code</p>
+                                <p>{robotStatus.callingCode?.code || 'Unbekannt'}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Modus</p>
+                                <p>{robotStatus.driveMode || 'Unbekannt'}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Ausgabepunkt</p>
+                                <p>{robotStatus.diningOutlet?.name || 'Unbekannt'}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Ladestation</p>
+                                <p>{robotStatus.chargingStation?.name || 'Unbekannt'}</p>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>Homebase</p>
+                                <p>{robotStatus.homeBaseMap?.showName || 'Unbekannt'}</p>
+                            </div>
+                        </div>
+                    </Accordion>
                 </div>
             ) : (
                 <SmallWaitCursor show/>
