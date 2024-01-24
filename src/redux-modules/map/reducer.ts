@@ -74,8 +74,7 @@ const reducer = createReducer(initialState, (builder) => {
             }
         });
 
-        // draft.selectedMap = payload.find((map) => !map.hidden && getPathDataByMapId(map.id))?.id;
-        draft.selectedMap = 51;
+        draft.selectedMap = payload.find((map) => !map.hidden && getPathDataByMapId(map.id))?.id;
     });
 
     builder.addCase(changeInitialViewState, (draft, { payload }) => {
