@@ -33,9 +33,12 @@ export const pathLayerDefaults: Partial<PathLayerProps> = {
     id: 'path-layer-track',
     coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
     pickable: true,
-    widthScale: 0.05,
-    getWidth: 1,
-    widthMinPixels: 2,
+    widthScale: 1,
+    getWidth: 0.025,
+    widthMinPixels: 0,
+    jointRounded: true,
+    capRounded: true,
+    billboard: true,
     getColor: (d: { color: [number, number, number] }) => d.color || [0, 0, 0],
 };
 
@@ -45,7 +48,9 @@ export const iconLayerDefaults: Partial<IconLayerProps> = {
     pickable: true,
     sizeScale: 3,
     getSize: 1,
+    sizeMinPixels: 100,
     sizeUnits: 'meters',
+    alphaCutoff: 0.5,
     getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
     getIcon: (d: IIconData) => ({
         url: svgToDataURL(d.selected ? redMarker() : blueMarker()),
@@ -54,3 +59,13 @@ export const iconLayerDefaults: Partial<IconLayerProps> = {
     }),
     getColor: (d: IIconData) => d.color || [0, 0, 0],
 }
+
+export const CONTROLLER_DEFAULTS = {
+    scrollZoom: true,
+    dragPan: true,
+    dragRotate: true,
+    doubleClickZoom: true,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+};

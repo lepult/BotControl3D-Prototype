@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import { SmallWaitCursor, Button } from 'chayns-components';
 import {
+    CONTROLLER_DEFAULTS,
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
     pathLayerDefaults,
@@ -148,7 +149,7 @@ const UserModeMap: FC<{
                     iconLayer,
                     ...robotLayers,
                 ]}
-                controller
+                controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as TViewState)}
             />
         </div>
