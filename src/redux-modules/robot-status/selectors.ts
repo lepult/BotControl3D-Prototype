@@ -6,4 +6,9 @@ export const selectRobotStatusFetchState = (state: RootState) => state[robotStat
 
 export const selectRobotIds = (state: RootState) => state[robotStatusName].ids;
 
+export const selectRobotsByCurrentMap = (mapId: number) => (state: RootState) => {
+    const robots = state[robotStatusName].ids.map((id) => state[robotStatusName].entities[id]);
+    return robots.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
+}
+
 export const selectRobotStatusById = (robotId: string) => (state: RootState) => state[robotStatusName].entities[robotId]?.robotStatus;

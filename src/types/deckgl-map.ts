@@ -48,5 +48,10 @@ export type TViewState = {
     latitude: number,
     longitude: number,
     pitch: number,
-    zoom: number
+    zoom: number,
+    maxZoom?: number,
+    minZoom?: number,
+    rotationX?: number,
+    maxPitch?: number,
+    minPitch?: number,
 }

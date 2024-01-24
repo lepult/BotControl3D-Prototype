@@ -8,15 +8,13 @@ import { getAllMapsAction } from '../redux-modules/map/actions';
 import { getAllDestinationsAction } from '../redux-modules/destination/actions';
 import { selectRobotIds, selectRobotStatus } from '../redux-modules/robot-status/selectors';
 import { getDevicesDataAction, getRobotDataAction } from '../redux-modules/robot-status/actions';
+import UserMode from './user/UserMode';
 
 const App = () => {
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const isAdminMode = useIsAdminMode();
 
-    const robotStatus = useSelector(selectRobotStatus);
     const robotIds = useSelector(selectRobotIds);
-
-    console.log('robotStatus', robotStatus);
 
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.exclusive);
@@ -33,9 +31,9 @@ const App = () => {
         }
     }, [dispatch, robotIds]);
 
-    return isAdminMode ? (
-        <AdminMode/>
-    ) : 'Nutzermodus'
+    return isAdminMode
+        ? <AdminMode/>
+        : <UserMode/>;
 };
 
 export default App;

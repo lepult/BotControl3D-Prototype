@@ -3,11 +3,11 @@ import ViewState from '@deck.gl/core/typed/controllers/view-state';
 import { ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { IconLayerProps, PathLayerProps } from '@deck.gl/layers/typed';
-import { IIconData } from '../types/deckgl-map';
+import { IIconData, TViewState } from '../types/deckgl-map';
 import { svgToDataURL } from '../utils/marker';
 import { blueMarker, redMarker } from '../assets/markers';
 
-export const INITIAL_VIEW_STATE = {
+export const INITIAL_VIEW_STATE: TViewState = {
     longitude: 0,
     latitude: 0,
     // @ts-ignore

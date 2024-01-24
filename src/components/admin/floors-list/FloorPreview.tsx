@@ -49,15 +49,20 @@ const FloorPreview: FC<{
 
     const [showPreview, setShowPreview] = useState(false);
 
+    const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-    const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements, selectedDestination?.name),
-        [mapId, selectedDestination]);
-    console.log('iconData', iconData);
+    const iconData = useMemo(() => pathData
+            ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName)
+            : [], [selectedDestination, pathData]);
+
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,
         data: iconData,
         onClick: (pickingInfo, event) => {
+            console.log('selectedDestination', selectedDestination);
+            console.log('pickingInfo', pickingInfo.object);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
                 dispatch(changeSelectedDestination(undefined));
@@ -75,13 +80,15 @@ const FloorPreview: FC<{
     }), [iconData, selectedDestination, mapId, dispatch]);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-    const pathData = useMemo(() => mapRobotElementsToPathData(getPathDataByMapId(mapId).elements), [mapId]);
+    const pathLayerData = useMemo(() => pathData
+        ? mapRobotElementsToPathData(pathData.elements)
+        : [], [pathData]);
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
         ...pathLayerDefaults,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         id: `path-layer__${mapId}`,
-        data: pathData,
-    }), [pathData, mapId]);
+        data: pathLayerData,
+    }), [pathLayerData, mapId]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,

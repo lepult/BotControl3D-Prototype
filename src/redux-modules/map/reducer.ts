@@ -1,16 +1,18 @@
 /* eslint-disable no-param-reassign */
 import { createReducer, current } from '@reduxjs/toolkit';
-import { changeInitialViewState, getAllMapsAction } from './actions';
+import { changeInitialViewState, changeSelectedMap, getAllMapsAction } from './actions';
 import { FetchState } from '../../types/fetch';
 import { TMap } from '../../types/api/map';
 import { TViewState } from '../../types/deckgl-map';
 import { INITIAL_VIEW_STATE } from '../../constants/deckGl';
+import { getPathDataByMapId } from '../../constants/puduData';
 
 const initialState: {
     fetchState: FetchState,
     entities: { [key: number]: TMap },
     ids: number[],
-    initialViewStateById: { [key: number]: TViewState }
+    initialViewStateById: { [key: number]: TViewState },
+    selectedMap?: number,
 } = {
     fetchState: FetchState.initial,
     entities: {},
@@ -29,8 +31,23 @@ const initialState: {
             longitude: 0.00014383500909172006,
             pitch: 0,
             zoom: 21.72801121717332,
+        },
+        23: {
+            bearing: -92.27603943420489,
+            latitude: 0.00007468137389339414,
+            longitude: 0.000046934286567453376,
+            pitch: 0,
+            zoom: 21.900260063435525,
+        },
+        88: {
+            bearing: 1.0801543077582512,
+            latitude: 0.00003415108335180374,
+            longitude: 0.0001394576258052846,
+            pitch: 0,
+            zoom: 21.861244231311016,
         }
     },
+    selectedMap: undefined,
 };
 
 
@@ -56,12 +73,19 @@ const reducer = createReducer(initialState, (builder) => {
                 };
             }
         });
-        console.log('map draft', current(draft));
+
+        // draft.selectedMap = payload.find((map) => !map.hidden && getPathDataByMapId(map.id))?.id;
+        draft.selectedMap = 51;
     });
 
     builder.addCase(changeInitialViewState, (draft, { payload }) => {
         draft.initialViewStateById[payload.mapId] = payload.viewState;
     });
+
+    builder.addCase(changeSelectedMap, (draft, { payload }) => ({
+        ...draft,
+        selectedMap: payload.mapId,
+    }));
 });
 
 export default reducer;

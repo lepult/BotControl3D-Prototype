@@ -1,0 +1,26 @@
+.user-mode-buttons__wrapper {
+  .map-buttons {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+
+    .map-button {
+      margin-top: 5px;
+    }
+  }
+
+  .position-right {
+    right: 10px;
+  }
+  .position-left {
+    left: 10px;
+  }
+  .position-top {
+    top: 10px;
+  }
+  .position-bottom {
+    bottom: 10px;
+  }
+}

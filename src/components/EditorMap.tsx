@@ -310,21 +310,17 @@ const EditorMap: FC<{
                     <i className="fa fa-location-crosshairs"/>
                 </Button>
                 <Button onClick={() => {
+                    const newInitialViewState = {
+                        bearing: viewState.bearing,
+                        latitude: viewState.latitude,
+                        longitude: viewState.longitude,
+                        pitch: viewState.pitch,
+                        zoom: viewState.zoom,
+                    };
+                    console.log('newInitialViewState', newInitialViewState);
                     dispatch(changeInitialViewState({
                         mapId,
-                        viewState: {
-                            // @ts-ignore
-                            bearing: viewState.bearing,
-                            // @ts-ignore
-                            latitude: viewState.latitude,
-                            // @ts-ignore
-                            longitude: viewState.longitude,
-                            // @ts-ignore
-                            pitch: viewState.pitch,
-                            // @-ignore
-                            // eslint-disable-next-line @typescript-eslint/unbound-method
-                            zoom: viewState.zoom,
-                        }
+                        viewState: newInitialViewState,
                     }))
                     }}
                 >
