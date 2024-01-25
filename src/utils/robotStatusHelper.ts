@@ -7,27 +7,8 @@ import {
     ROBOT_STOP_CHARGE_REGEX
 } from '../constants/regex';
 import { RobotActivity } from '../constants/enums/robotActivity';
+import { MapRobotStatus } from '../types/deckgl-map';
 
-enum MapRobotStatus {
-    'Offline' = 'Offline',
-    'Idle' = 'Idle',
-    'Charged' = 'Charged',
-    'Charging' = 'Charging',
-    'ChargingError' = 'ChargingError',
-    'ArrivedAtDiningOutlet' = 'ArrivedAtDiningOutlet',
-    'SendToChargingPile' = 'SendToChargingPile',
-    'WaitForDoor' = 'WaitForDoor',
-    'WaitForElevator' = 'WaitForElevator',
-    'MovingWithElevator' = 'MovingWithElevator',
-    'ArrivedAtPickupDestination' = 'ArrivedAtPickupDestination',
-    'PrepareDriveToDestination' = 'PrepareDriveToDestination',
-    'SendToDestination' = 'SendToDestination',
-    'ArrivedAtDestination' = 'ArrivedAtDestination',
-    'Avoid' = 'Avoid',
-    'Blocked' = 'Blocked',
-    'Cancel' = 'Cancel',
-    'Error' = 'Error',
-}
 
 export const getMapRobotStatus = (robotStatus: TRobotStatus | undefined, puduApiRobotStatus: TPuduApiRobotStatus | undefined): MapRobotStatus => {
     let mapRobotStatus: MapRobotStatus | undefined;
@@ -61,6 +42,7 @@ export const getMapRobotStatus = (robotStatus: TRobotStatus | undefined, puduApi
 
 const getChaynsMapRobotStatus = (robotStatus: TRobotStatus): MapRobotStatus | undefined => {
     const state = robotStatus?.state?.toLowerCase();
+    console.log('status', state);
 
     if (!state) {
         return undefined;
@@ -100,6 +82,8 @@ const getChaynsMapRobotStatus = (robotStatus: TRobotStatus): MapRobotStatus | un
             return MapRobotStatus.PrepareDriveToDestination;
         case RobotStatusLowerCase.Idle:
             return MapRobotStatus.Idle;
+        case RobotStatusLowerCase.Pause:
+            return MapRobotStatus.Pause;
         case RobotStatusLowerCase.Moving:
         case RobotStatusLowerCase.Approaching:
         case RobotStatusLowerCase.Arriving: {

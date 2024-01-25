@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import ViewState from '@deck.gl/core/typed/controllers/view-state';
-import { ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
+import { OBJLoader } from '@loaders.gl/obj';
+import { ScenegraphLayerProps, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
-import { IconLayerProps, PathLayerProps } from '@deck.gl/layers/typed';
+import { IconLayerProps, PathLayerProps, TextLayer } from '@deck.gl/layers/typed';
 import { IIconData, TViewState } from '../types/deckgl-map';
 import { svgToDataURL } from '../utils/marker';
 import { blueMarker, redMarker } from '../assets/markers';
@@ -57,7 +57,35 @@ export const iconLayerDefaults: Partial<IconLayerProps> = {
         width: 128,
     }),
     getColor: (d: IIconData) => d.color || [0, 0, 0],
-}
+};
+
+const TRANSITION_DURATION = 2000;
+
+export const robotStatusTextLayerDefaults: Partial<TextLayer> = {
+    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+    sizeUnits: 'meters',
+    getSize: 0.25,
+    pickable: true,
+    getTextAnchor: 'middle',
+    getAlignmentBaseline: 'center',
+    outlineWidth: 2,
+    outlineColor: [255, 255, 255],
+    fontSettings: {
+        sdf: true,
+    },
+    transitions: { getPosition: TRANSITION_DURATION },
+};
+
+export const robotsSimpleMeshLayerDefaults: Partial<SimpleMeshLayer> = {
+    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+    mesh: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.obj',
+    loaders: [OBJLoader],
+    sizeScale: 1,
+    getScale: () => [1, 1, 1],
+    pickable: true,
+
+    transitions: { getPosition: TRANSITION_DURATION },
+};
 
 export const CONTROLLER_DEFAULTS = {
     scrollZoom: true,

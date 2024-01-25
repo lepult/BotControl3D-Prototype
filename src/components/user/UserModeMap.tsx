@@ -4,13 +4,12 @@ import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer, TextLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-// @ts-ignore
-import { SmallWaitCursor, Button } from 'chayns-components';
+import { Layer, PickingInfo } from '@deck.gl/core/typed';
 import {
     CONTROLLER_DEFAULTS,
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
-    pathLayerDefaults,
+    pathLayerDefaults, robotsSimpleMeshLayerDefaults, robotStatusTextLayerDefaults,
     scenegraphLayerDefaults
 } from '../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
@@ -18,19 +17,15 @@ import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
 import { selectInitialViewStateByMapId, selectSelectedRobot } from '../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../redux-modules/misc/actions';
-import { IIconData, TViewState } from '../../types/deckgl-map';
+import { MapRobotStatus, TViewState } from '../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
 } from '../../redux-modules/robot-status/selectors';
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
-import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
-import { svgToDataURL } from '../../utils/marker';
-import { blueMarker, greenMarker, redMarker } from '../../assets/markers';
-import { OBJLoader } from '@loaders.gl/obj';
 import { toggleSelectedRobot } from '../../redux-modules/map/actions';
-import { PathStyleExtension } from '@deck.gl/extensions/typed';
 import { getMapRobotStatus } from '../../utils/robotStatusHelper';
+import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../utils/deckGlDataAccessors';
 
 type TGltfModel = {
     id: string,
@@ -39,12 +34,17 @@ type TGltfModel = {
     orientation: [number, number, number],
 }
 
-const radiansToDegrees = (radians: number) => {
-    let pi = Math.PI;
-    return radians * (180/pi);
+type TRobotMapData = {
+    name: string,
+    id: string,
+    puduRobotStatus: TPuduApiRobotStatus,
+    mapRobotStatus: MapRobotStatus,
 }
 
-const TRANSITION_DURATION = 2000;
+interface IPickingInfo extends PickingInfo {
+    object: TRobotMapData,
+}
+
 
 const UserModeMap: FC<{
     mapId: number,
@@ -63,14 +63,18 @@ const UserModeMap: FC<{
         return r.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
     }, [mapId, robotIds, robotEntities]);
 
-    const robotsPositionsLayerData = useMemo<TPuduApiRobotStatus[]>(() => robots
+    const robotsPositionsLayerData = useMemo<TRobotMapData[]>(() => robots
         .filter((robot) => robot?.puduRobotStatus)
         .map((robot) => ({
-            ...robot?.puduRobotStatus,
-            name: robot?.robotStatus?.robotName,
-            id: robot?.robotStatus?.robotId,
+            puduRobotStatus: robot?.puduRobotStatus as TPuduApiRobotStatus,
+            name: robot?.robotStatus?.robotName as string,
+            id: robot?.robotStatus?.robotId as string,
+            mapRobotStatus: getMapRobotStatus(
+                robotEntities[robot?.robotStatus?.robotId || 0]?.robotStatus,
+                robotEntities[robot?.robotStatus?.robotId || 0]?.puduRobotStatus
+            ),
         })),
-        [robots]);
+        [robots, robotEntities]);
 
     const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
     const [viewState, setViewState] = useState<TViewState>({
@@ -86,67 +90,32 @@ const UserModeMap: FC<{
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
 
-    const handleRobotClick = (robotId: string) => {
-        console.log('handleRobotClick', robotId);
-        dispatch(toggleSelectedRobot({ robotId }));
-    };
+    const robotLayerDataAccessors = useMemo<Partial<Layer>>(() => ({
+        data: robotsPositionsLayerData,
+        getOrientation: (d: TRobotMapData) => getRobotOrientation(d.puduRobotStatus.robotPose?.angle || 0),
+        getColor: (d: TRobotMapData) => getRobotColor(d.id === selectedRobot),
+        // @ts-ignore
+        onClick: (pickingInfo: IPickingInfo) => dispatch(toggleSelectedRobot({ robotId: pickingInfo.object.id })),
+        updateTriggers: {
+            getColor: [selectedRobot]
+        },
+    }), [dispatch, robotsPositionsLayerData, selectedRobot]);
 
-    const tempTextLayer = useMemo<TextLayer>(() => new TextLayer({
-        id: `text-layer-${mapId}`,
-        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-        sizeUnits: 'meters',
-        data: robotsPositionsLayerData.map((d) => ({
-            ...d,
-            // name: robotEntities[d.id]?.robotStatus?.robotName,
-            name: getMapRobotStatus(robotEntities[d.id]?.robotStatus, robotEntities[d.id]?.puduRobotStatus),
-        })),
-        pickable: true,
-        getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 1.5],
-        getText: (i) => i.name,
-        getSize: 0.25,
-        getColor: [157, 0, 0],
-        getTextAnchor: 'middle',
-        getAlignmentBaseline: 'center'
-    }), [mapId, robotsPositionsLayerData, robotEntities]);
-
-    const robotLayers = useMemo<[IconLayer, SimpleMeshLayer]>(() => [
-        new IconLayer({
-            ...iconLayerDefaults,
-            id: `robot-icon-layer-${mapId}`,
-            sizeScale: 5,
-            data: robotsPositionsLayerData,
-            getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 1.5],
-            getSize: (i: TPuduApiRobotStatus) => i.id === selectedRobot ? 1 : 0,
-            getIcon: () => ({
-                url: svgToDataURL(greenMarker()),
-                height: 128,
-                width: 128,
-            }),
-            transitions: { getPosition: TRANSITION_DURATION },
-            updateTriggers: {
-                getSize: [selectedRobot]
-            },
-            onClick: (pickingInfo) => handleRobotClick(pickingInfo.object.id),
+    const robotLayers = useMemo<[TextLayer, SimpleMeshLayer]>(() => [
+        new TextLayer({
+            ...robotStatusTextLayerDefaults,
+            ...robotLayerDataAccessors,
+            id: `text-layer-${mapId}`,
+            getPosition: (d: TRobotMapData) => getRobotPosition(d.puduRobotStatus.robotPose, 1.5),
+            getText: (d: TRobotMapData) => d.mapRobotStatus,
         }),
         new SimpleMeshLayer({
-            coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+            ...robotsSimpleMeshLayerDefaults,
+            ...robotLayerDataAccessors,
             id: `robots-positions-layer123__${mapId}`,
-            mesh: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.obj',
-            loaders: [OBJLoader],
-            data: robotsPositionsLayerData,
-            sizeScale: 1,
-            pickable: true,
-            getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 0],
-            getOrientation: (i: TPuduApiRobotStatus) => [0, radiansToDegrees(i.robotPose?.angle || 0) + 90, 90],
-            getColor: (i: TPuduApiRobotStatus) => i.id === selectedRobot ? [0, 157, 0] : [157, 0, 0],
-            getScale: () => [1, 1, 1],
-            transitions: { getPosition: TRANSITION_DURATION },
-            updateTriggers: {
-                getColor: [selectedRobot]
-            },
-            onClick: (pickingInfo) => handleRobotClick(pickingInfo.object.id),
+            getPosition: (d: TRobotMapData) => getRobotPosition(d.puduRobotStatus.robotPose, 0),
         }),
-    ], [robotsPositionsLayerData, mapId, selectedRobot]);
+    ], [mapId, robotLayerDataAccessors]);
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
@@ -212,7 +181,6 @@ const UserModeMap: FC<{
                     pathLayer,
                     iconLayer,
                     ...robotLayers,
-                    tempTextLayer,
                 ]}
                 controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as TViewState)}

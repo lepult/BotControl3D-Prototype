@@ -55,3 +55,25 @@ export type TViewState = {
     maxPitch?: number,
     minPitch?: number,
 }
+
+export enum MapRobotStatus {
+    'Offline' = 'Offline',
+    'Idle' = 'Idle',
+    'Charged' = 'Charged',
+    'Charging' = 'Charging',
+    'ChargingError' = 'ChargingError',
+    'ArrivedAtDiningOutlet' = 'ArrivedAtDiningOutlet',
+    'SendToChargingPile' = 'SendToChargingPile',
+    'WaitForDoor' = 'WaitForDoor',
+    'WaitForElevator' = 'WaitForElevator',
+    'MovingWithElevator' = 'MovingWithElevator',
+    'ArrivedAtPickupDestination' = 'ArrivedAtPickupDestination',
+    'PrepareDriveToDestination' = 'PrepareDriveToDestination',
+    'SendToDestination' = 'SendToDestination',
+    'ArrivedAtDestination' = 'ArrivedAtDestination',
+    'Avoid' = 'Avoid',
+    'Blocked' = 'Blocked',
+    'Cancel' = 'Cancel',
+    'Error' = 'Error',
+    'Pause' = 'Pause',
+}
