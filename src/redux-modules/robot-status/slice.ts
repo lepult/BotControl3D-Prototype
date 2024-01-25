@@ -12,6 +12,8 @@ import { TNotifyGoStateData } from '../../types/websocket/notifyGoStateData';
 import { getDevicesDataAction, getRobotDataAction } from './actions';
 import { sortMapsAndDestinations } from '../../utils/sortHelper';
 import { TNotifyRobotPoseData } from '../../types/websocket/notifyRobotPoseData';
+import { TNotifyChaynsDeliveryStatus } from '../../types/websocket/notifyChaynsDeliveryStatus';
+import { TQueryStateData } from '../../types/websocket/queryStateData';
 
 type TInitialState = {
     fetchState: FetchState;
@@ -46,6 +48,26 @@ const slice = createSlice({
         sendToDestinations: [],
     }),
     reducers: {
+        updateRobotStatus: (draft, action: PayloadAction<TReducerAction<TNotifyChaynsDeliveryStatus>>) => {
+            if (action.payload) {
+                robotStatusAdapter.updateOne(draft, {
+                    id: action.payload.robotId,
+                    changes: {
+                        robotStatus: action.payload.data.chaynsStatus
+                    }
+                });
+            }
+        },
+        updatePuduApiStatus: (draft, action: PayloadAction<TReducerAction<TQueryStateData>>) => {
+            if (action.payload) {
+                robotStatusAdapter.updateOne(draft, {
+                    id: action.payload.robotId,
+                    changes: {
+                        puduRobotStatus: action.payload.data
+                    }
+                });
+            }
+        },
         updateRobotPose: (draft, action: PayloadAction<TReducerAction<TNotifyRobotPoseData>>) => {
             if (action.payload) {
                 const robot = draft.entities[action.payload.robotId];
@@ -152,6 +174,8 @@ const slice = createSlice({
 });
 
 export const {
+    updateRobotStatus,
+    updatePuduApiStatus,
     updateRobotPose,
 } = slice.actions;
 

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@deck.gl/core": "^8.9.33",
+    "@deck.gl/extensions": "^8.9.34",
     "@deck.gl/layers": "^8.9.33",
     "@deck.gl/mesh-layers": "^8.9.33",
     "@deck.gl/react": "^8.9.33",

@@ -2,7 +2,7 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
-import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
+import { IconLayer, PathLayer, TextLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import { SmallWaitCursor, Button } from 'chayns-components';
@@ -29,6 +29,8 @@ import { svgToDataURL } from '../../utils/marker';
 import { blueMarker, greenMarker, redMarker } from '../../assets/markers';
 import { OBJLoader } from '@loaders.gl/obj';
 import { toggleSelectedRobot } from '../../redux-modules/map/actions';
+import { PathStyleExtension } from '@deck.gl/extensions/typed';
+import { getMapRobotStatus } from '../../utils/robotStatusHelper';
 
 type TGltfModel = {
     id: string,
@@ -88,6 +90,24 @@ const UserModeMap: FC<{
         console.log('handleRobotClick', robotId);
         dispatch(toggleSelectedRobot({ robotId }));
     };
+
+    const tempTextLayer = useMemo<TextLayer>(() => new TextLayer({
+        id: `text-layer-${mapId}`,
+        coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
+        sizeUnits: 'meters',
+        data: robotsPositionsLayerData.map((d) => ({
+            ...d,
+            // name: robotEntities[d.id]?.robotStatus?.robotName,
+            name: getMapRobotStatus(robotEntities[d.id]?.robotStatus, robotEntities[d.id]?.puduRobotStatus),
+        })),
+        pickable: true,
+        getPosition: (i: TPuduApiRobotStatus) => [i.robotPose?.x || 0, i.robotPose?.y || 0, 1.5],
+        getText: (i) => i.name,
+        getSize: 0.25,
+        getColor: [157, 0, 0],
+        getTextAnchor: 'middle',
+        getAlignmentBaseline: 'center'
+    }), [mapId, robotsPositionsLayerData, robotEntities]);
 
     const robotLayers = useMemo<[IconLayer, SimpleMeshLayer]>(() => [
         new IconLayer({
@@ -174,7 +194,10 @@ const UserModeMap: FC<{
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         id: `path-layer__${mapId}`,
         data: pathLayerData,
+        // extensions: [new PathStyleExtension({ dash: true })],
     }), [pathLayerData, mapId]);
+
+
 
     return (
         <div
@@ -189,6 +212,7 @@ const UserModeMap: FC<{
                     pathLayer,
                     iconLayer,
                     ...robotLayers,
+                    tempTextLayer,
                 ]}
                 controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as TViewState)}

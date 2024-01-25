@@ -6,18 +6,19 @@ import AdminMode from './admin/AdminMode';
 import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { getAllMapsAction } from '../redux-modules/map/actions';
 import { getAllDestinationsAction } from '../redux-modules/destination/actions';
-import { selectRobotIds, selectRobotStatus } from '../redux-modules/robot-status/selectors';
+import { selectRobotIds } from '../redux-modules/robot-status/selectors';
 import { getDevicesDataAction, getRobotDataAction } from '../redux-modules/robot-status/actions';
 import UserMode from './user/UserMode';
 import addWebsocket from '../utils/websocketHelper';
 import { useProductionBackend } from '../constants/env';
-import { TNotifyRobotMoveStateData } from '../types/websocket/notifyRobotMoveStateData';
-import { updateRobotPose } from '../redux-modules/robot-status/slice';
+import { updatePuduApiStatus, updateRobotPose, updateRobotStatus } from '../redux-modules/robot-status/slice';
 import { TNotifyRobotPoseData } from '../types/websocket/notifyRobotPoseData';
+import { TQueryStateData } from '../types/websocket/queryStateData';
+import { TNotifyChaynsDeliveryStatus } from '../types/websocket/notifyChaynsDeliveryStatus';
 
 
 const radiansToDegrees = (radians: number) => {
-    let pi = Math.PI;
+    const pi = Math.PI;
     return radians * (180/pi);
 }
 
@@ -52,6 +53,20 @@ const App = () => {
                         robotId
                     },
                     events: {
+
+                        chayns_delivery_status: (data: TNotifyChaynsDeliveryStatus) => {
+                            void dispatch(updateRobotStatus({
+                                robotId: robotId as string,
+                                data
+                            }));
+                        },
+                        // Updates after requesting update
+                        query_state: (data: TQueryStateData) => {
+                            dispatch(updatePuduApiStatus({
+                                robotId: robotId as string,
+                                data
+                            }));
+                        },
                         notify_robot_pose: (data: TNotifyRobotPoseData) => {
                             console.log('angle', data.angle, radiansToDegrees(data.angle));
                             dispatch(updateRobotPose({

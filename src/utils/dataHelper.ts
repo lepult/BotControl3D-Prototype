@@ -17,6 +17,8 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
         // Elements with the same id are connected lines
         // Add vector to other element, if they have the same id
         const find = pathData.find((d) => d.id === element.id && d.type === element.type);
+
+        // insertTokenEveryN is used to move all paths up by <token> units, by adding <token> as a Z-coordinate into the XY-Array.
         const newVector = insertTokenEveryN(element.vector, 0.1, 2, false);
         if (!find) {
             pathData.push({
@@ -36,9 +38,6 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
 // endregion
 
 const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: boolean) => {
-    // Clone the received array, so we don't mutate the
-    // original one. You can ignore this if you don't mind.
-
     const a = array.slice(0);
 
     // Insert the <token> every <n> elements.
