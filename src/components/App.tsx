@@ -11,10 +11,18 @@ import { getDevicesDataAction, getRobotDataAction } from '../redux-modules/robot
 import UserMode from './user/UserMode';
 import addWebsocket from '../utils/websocketHelper';
 import { useProductionBackend } from '../constants/env';
-import { updatePuduApiStatus, updateRobotPose, updateRobotStatus } from '../redux-modules/robot-status/slice';
+import {
+    updatePuduApiStatus,
+    updateRobotActivity, updateRobotMoveState,
+    updateRobotPose, updateRobotPower,
+    updateRobotStatus
+} from '../redux-modules/robot-status/slice';
 import { TNotifyRobotPoseData } from '../types/websocket/notifyRobotPoseData';
 import { TQueryStateData } from '../types/websocket/queryStateData';
 import { TNotifyChaynsDeliveryStatus } from '../types/websocket/notifyChaynsDeliveryStatus';
+import { TSyncActivitiesData } from '../types/websocket/syncActivitiesData';
+import { TNotifyRobotPowerData } from '../types/websocket/notifyRobotPowerData';
+import { TNotifyRobotMoveStateData } from '../types/websocket/notifyRobotMoveStateData';
 
 
 const radiansToDegrees = (radians: number) => {
@@ -68,10 +76,33 @@ const App = () => {
                             }));
                         },
                         notify_robot_pose: (data: TNotifyRobotPoseData) => {
-                            console.log('angle', data.angle, radiansToDegrees(data.angle));
                             dispatch(updateRobotPose({
                                 robotId: robotId as string,
                                 data,
+                            }));
+                        },
+                        sync_activities: (data: TSyncActivitiesData) => {
+                            void dispatch(updateRobotActivity({
+                                robotId: robotId as string,
+                                data
+                            }));
+                        },
+                        notify_robot_power: (data: TNotifyRobotPowerData) => {
+                            dispatch(updateRobotPower({
+                                robotId: robotId as string,
+                                data
+                            }));
+                        },
+                        notify_robot_move_state: (data: TNotifyRobotMoveStateData) => {
+                            dispatch(updateRobotMoveState({
+                                robotId: robotId as string,
+                                data
+                            }));
+                        },
+                        notify_robot_move_state: (data: TNotifyRobotMoveStateData) => {
+                            dispatch(updateRobotMoveState({
+                                robotId: robotId as string,
+                                data
                             }));
                         },
                     }

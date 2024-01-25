@@ -14,6 +14,9 @@ import { sortMapsAndDestinations } from '../../utils/sortHelper';
 import { TNotifyRobotPoseData } from '../../types/websocket/notifyRobotPoseData';
 import { TNotifyChaynsDeliveryStatus } from '../../types/websocket/notifyChaynsDeliveryStatus';
 import { TQueryStateData } from '../../types/websocket/queryStateData';
+import { TSyncActivitiesData } from '../../types/websocket/syncActivitiesData';
+import { TNotifyRobotPowerData } from '../../types/websocket/notifyRobotPowerData';
+import { TNotifyRobotMoveStateData } from '../../types/websocket/notifyRobotMoveStateData';
 
 type TInitialState = {
     fetchState: FetchState;
@@ -58,6 +61,24 @@ const slice = createSlice({
                 });
             }
         },
+        updateRobotActivity: (draft, action: PayloadAction<TReducerAction<TSyncActivitiesData>>) => {
+            if (action.payload) {
+                const robot = draft.entities[action.payload.robotId];
+
+                if (robot) {
+                    robotStatusAdapter.updateOne(draft, {
+                        id: action.payload.robotId,
+                        changes: {
+                            robotStatus: {
+                                ...robot.robotStatus,
+                                robotId: action.payload.robotId,
+                                currentActivity: action.payload.data.currentActivity
+                            }
+                        }
+                    });
+                }
+            }
+        },
         updatePuduApiStatus: (draft, action: PayloadAction<TReducerAction<TQueryStateData>>) => {
             if (action.payload) {
                 robotStatusAdapter.updateOne(draft, {
@@ -66,6 +87,41 @@ const slice = createSlice({
                         puduRobotStatus: action.payload.data
                     }
                 });
+            }
+        },
+        updateRobotPower: (draft, action: PayloadAction<TReducerAction<TNotifyRobotPowerData>>) => {
+            if (action.payload) {
+                const robot = draft.entities[action.payload.robotId];
+
+                if (robot) {
+                    robotStatusAdapter.updateOne(draft, {
+                        id: action.payload.robotId,
+                        changes: {
+                            puduRobotStatus: {
+                                ...robot.puduRobotStatus,
+                                robotPower: action.payload.data.power,
+                                chargeStage: action.payload.data.chargeStage
+                            }
+                        }
+                    });
+                }
+            }
+        },
+        updateRobotMoveState: (draft, action: PayloadAction<TReducerAction<TNotifyRobotMoveStateData>>) => {
+            if (action.payload) {
+                const robot = draft.entities[action.payload.robotId];
+
+                if (robot) {
+                    robotStatusAdapter.updateOne(draft, {
+                        id: action.payload.robotId,
+                        changes: {
+                            puduRobotStatus: {
+                                ...robot.puduRobotStatus,
+                                moveState: action.payload.data.state
+                            }
+                        }
+                    });
+                }
             }
         },
         updateRobotPose: (draft, action: PayloadAction<TReducerAction<TNotifyRobotPoseData>>) => {
@@ -85,6 +141,10 @@ const slice = createSlice({
                 }
             }
         },
+        updateSendToDestinations: (draft, { payload }: PayloadAction<Array<TDestination>>) => ({
+            ...draft,
+            sendToDestinations: payload
+        }),
     },
     extraReducers: (builder) => {
         // region fetch initial data
@@ -119,6 +179,7 @@ const slice = createSlice({
                     }
                 }
             }
+            return draft;
         });
         builder.addCase(getDevicesDataAction.rejected, (draft) => ({
             ...draft,
@@ -175,8 +236,12 @@ const slice = createSlice({
 
 export const {
     updateRobotStatus,
+    updateRobotActivity,
     updatePuduApiStatus,
+    updateRobotPower,
+    updateRobotMoveState,
     updateRobotPose,
+    updateSendToDestinations,
 } = slice.actions;
 
 export const robotStatusReducer = slice.reducer;
