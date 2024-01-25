@@ -9,3 +9,14 @@ export const meterToCoordinate = (meters: [number, number]): [number, number] =>
     const lat = meters[1] / 111111;
     return [lng, lat]
 };
+
+export const robotAngleToViewStateBearing = (angle: number) => {
+    return -radiansToDegrees(angle) + 90;
+}
+
+// -x +90
+
+export const radiansToDegrees = (radians: number) => {
+    const pi = Math.PI;
+    return radians * (180/pi);
+}

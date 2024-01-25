@@ -1,5 +1,5 @@
 // region Imports
-import { Position, Color } from '@deck.gl/core/typed';
+import { Position, Color, TransitionInterpolator } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer, PolygonLayer } from '@deck.gl/layers/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { IMergedMapElement, IZone } from './pudu-api/robotMap';
@@ -54,6 +54,8 @@ export type TViewState = {
     rotationX?: number,
     maxPitch?: number,
     minPitch?: number,
+    transitionDuration?: number,
+    transitionInterpolator?: TransitionInterpolator,
 }
 
 export enum MapRobotStatus {

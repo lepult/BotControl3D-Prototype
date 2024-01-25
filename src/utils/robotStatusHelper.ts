@@ -42,7 +42,6 @@ export const getMapRobotStatus = (robotStatus: TRobotStatus | undefined, puduApi
 
 const getChaynsMapRobotStatus = (robotStatus: TRobotStatus): MapRobotStatus | undefined => {
     const state = robotStatus?.state?.toLowerCase();
-    console.log('status', state);
 
     if (!state) {
         return undefined;

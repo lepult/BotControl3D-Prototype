@@ -25,3 +25,5 @@ export const changeInitialViewState = createAction<TChangeInitialViewState>('map
 export const changeSelectedMap = createAction<TChangeSelectedMap>('map/changeSelectedMap');
 
 export const toggleSelectedRobot = createAction<TToggleSelectedRobot>('map/toggleSelectedRobot')
+
+export const toggleFollowRobot = createAction('map/toggleFollowRobot')

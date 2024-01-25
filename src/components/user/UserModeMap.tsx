@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer, TextLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layer, PickingInfo } from '@deck.gl/core/typed';
+import { FlyToInterpolator, Layer, PickingInfo } from '@deck.gl/core/typed';
+import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import {
     CONTROLLER_DEFAULTS,
     iconLayerDefaults,
@@ -14,7 +15,11 @@ import {
 } from '../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
-import { selectInitialViewStateByMapId, selectSelectedRobot } from '../../redux-modules/map/selectors';
+import {
+    selectFollowRobot,
+    selectInitialViewStateByMapId,
+    selectSelectedRobot
+} from '../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../redux-modules/misc/actions';
 import { MapRobotStatus, TViewState } from '../../types/deckgl-map';
@@ -23,9 +28,10 @@ import {
     selectRobotIds,
 } from '../../redux-modules/robot-status/selectors';
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
-import { toggleSelectedRobot } from '../../redux-modules/map/actions';
+import { toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
 import { getMapRobotStatus } from '../../utils/robotStatusHelper';
 import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../utils/deckGlDataAccessors';
+import { meterToCoordinate, robotAngleToViewStateBearing } from '../../utils/deckGlHelpers';
 
 type TGltfModel = {
     id: string,
@@ -45,6 +51,14 @@ interface IPickingInfo extends PickingInfo {
     object: TRobotMapData,
 }
 
+const flyToInterpolator =  new FlyToInterpolator({
+    speed: 10,
+    maxDuration: 1000,
+});
+
+// const flyToInterpolator =  new LinearInterpolator({
+//     transitionProps: ['longitude', 'latitude'],
+// });
 
 const UserModeMap: FC<{
     mapId: number,
@@ -53,28 +67,7 @@ const UserModeMap: FC<{
 }) => {
     const dispatch = useDispatch();
 
-    const selectedDestination = useSelector(selectSelectedDestination(mapId));
-    const selectedRobot = useSelector(selectSelectedRobot);
-
-    const robotIds = useSelector(selectRobotIds);
-    const robotEntities = useSelector(selectRobotEntities);
-    const robots = useMemo(() => {
-        const r = robotIds.map((id) => robotEntities[id]);
-        return r.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
-    }, [mapId, robotIds, robotEntities]);
-
-    const robotsPositionsLayerData = useMemo<TRobotMapData[]>(() => robots
-        .filter((robot) => robot?.puduRobotStatus)
-        .map((robot) => ({
-            puduRobotStatus: robot?.puduRobotStatus as TPuduApiRobotStatus,
-            name: robot?.robotStatus?.robotName as string,
-            id: robot?.robotStatus?.robotId as string,
-            mapRobotStatus: getMapRobotStatus(
-                robotEntities[robot?.robotStatus?.robotId || 0]?.robotStatus,
-                robotEntities[robot?.robotStatus?.robotId || 0]?.puduRobotStatus
-            ),
-        })),
-        [robots, robotEntities]);
+    const [controller] = useState(CONTROLLER_DEFAULTS);
 
     const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
     const [viewState, setViewState] = useState<TViewState>({
@@ -88,7 +81,30 @@ const UserModeMap: FC<{
         }));
     }, [initialViewState]);
 
-    const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
+
+    const selectedDestination = useSelector(selectSelectedDestination(mapId));
+    const selectedRobot = useSelector(selectSelectedRobot);
+
+    const robotIds = useSelector(selectRobotIds);
+    const robotEntities = useSelector(selectRobotEntities);
+    const robots = useMemo(() => {
+        const r = robotIds.map((id) => robotEntities[id]);
+        return r.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
+    }, [mapId, robotIds, robotEntities]);
+
+
+    const robotsPositionsLayerData = useMemo<TRobotMapData[]>(() => robots
+            .filter((robot) => robot?.puduRobotStatus)
+            .map((robot) => ({
+                puduRobotStatus: robot?.puduRobotStatus as TPuduApiRobotStatus,
+                name: robot?.robotStatus?.robotName as string,
+                id: robot?.robotStatus?.robotId as string,
+                mapRobotStatus: getMapRobotStatus(
+                    robotEntities[robot?.robotStatus?.robotId || 0]?.robotStatus,
+                    robotEntities[robot?.robotStatus?.robotId || 0]?.puduRobotStatus
+                ),
+            })),
+        [robots, robotEntities]);
 
     const robotLayerDataAccessors = useMemo<Partial<Layer>>(() => ({
         data: robotsPositionsLayerData,
@@ -117,6 +133,7 @@ const UserModeMap: FC<{
         }),
     ], [mapId, robotLayerDataAccessors]);
 
+
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
         id: `scenegraph-layer__${mapId}__${floorModel.id}`,
@@ -128,6 +145,9 @@ const UserModeMap: FC<{
         getPosition: (m: TGltfModel) => m.position,
         getOrientation: (m: TGltfModel) => m.orientation,
     })), [mapId]);
+
+
+    const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
 
     const iconLayerData = useMemo(() => pathData
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName)
@@ -167,23 +187,65 @@ const UserModeMap: FC<{
     }), [pathLayerData, mapId]);
 
 
+    const followRobot = useSelector(selectFollowRobot);
+
+    useEffect(() => {
+        setViewState((prev) => ({
+            ...prev,
+            transitionDuration: followRobot ? 2000 : 0,
+            transitionInterpolator: followRobot ? flyToInterpolator : undefined,
+        }))
+    }, [followRobot]);
+
+    useEffect(() => {
+        if (followRobot && selectedRobot) {
+            const robot = robotEntities[selectedRobot];
+            const [longitude, latitude] = meterToCoordinate([
+                robot?.puduRobotStatus?.robotPose?.x || 0,
+                robot?.puduRobotStatus?.robotPose?.y || 0,
+            ]);
+            const bearing = robotAngleToViewStateBearing(robotEntities[selectedRobot]?.puduRobotStatus?.robotPose?.angle || 0);
+
+            setViewState((prev) => ({
+                ...prev,
+                latitude,
+                longitude,
+                pitch: 55,
+                zoom: 23,
+                bearing,
+            }));
+        }
+    }, [followRobot, selectedRobot, robotEntities]);
+
+    const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
+        const interaction = viewStateChagneParameters.interactionState;
+        if (followRobot && (interaction.isDragging || interaction.isPanning || interaction.isZooming || interaction.isRotating)) {
+            dispatch(toggleFollowRobot());
+        }
+
+        setViewState((prev) => ({
+            ...prev,
+            ...viewStateChagneParameters.viewState,
+        }));
+    }, [dispatch, followRobot]);
+
 
     return (
         <div
             onContextMenu={(event) => event.preventDefault()}
         >
             <DeckGL
-                viewState={{
-                    ...viewState,
-                }}
+                viewState={viewState}
                 layers={[
                     ...scenegraphLayers,
                     pathLayer,
                     iconLayer,
                     ...robotLayers,
                 ]}
-                controller={CONTROLLER_DEFAULTS}
-                onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as TViewState)}
+                controller={controller}
+                onViewStateChange={(viewStateChagneParameters) => {
+                    handleNewViewState(viewStateChagneParameters)
+                }}
             />
         </div>
     );
