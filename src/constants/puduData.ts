@@ -1,5 +1,5 @@
 import { pathDataT21OG, pathDataTobitEG, pathDataT22OG, pathDataT12OG, pathDataAtriumDome } from './pathData';
-import { floorModelsT22OG } from './models';
+import { floorModelsT21OG, floorModelsT22OG } from './models';
 import { TRobotMap } from '../types/pudu-api/robotMap';
 import { useProductionBackend } from './env';
 
@@ -44,6 +44,8 @@ export const getModelsByMapId = (mapId: number) => {
         switch (mapId) {
             case 89:
                 return floorModelsT22OG;
+            case 88:
+                return floorModelsT21OG;
             default:
                 return [];
         }
@@ -51,6 +53,8 @@ export const getModelsByMapId = (mapId: number) => {
         switch (mapId) {
             case 51:
                 return floorModelsT22OG;
+            case 52:
+                return floorModelsT21OG;
             default:
                 return [];
         }
