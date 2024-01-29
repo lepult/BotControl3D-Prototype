@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import FloorsList from './floors-list/FloorsList';
 import { useSelector } from 'react-redux';
+import { setRefreshScrollEnabled } from 'chayns-api';
+import FloorsList from './floors-list/FloorsList';
 import { selectAdminModeType, selectEditingMapId } from '../../redux-modules/misc/selectors';
 import EditorMap from '../EditorMap';
 import { AdminModeType } from '../../types/misc';
@@ -14,6 +15,11 @@ const AdminMode = () => {
     useEffect(() => {
         if (adminModeType === AdminModeType.default) {
             updateChaynsViewmode(ChaynsViewMode.exclusive);
+        }
+        if (adminModeType === AdminModeType.editMap) {
+            void setRefreshScrollEnabled(false);
+        } else {
+            void setRefreshScrollEnabled(true);
         }
     }, [adminModeType]);
 

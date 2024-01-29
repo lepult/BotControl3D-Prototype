@@ -24,13 +24,6 @@ import { TSyncActivitiesData } from '../types/websocket/syncActivitiesData';
 import { TNotifyRobotPowerData } from '../types/websocket/notifyRobotPowerData';
 import { TNotifyRobotMoveStateData } from '../types/websocket/notifyRobotMoveStateData';
 
-
-const radiansToDegrees = (radians: number) => {
-    const pi = Math.PI;
-    return radians * (180/pi);
-}
-
-
 const App = () => {
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const isAdminMode = useIsAdminMode();
@@ -89,12 +82,6 @@ const App = () => {
                         },
                         notify_robot_power: (data: TNotifyRobotPowerData) => {
                             dispatch(updateRobotPower({
-                                robotId: robotId as string,
-                                data
-                            }));
-                        },
-                        notify_robot_move_state: (data: TNotifyRobotMoveStateData) => {
-                            dispatch(updateRobotMoveState({
                                 robotId: robotId as string,
                                 data
                             }));

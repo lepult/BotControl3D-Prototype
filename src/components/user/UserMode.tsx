@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { setRefreshScrollEnabled } from 'chayns-api';
 // @ts-ignore
 import { SmallWaitCursor } from 'chayns-components';
 import { ChaynsViewMode, updateChaynsViewmode } from '../../utils/pageSizeHelper';
@@ -12,6 +13,7 @@ import { FetchState } from '../../types/fetch';
 const UserMode = () => {
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.wide);
+        void setRefreshScrollEnabled(false);
     }, []);
 
     const selectedMap = useSelector(selectSelectedMap);
