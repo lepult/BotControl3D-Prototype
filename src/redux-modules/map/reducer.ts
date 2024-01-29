@@ -5,7 +5,7 @@ import {
     changeSelectedMap,
     toggleSelectedRobot,
     getAllMapsAction,
-    toggleFollowRobot
+    toggleFollowRobot, setFollowRobot
 } from './actions';
 import { FetchState } from '../../types/fetch';
 import { TMap } from '../../types/api/map';
@@ -116,6 +116,11 @@ const reducer = createReducer(initialState, (builder) => {
     builder.addCase(toggleFollowRobot, (draft) => ({
         ...draft,
         followRobot: !draft.followRobot,
+    }));
+
+    builder.addCase(setFollowRobot, (draft, { payload }) => ({
+        ...draft,
+        followRobot: payload.followRobot,
     }));
 });
 

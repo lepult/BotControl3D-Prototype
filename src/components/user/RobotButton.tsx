@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { FilterButton } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRobotStatusById } from '../../redux-modules/robot-status/selectors';
-import { selectSelectedMap, selectSelectedRobot } from '../../redux-modules/map/selectors';
+import { selectSelectedRobot } from '../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../redux-modules/map/actions';
 
 const RobotButton: FC<{
@@ -14,14 +14,7 @@ const RobotButton: FC<{
     const dispatch = useDispatch();
 
     const robot = useSelector(selectRobotStatusById(robotId));
-    const selectedMap = useSelector(selectSelectedMap);
     const selectedRobot = useSelector(selectSelectedRobot);
-
-    if (robot?.currentMap?.id !== selectedMap) {
-        return null;
-    }
-
-
 
     return (
         <FilterButton

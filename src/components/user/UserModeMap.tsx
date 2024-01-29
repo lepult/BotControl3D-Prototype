@@ -28,7 +28,7 @@ import {
     selectRobotIds, selectRobotStatusById
 } from '../../redux-modules/robot-status/selectors';
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
-import { toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
+import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
 import { getMapRobotStatus } from '../../utils/robotStatusHelper';
 import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../utils/deckGlDataAccessors';
 import { meterToCoordinate, robotAngleToViewStateBearing } from '../../utils/deckGlHelpers';
@@ -89,9 +89,6 @@ const UserModeMap: FC<{
 
     const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));
     const currentRoute = useMemo(() => selectedRobotStatus?.currentRoute, [selectedRobotStatus]);
-    useEffect(() => {
-        console.log('currentRoute', currentRoute);
-    }, [currentRoute]);
 
     const robotIds = useSelector(selectRobotIds);
     const robotEntities = useSelector(selectRobotEntities);
@@ -99,7 +96,6 @@ const UserModeMap: FC<{
         const r = robotIds.map((id) => robotEntities[id]);
         return r.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
     }, [mapId, robotIds, robotEntities]);
-
 
     const robotsPositionsLayerData = useMemo<TRobotMapData[]>(() => robots
             .filter((robot) => robot?.puduRobotStatus)
@@ -160,7 +156,7 @@ const UserModeMap: FC<{
     const iconLayerData = useMemo(() => pathData
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination)
         : [],
-        [selectedDestination, pathData, currentRoute, mapId]);
+        [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus]);
     useEffect(() => {
         console.log('iconLayerData', iconLayerData.filter((i) => i.routeData.isFinalDestination || i.routeData.isRouteDestination));
     }, [iconLayerData]);
@@ -228,22 +224,29 @@ const UserModeMap: FC<{
     useEffect(() => {
         if (followRobot && selectedRobot) {
             const robot = robotEntities[selectedRobot];
-            const [longitude, latitude] = meterToCoordinate([
-                robot?.puduRobotStatus?.robotPose?.x || 0,
-                robot?.puduRobotStatus?.robotPose?.y || 0,
-            ]);
-            const bearing = robotAngleToViewStateBearing(robotEntities[selectedRobot]?.puduRobotStatus?.robotPose?.angle || 0);
 
-            setViewState((prev) => ({
-                ...prev,
-                latitude,
-                longitude,
-                pitch: 55,
-                zoom: 23,
-                bearing,
-            }));
+            if (robot) {
+                const [longitude, latitude] = meterToCoordinate([
+                    robot?.puduRobotStatus?.robotPose?.x || 0,
+                    robot?.puduRobotStatus?.robotPose?.y || 0,
+                ]);
+                const bearing = robotAngleToViewStateBearing(robotEntities[selectedRobot]?.puduRobotStatus?.robotPose?.angle || 0);
+
+                setViewState((prev) => ({
+                    ...prev,
+                    latitude,
+                    longitude,
+                    pitch: 55,
+                    zoom: 23,
+                    bearing,
+                }));
+
+                if (robot.robotStatus?.currentMap) {
+                    dispatch(changeSelectedMap({ mapId: robot.robotStatus.currentMap?.id }))
+                }
+            }
         }
-    }, [followRobot, selectedRobot, robotEntities]);
+    }, [dispatch, followRobot, selectedRobot, robotEntities]);
 
     const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
         const interaction = viewStateChagneParameters.interactionState;

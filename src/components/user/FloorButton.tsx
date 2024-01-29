@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMapById, selectSelectedMap } from '../../redux-modules/map/selectors';
+import { selectMapById, selectSelectedMap, selectSelectedRobot } from '../../redux-modules/map/selectors';
 import { getPathDataByMapId } from '../../constants/puduData';
-import { changeSelectedMap } from '../../redux-modules/map/actions';
+import { changeSelectedMap, setFollowRobot } from '../../redux-modules/map/actions';
+import { selectRobotStatusById } from '../../redux-modules/robot-status/selectors';
 
 const FloorButton: FC<{
     mapId: number,
@@ -15,6 +16,8 @@ const FloorButton: FC<{
     const selectedMap = useSelector(selectSelectedMap);
     const map = useSelector(selectMapById(mapId));
     const pathData = getPathDataByMapId(mapId);
+    const selectedRobotId = useSelector(selectSelectedRobot);
+    const selectedRobot = useSelector(selectRobotStatusById(selectedRobotId || ''));
 
     if (map.hidden || !pathData) {
         return null;
@@ -22,8 +25,11 @@ const FloorButton: FC<{
 
     return (
         <Button
-            className={selectedMap === mapId ? 'map-button' : 'map-button button--secondary'}
-            onClick={() => dispatch(changeSelectedMap({ mapId }))}
+            className={`map-button ${selectedMap === mapId ? '' : 'button--secondary'} ${selectedRobot?.currentMap?.id === mapId && selectedMap !== mapId ? 'button--bordered' : ''}`}
+            onClick={() => {
+                dispatch(changeSelectedMap({ mapId }));
+                dispatch(setFollowRobot({ followRobot: false }));
+            }}
         >
             {map.showName}
         </Button>

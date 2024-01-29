@@ -11,6 +11,10 @@
     }
   }
 
+  .button--bordered {
+    outline: 1px solid black;
+  }
+
   .map-buttons-row {
     flex-direction: row;
   }

@@ -15,6 +15,10 @@ type TToggleSelectedRobot = {
     robotId: string | undefined,
 }
 
+type TSetFollowRobot = {
+    followRobot: boolean,
+}
+
 export const getAllMapsAction = createAsyncThunk(
     'map/getAllMaps',
     async () => getAllMapsFetch(),
@@ -27,3 +31,4 @@ export const changeSelectedMap = createAction<TChangeSelectedMap>('map/changeSel
 export const toggleSelectedRobot = createAction<TToggleSelectedRobot>('map/toggleSelectedRobot')
 
 export const toggleFollowRobot = createAction('map/toggleFollowRobot')
+export const setFollowRobot = createAction<TSetFollowRobot>('map/setFollowRobot')
