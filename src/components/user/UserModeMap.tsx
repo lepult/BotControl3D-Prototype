@@ -22,16 +22,18 @@ import {
 } from '../../redux-modules/map/selectors';
 import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../redux-modules/misc/actions';
-import { MapRobotStatus, TViewState } from '../../types/deckgl-map';
+import { IIconData, MapRobotStatus, TViewState } from '../../types/deckgl-map';
 import {
     selectRobotEntities,
-    selectRobotIds,
+    selectRobotIds, selectRobotStatusById
 } from '../../redux-modules/robot-status/selectors';
 import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
 import { toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
 import { getMapRobotStatus } from '../../utils/robotStatusHelper';
 import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../utils/deckGlDataAccessors';
 import { meterToCoordinate, robotAngleToViewStateBearing } from '../../utils/deckGlHelpers';
+import { svgToDataURL } from '../../utils/marker';
+import { blueMarker, getColoredMarker, redMarker } from '../../assets/markers';
 
 type TGltfModel = {
     id: string,
@@ -84,6 +86,12 @@ const UserModeMap: FC<{
 
     const selectedDestination = useSelector(selectSelectedDestination(mapId));
     const selectedRobot = useSelector(selectSelectedRobot);
+
+    const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));
+    const currentRoute = useMemo(() => selectedRobotStatus?.currentRoute, [selectedRobotStatus]);
+    useEffect(() => {
+        console.log('currentRoute', currentRoute);
+    }, [currentRoute]);
 
     const robotIds = useSelector(selectRobotIds);
     const robotEntities = useSelector(selectRobotEntities);
@@ -150,9 +158,12 @@ const UserModeMap: FC<{
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
 
     const iconLayerData = useMemo(() => pathData
-        ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName)
+        ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination)
         : [],
-        [selectedDestination, pathData]);
+        [selectedDestination, pathData, currentRoute, mapId]);
+    useEffect(() => {
+        console.log('iconLayerData', iconLayerData.filter((i) => i.routeData.isFinalDestination || i.routeData.isRouteDestination));
+    }, [iconLayerData]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,
@@ -169,6 +180,23 @@ const UserModeMap: FC<{
                 }));
             }
         },
+        getIcon: (d: IIconData) => ({
+            // eslint-disable-next-line no-nested-ternary
+            url: svgToDataURL(d.routeData.isFinalDestination
+                ? getColoredMarker(0, 255, 0)
+                // eslint-disable-next-line no-nested-ternary
+                : d.routeData.isNextDestination
+                    ? getColoredMarker(0, 50, 0)
+                    // eslint-disable-next-line no-nested-ternary
+                    : d.routeData.isRouteDestination && !d.routeData.isEarlierDestination
+                        ? getColoredMarker(255, 0, 0)
+                        : d.selected
+                            ? getColoredMarker(200, 200, 200)
+                            : getColoredMarker(0, 0, 255)
+            ),
+            height: 128,
+            width: 128,
+        }),
         updateTriggers: {
             getPosition: [selectedDestination]
         }

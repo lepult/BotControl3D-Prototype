@@ -11,6 +11,13 @@ export interface IIconData extends IMergedMapElement {
     color?: Color;
     angle?: number;
     selected?: boolean;
+    routeData: {
+        isRouteDestination: boolean;
+        isNextDestination: boolean;
+        isEarlierDestination: boolean;
+        isFinalDestination: boolean;
+        isPreviousDestination: boolean;
+    }
 }
 
 export interface IPathData extends IMergedMapElement {

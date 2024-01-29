@@ -2,6 +2,7 @@ import { Position } from '@deck.gl/core/typed';
 import { MapElementType, TMapElement } from '../types/pudu-api/robotMap';
 import { IIconData, IPathData } from '../types/deckgl-map';
 import { DestinationType, TDestination } from '../types/api/destination';
+import { TRoute, TRouteDestination } from '../types/api/route';
 
 // region PathData
 /**
@@ -57,10 +58,18 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
 /**
  * Maps mapElements of type source and charging_pile to data that can be used for IconLayer
  * @param elements
- * @param destinations
+ * @param selectedDestination
+ * @param currentRoute
+ * @param mapId
+ * @param currentDestination
+ * @param previousDestination
  */
-export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string): Array<IIconData> => {
+export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string, currentRoute?: TRoute, mapId?: number, currentDestination?: TDestination, previousDestination?: TDestination): Array<IIconData> => {
+    console.log('currentRoute', currentRoute);
     const iconData: Array<IIconData> = [];
+
+    const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
+
     elements.forEach((element) => {
         if (element.type === MapElementType.source || element.type === MapElementType.chargingPile) {
             const position: Position = [element.vector[0], element.vector[1]];
@@ -74,6 +83,11 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selecte
             //     name = destinationName !== undefined && destinationName !== name ? `${destinationName} (${name})` : name;
             // }
 
+            const indexInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => (element.name === destination?.name || element.id === destination?.name) && mapId === destination.mapId);
+            const routeDestination = currentRoute?.routeDestinations[indexInRoute === undefined ? -1 : indexInRoute];
+
+            if (indexInRoute !== -1) console.log('test', indexInRoute, routeDestination, currentRoute);
+
             iconData.push({
                 ...element,
                 name: '',
@@ -83,6 +97,13 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selecte
                     ? [0, 255, 0]
                     : [0, 0, 255],
                 selected: element.id === selectedDestination,
+                routeData: {
+                    isRouteDestination: !!routeDestination,
+                    isNextDestination: !!currentDestination && routeDestination?.destination.id === currentDestination.id,
+                    isPreviousDestination: !!previousDestination && routeDestination?.destination.id === previousDestination?.id,
+                    isEarlierDestination: indexOfNextDestinationInRoute > -1 && indexInRoute !== undefined && indexOfNextDestinationInRoute > indexInRoute,
+                    isFinalDestination: (currentRoute?.routeDestinations || []).length > 0 && indexInRoute === (currentRoute?.routeDestinations || []).length - 1,
+                }
             });
         }
     });
