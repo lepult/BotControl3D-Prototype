@@ -5,8 +5,8 @@ import { setRefreshScrollEnabled } from 'chayns-api';
 // @ts-ignore
 import { SmallWaitCursor } from 'chayns-components';
 import { ChaynsViewMode, updateChaynsViewmode } from '../../utils/pageSizeHelper';
-import UserModeMap from './UserModeMap';
-import UserModeButtons from './UserModeButtons';
+import UserModeMap from './user-mode-map/UserModeMap';
+import UserModeButtons from './user-mode-buttons/UserModeButtons';
 import { selectMapsFetchState, selectSelectedMap } from '../../redux-modules/map/selectors';
 import { FetchState } from '../../types/fetch';
 

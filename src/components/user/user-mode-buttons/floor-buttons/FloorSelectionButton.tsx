@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMapById, selectSelectedMap, selectSelectedRobot } from '../../redux-modules/map/selectors';
-import { getPathDataByMapId } from '../../constants/puduData';
-import { changeSelectedMap, setFollowRobot } from '../../redux-modules/map/actions';
-import { selectRobotStatusById } from '../../redux-modules/robot-status/selectors';
+import { selectMapById, selectSelectedMap, selectSelectedRobot } from '../../../../redux-modules/map/selectors';
+import { getPathDataByMapId } from '../../../../constants/puduData';
+import { changeSelectedMap, setFollowRobot } from '../../../../redux-modules/map/actions';
+import { selectRobotStatusById } from '../../../../redux-modules/robot-status/selectors';
 
-const FloorButton: FC<{
+const FloorSelectionButton: FC<{
     mapId: number,
 }> = ({
     mapId,
@@ -36,4 +37,4 @@ const FloorButton: FC<{
     );
 };
 
-export default FloorButton;
+export default FloorSelectionButton;

@@ -12,28 +12,28 @@ import {
     INITIAL_VIEW_STATE,
     pathLayerDefaults, robotsSimpleMeshLayerDefaults, robotStatusTextLayerDefaults,
     scenegraphLayerDefaults
-} from '../../constants/deckGl';
-import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
-import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
+} from '../../../constants/deckGl';
+import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
+import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
     selectSelectedRobot
-} from '../../redux-modules/map/selectors';
-import { selectSelectedDestination } from '../../redux-modules/misc/selectors';
-import { changeSelectedDestination } from '../../redux-modules/misc/actions';
-import { IIconData, MapRobotStatus, TViewState } from '../../types/deckgl-map';
+} from '../../../redux-modules/map/selectors';
+import { selectSelectedDestination } from '../../../redux-modules/misc/selectors';
+import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
+import { IIconData, MapRobotStatus, TViewState } from '../../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds, selectRobotStatusById
-} from '../../redux-modules/robot-status/selectors';
-import { TPuduApiRobotStatus } from '../../types/pudu-api/robotStatus';
-import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
-import { getMapRobotStatus } from '../../utils/robotStatusHelper';
-import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../utils/deckGlDataAccessors';
-import { meterToCoordinate, robotAngleToViewStateBearing } from '../../utils/deckGlHelpers';
-import { svgToDataURL } from '../../utils/marker';
-import { blueMarker, getColoredMarker, redMarker } from '../../assets/markers';
+} from '../../../redux-modules/robot-status/selectors';
+import { TPuduApiRobotStatus } from '../../../types/pudu-api/robotStatus';
+import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../../redux-modules/map/actions';
+import { getMapRobotStatus } from '../../../utils/robotStatusHelper';
+import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../../utils/deckGlDataAccessors';
+import { meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
+import { svgToDataURL } from '../../../utils/marker';
+import { blueMarker, getColoredMarker, redMarker } from '../../../assets/markers';
 
 type TGltfModel = {
     id: string,

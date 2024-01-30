@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { createDialog, DialogType } from 'chayns-api';
-import '../routeButton.scss';
+import './routeButton.scss';
 import { useSelector } from 'react-redux';
-import { selectRobotEntities, selectRobotIds } from '../../../redux-modules/robot-status/selectors';
+import { selectRobotEntities, selectRobotIds } from '../../../../redux-modules/robot-status/selectors';
 import RouteInput from './RouteInput';
-import { selectDestinationEntities, selectDestinationIds } from '../../../redux-modules/destination/selectors';
-import { CustomDestinationType, TDestination } from '../../../types/api/destination';
-import { postSendRobotFetch } from '../../../api/robot/postSendRobot';
+import { selectDestinationEntities, selectDestinationIds } from '../../../../redux-modules/destination/selectors';
+import { CustomDestinationType, TDestination } from '../../../../types/api/destination';
+import { postSendRobotFetch } from '../../../../api/robot/postSendRobot';
 
 const getDestinationName = (destination: TDestination) => {
     if (destination.chaynsUser) {
@@ -47,6 +48,8 @@ const RouteButton = () => {
         , [destinationEntities, destinationIds]);
 
     // TODO Remove null from initial state and comment out map line below, to allow multi destination routes.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const [selectedDestinations, setSelectedDestinations] = useState<number[]>([null]);
     const [robot, setRobot] = useState<string | number | null>(null);
 
@@ -81,7 +84,7 @@ const RouteButton = () => {
                     className="far fa-times"
                     onClick={() => setIsPlanningRoute(false)}
                 />
-                {/*{[...selectedDestinations, null].map((selectedDestination, index, array) => (*/}
+                {/* {[...selectedDestinations, null].map((selectedDestination, index, array) => ( */}
                 {([...selectedDestinations]).map((selectedDestination, index, array) => (
                     <div>
                         {index > 0 && (

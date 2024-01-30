@@ -1,24 +1,21 @@
 import React, { FC } from 'react';
 import './userModeButtons.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button } from 'chayns-components';
-import { selectFollowRobot, selectMapIds, selectSelectedRobot } from '../../redux-modules/map/selectors';
-import FloorButton from './FloorButton';
-import { selectRobotIds } from '../../redux-modules/robot-status/selectors';
-import RobotButton from './RobotButton';
-import { toggleFollowRobot } from '../../redux-modules/map/actions';
+import { selectMapIds } from '../../../redux-modules/map/selectors';
+import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
+import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
+import RobotSelectionButton from './robot-selection-buttons/RobotSelectionButton';
 import RouteButton from './robot-controls-buttons/RouteButton';
 import ChargeButton from './robot-controls-buttons/ChargeButton';
 import CancelButton from './robot-controls-buttons/CancelButton';
+import FollowRobotButton from './interaction-buttons/FollowRobotButton';
 
 const UserModeButtons: FC = () => {
-    const dispatch = useDispatch();
 
     const allMapIds = useSelector(selectMapIds);
     const allRobotIds = useSelector(selectRobotIds);
-    const selectedRobot = useSelector(selectSelectedRobot);
-    const followRobot = useSelector(selectFollowRobot);
 
     return (
         <div className="user-mode-buttons__wrapper">
@@ -27,7 +24,7 @@ const UserModeButtons: FC = () => {
                 style={{ flexWrap: 'wrap' }}
             >
                 {allRobotIds.map((id) => (
-                    <RobotButton robotId={id as string}/>
+                    <RobotSelectionButton robotId={id as string}/>
                 ))}
             </div>
             <div className="map-buttons position-right position-top">
@@ -37,17 +34,11 @@ const UserModeButtons: FC = () => {
             </div>
             <div className="map-buttons position-left position-bottom">
                 {allMapIds.map((id) => (
-                    <FloorButton mapId={id}/>
+                    <FloorSelectionButton mapId={id}/>
                 ))}
             </div>
             <div className="map-buttons position-right position-bottom">
-                <Button
-                    disabled={!selectedRobot}
-                    className={followRobot ? '' : 'button--secondary'}
-                    onClick={() => dispatch(toggleFollowRobot())}
-                >
-                    <i className="fa-solid fa-location-arrow"/>
-                </Button>
+                <FollowRobotButton/>
             </div>
         </div>
     )

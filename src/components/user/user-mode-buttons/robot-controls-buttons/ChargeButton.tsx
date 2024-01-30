@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
+import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
-import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
-import { selectSelectedRobot } from '../../../redux-modules/map/selectors';
-import { postCancelRobotFetch } from '../../../api/robot/postCancelRobot';
+import { selectSelectedRobot } from '../../../../redux-modules/map/selectors';
+import { postChargeRobotFetch } from '../../../../api/robot/postChargeRobot';
 
-const CancelButton = () => {
+const ChargeButton = () => {
     const selectedRobot = useSelector(selectSelectedRobot);
     const confirmDialog = createDialog({
         type: DialogType.CONFIRM,
-        text: 'Mit dieser Aktion, beendet der Roboter alle aktuellen Lieferaufträge.',
+        text: 'Mit dieser Aktion, beendet der Roboter alle aktuellen Lieferaufträge und fährt zur Ladestation.',
         buttons: [{
             type: DialogButtonType.OK,
             text: 'Bestätigen',
@@ -34,18 +34,18 @@ const CancelButton = () => {
                         .then((result) => {
                             // @ts-ignore
                             if (result.buttonType === DialogButtonType.OK) {
-                                postCancelRobotFetch(selectedRobot)
+                                postChargeRobotFetch(selectedRobot)
                                     .catch(() => errorDialog.open());
                             }
                         });
-
+                   
                 }
             }}
             disabled={!selectedRobot}
         >
-            <i className="far fa-ban"/>
+            <i className="far fa-battery-bolt"/>
         </Button>
     )
 };
 
-export default CancelButton;
+export default ChargeButton;

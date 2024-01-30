@@ -1,4 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { PersonFinder, SimpleWrapperContext, Input } from 'chayns-components';
 

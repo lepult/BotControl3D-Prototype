@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { FilterButton } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRobotById } from '../../redux-modules/robot-status/selectors';
-import { selectSelectedRobot } from '../../redux-modules/map/selectors';
-import { toggleSelectedRobot } from '../../redux-modules/map/actions';
+import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
+import { selectSelectedRobot } from '../../../../redux-modules/map/selectors';
+import { toggleSelectedRobot } from '../../../../redux-modules/map/actions';
 
-const RobotButton: FC<{
+const RobotSelectionButton: FC<{
     robotId: string,
 }> = ({
     robotId
@@ -31,4 +32,4 @@ const RobotButton: FC<{
     )
 };
 
-export default RobotButton;
+export default RobotSelectionButton;
