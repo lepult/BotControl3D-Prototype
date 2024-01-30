@@ -16,7 +16,7 @@ const FollowRobotButton = () => {
     return (
         <Button
             disabled={!selectedRobot}
-            className={clsx('icon-button', {
+            className={clsx('icon-button pointer-events', {
                 'button--secondary': !followRobot,
             })}
             onClick={() => dispatch(toggleFollowRobot())}

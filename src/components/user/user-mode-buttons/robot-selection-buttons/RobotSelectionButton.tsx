@@ -23,6 +23,7 @@ const RobotSelectionButton: FC<{
 
     return (
         <FilterButton
+            className="pointer-events"
             label={robot?.robotStatus?.robotName}
             checked={selectedRobot === robotId}
             onChange={() => {

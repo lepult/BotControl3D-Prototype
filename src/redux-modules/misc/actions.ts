@@ -11,6 +11,12 @@ type TChangeSelectedDestination = {
     destinationName: string,
 }
 
+type TChangeIsPlaningRoute = {
+    isPlanning: boolean,
+}
+
 export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType');
 
 export const changeSelectedDestination = createAction<TChangeSelectedDestination | undefined>('misc/changeSelectedDestination');
+
+export const changeIsPlanningRoute = createAction<TChangeIsPlaningRoute>('misc/changeIsPlanningRoute');

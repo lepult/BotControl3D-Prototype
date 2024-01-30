@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import './userModeButtons.scss';
 import { useSelector } from 'react-redux';
+import { useWindowMetrics } from 'chayns-api';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { selectMapIds } from '../../../redux-modules/map/selectors';
@@ -11,37 +12,63 @@ import RouteButton from './robot-controls-buttons/route/RouteButton';
 import ChargeButton from './robot-controls-buttons/charge/ChargeButton';
 import CancelButton from './robot-controls-buttons/cancel/CancelButton';
 import FollowRobotButton from './interaction-buttons/FollowRobotButton';
+import ResetViewButton from './interaction-buttons/ResetViewButton';
+import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
 
 const UserModeButtons: FC = () => {
-
     const allMapIds = useSelector(selectMapIds);
     const allRobotIds = useSelector(selectRobotIds);
-
+    const metrics = useWindowMetrics();
+    const isPlanningRoute = useSelector(selectIsPlanningRoute);
+    console.log('metrics', metrics.pageWidth);
+    console.log('isPlanningRoute', isPlanningRoute);
+    console.log('isPlanningRoute', isPlanningRoute);
     return (
         <div className="user-mode-buttons__wrapper">
             <div
-                className="map-buttons map-buttons-row position-left position-top"
-                style={{ flexWrap: 'wrap' }}
+                style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
+                }}
             >
-                {allRobotIds.map((id) => (
-                    <RobotSelectionButton robotId={id as string}/>
-                ))}
-            </div>
-            <div
-                className="map-buttons position-right position-top"
-                style={{ alignItems: 'end' }}
-            >
-                <RouteButton/>
-                <ChargeButton/>
-                <CancelButton/>
-            </div>
-            <div className="map-buttons position-left position-bottom">
-                {allMapIds.map((id) => (
-                    <FloorSelectionButton mapId={id}/>
-                ))}
-            </div>
-            <div className="map-buttons position-right position-bottom">
-                <FollowRobotButton/>
+                {(metrics.pageWidth > 900 || !isPlanningRoute) && (
+                    <div
+                        className="map-buttons map-buttons-row position-left position-top"
+                        style={{
+                            flexWrap: 'wrap',
+                            width: 'calc(100% - 520px)',
+                        }}
+                    >
+                        {allRobotIds.map((id) => (
+                            <RobotSelectionButton robotId={id as string}/>
+                        ))}
+                    </div>
+                )}
+
+                <div
+                    className="map-buttons"
+                    style={{
+                        alignItems: 'end',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        padding: '10px',
+                    }}
+                >
+                    <RouteButton/>
+                    {!isPlanningRoute && <ChargeButton/>}
+                    {!isPlanningRoute && <CancelButton/>}
+                </div>
+                <div className="map-buttons position-left position-bottom">
+                    {allMapIds.map((id) => (
+                        <FloorSelectionButton mapId={id}/>
+                    ))}
+                </div>
+                <div className="map-buttons position-right position-bottom">
+                    <FollowRobotButton/>
+                    <ResetViewButton/>
+                </div>
             </div>
         </div>
     )

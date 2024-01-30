@@ -10,10 +10,10 @@ import RouteInput from './RouteInput';
 import { selectDestinationEntities, selectDestinationIds } from '../../../../../redux-modules/destination/selectors';
 import { CustomDestinationType, TDestination } from '../../../../../types/api/destination';
 import { postSendRobotFetch } from '../../../../../api/robot/postSendRobot';
-import { selectSelectedDestination } from '../../../../../redux-modules/misc/selectors';
+import { selectIsPlanningRoute, selectSelectedDestination } from '../../../../../redux-modules/misc/selectors';
 import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
-import { changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
+import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
 
 const getDestinationName = (destination: TDestination) => {
     if (destination.chaynsUser) {
@@ -31,8 +31,7 @@ const RouteButton = () => {
 
     const dispatch = useDispatch();
 
-
-    const [isPlanningRoute, setIsPlanningRoute] = useState(false);
+    const isPlanningRoute = useSelector(selectIsPlanningRoute);
 
     const robotEntities = useSelector(selectRobotEntities);
     const robotIds = useSelector(selectRobotIds);
@@ -83,7 +82,7 @@ const RouteButton = () => {
         postSendRobotFetch(selectedRobotOnMap, requestBody)
             .then((success) => {
                 if (success) {
-                    setIsPlanningRoute(false);
+                    dispatch(changeIsPlanningRoute({ isPlanning: false }))
                     dispatch(changeSelectedDestination(undefined));
                     // dispatch(toggleSelectedRobot({ robotId: undefined }));
                 } else {
@@ -97,14 +96,12 @@ const RouteButton = () => {
 
     if (isPlanningRoute) {
         return (
-            <div
-                className="content__card route-planner"
-            >
+            <div className="content__card route-planner pointer-events">
                 <div style={{ display: 'flex', justifyContent: 'right' }}>
                     <i
                         style={{ cursor: 'pointer', padding: '5px' }}
                         className="far fa-times"
-                        onClick={() => setIsPlanningRoute(false)}
+                        onClick={() => dispatch(changeIsPlanningRoute({ isPlanning: false }))}
                     />
                 </div>
                 <RouteInput
@@ -147,14 +144,12 @@ const RouteButton = () => {
     }
 
     return (
-        <div>
-            <Button
-                className="icon-button"
-                onClick={() => setIsPlanningRoute(true)}
-            >
-                <i className="fa fa-route"/>
-            </Button>
-        </div>
+        <Button
+            className="icon-button pointer-events"
+            onClick={() => dispatch(changeIsPlanningRoute({ isPlanning: true }))}
+        >
+            <i className="fa fa-route"/>
+        </Button>
     );
 };
 

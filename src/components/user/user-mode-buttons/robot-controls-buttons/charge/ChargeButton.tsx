@@ -28,7 +28,7 @@ const ChargeButton = () => {
 
     return (
         <Button
-            className="icon-button"
+            className="icon-button pointer-events"
             onClick={() => {
                 if (selectedRobot) {
                     void confirmDialog.open()

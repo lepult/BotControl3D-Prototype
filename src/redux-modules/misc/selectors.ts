@@ -8,3 +8,5 @@ export const selectSelectedDestination = (state: RootState) => state.misc.select
 export const selectSelectedDestinationByMapId = (mapId: number) => (state: RootState) => state.misc.selectedDestination?.mapId === mapId
     ? state.misc.selectedDestination
     : undefined;
+
+export const selectIsPlanningRoute = (state: RootState) => state.misc.isPlanningRoute;

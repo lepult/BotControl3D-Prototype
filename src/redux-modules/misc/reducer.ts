@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
 import { AdminModeType } from '../../types/misc';
-import { changeAdminModeType, changeSelectedDestination } from './actions';
+import { changeAdminModeType, changeIsPlanningRoute, changeSelectedDestination } from './actions';
 
 const initialState: {
     adminModeType: AdminModeType,
@@ -10,10 +10,12 @@ const initialState: {
         mapId: number,
         destinationName: string,
     } | undefined,
+    isPlanningRoute: boolean,
 } = {
     adminModeType: AdminModeType.default,
     editingMapId: undefined,
     selectedDestination: undefined,
+    isPlanningRoute: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -25,6 +27,10 @@ const reducer = createReducer(initialState, (builder) => {
     builder.addCase(changeSelectedDestination, (draft, { payload }) => {
         draft.selectedDestination = payload;
     });
+
+    builder.addCase(changeIsPlanningRoute, (draft, { payload }) => {
+        draft.isPlanningRoute = payload.isPlanning;
+    })
 });
 
 export default reducer;
