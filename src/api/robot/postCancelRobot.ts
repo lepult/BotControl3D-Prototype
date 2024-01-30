@@ -1,8 +1,8 @@
 import { PUDU_API_URL } from '../url';
 import { getDefaultHeaders } from '../helpers';
 
-export const postChargeRobotFetch = async (robotId: string): Promise<boolean> => {
-    const response = await fetch(`${PUDU_API_URL}/Robot/${robotId}/charge`, {
+export const postCancelRobotFetch = async (robotId: string): Promise<boolean> => {
+    const response = await fetch(`${PUDU_API_URL}/Robot/${robotId}/cancel`, {
         method: 'POST',
         headers: await getDefaultHeaders(),
     }).catch((error) => {

@@ -1,15 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 // @ts-ignore
 import { Button } from 'chayns-components';
-import './routeButton.scss';
-import { useSelector } from 'react-redux';
-import { selectRobotEntities, selectRobotIds } from '../../redux-modules/robot-status/selectors';
-import RouteInput from './RouteInput';
-import { selectDestinationEntities, selectDestinationIds } from '../../redux-modules/destination/selectors';
-import { CustomDestinationType, TDestination } from '../../types/api/destination';
-import { string } from 'prop-types';
-import { postSendRobotFetch } from '../../api/robot/postSendRobot';
 import { createDialog, DialogType } from 'chayns-api';
+import '../routeButton.scss';
+import { useSelector } from 'react-redux';
+import { selectRobotEntities, selectRobotIds } from '../../../redux-modules/robot-status/selectors';
+import RouteInput from './RouteInput';
+import { selectDestinationEntities, selectDestinationIds } from '../../../redux-modules/destination/selectors';
+import { CustomDestinationType, TDestination } from '../../../types/api/destination';
+import { postSendRobotFetch } from '../../../api/robot/postSendRobot';
 
 const getDestinationName = (destination: TDestination) => {
     if (destination.chaynsUser) {
