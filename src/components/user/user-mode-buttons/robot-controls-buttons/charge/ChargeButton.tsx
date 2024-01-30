@@ -1,14 +1,28 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
 import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
 import { postChargeRobotFetch } from '../../../../../api/robot/postChargeRobot';
+import { selectRobotById } from '../../../../../redux-modules/robot-status/selectors';
+import { getMapRobotStatus } from '../../../../../utils/robotStatusHelper';
+import clsx from 'clsx';
+import { MapRobotStatus } from '../../../../../types/deckgl-map';
+import { CustomDestinationType } from '../../../../../types/api/destination';
 
 const ChargeButton = () => {
-    const selectedRobot = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobot);
+    const selectedRobot = useSelector(selectRobotById(selectedRobotId || ''));
+    const mapRobotStatus = useMemo(() => getMapRobotStatus(selectedRobot?.robotStatus, selectedRobot?.puduRobotStatus),
+        [selectedRobot]);
+
+    const robotRouteDestinations = useMemo(() => selectedRobot?.robotStatus?.currentRoute?.routeDestinations,
+        [selectedRobot]);
+    const lastDestinationIsChargingStation = useMemo(() => (robotRouteDestinations || [])[(robotRouteDestinations?.length || 0) - 1]?.destination.customType === CustomDestinationType.chargingStation,
+        [robotRouteDestinations]);
+
     const confirmDialog = createDialog({
         type: DialogType.CONFIRM,
         text: 'Mit dieser Aktion, beendet der Roboter alle aktuellen Lieferaufträge und fährt zur Ladestation.',
@@ -28,21 +42,27 @@ const ChargeButton = () => {
 
     return (
         <Button
-            className="icon-button pointer-events"
+            className={clsx('icon-button pointer-events', {
+                'button--secondary': ![
+                    MapRobotStatus.Charging,
+                    MapRobotStatus.SendToChargingPile,
+                    MapRobotStatus.Charged
+                ].includes(mapRobotStatus) && !lastDestinationIsChargingStation
+            })}
             onClick={() => {
-                if (selectedRobot) {
+                if (selectedRobotId) {
                     void confirmDialog.open()
                         .then((result) => {
                             // @ts-ignore
                             if (result.buttonType === DialogButtonType.OK) {
-                                postChargeRobotFetch(selectedRobot)
+                                postChargeRobotFetch(selectedRobotId)
                                     .catch(() => errorDialog.open());
                             }
                         });
                    
                 }
             }}
-            disabled={!selectedRobot}
+            disabled={!selectedRobotId}
         >
             <i className="far fa-battery-bolt"/>
         </Button>

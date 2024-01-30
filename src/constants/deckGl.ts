@@ -50,7 +50,7 @@ export const iconLayerDefaults: Partial<IconLayerProps> = {
     getSize: 1,
     sizeUnits: 'meters',
     alphaCutoff: 0.5,
-    getPosition: (d: IIconData) => [d.position[0], d.position[1], 0],
+    getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.1],
     getIcon: (d: IIconData) => ({
         url: svgToDataURL(d.selected ? redMarker() : blueMarker()),
         height: 128,

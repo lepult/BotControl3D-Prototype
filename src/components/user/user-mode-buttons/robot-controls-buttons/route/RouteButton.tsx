@@ -5,7 +5,11 @@ import { Button } from 'chayns-components';
 import { createDialog, DialogType } from 'chayns-api';
 import './routeButton.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRobotEntities, selectRobotIds } from '../../../../../redux-modules/robot-status/selectors';
+import {
+    selectRobotById,
+    selectRobotEntities,
+    selectRobotIds
+} from '../../../../../redux-modules/robot-status/selectors';
 import RouteInput from './RouteInput';
 import { selectDestinationEntities, selectDestinationIds } from '../../../../../redux-modules/destination/selectors';
 import { CustomDestinationType, TDestination } from '../../../../../types/api/destination';
@@ -14,6 +18,8 @@ import { selectIsPlanningRoute, selectSelectedDestination } from '../../../../..
 import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
 import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
+import clsx from 'clsx';
+import { MapRobotStatus } from '../../../../../types/deckgl-map';
 
 const getDestinationName = (destination: TDestination) => {
     if (destination.chaynsUser) {
@@ -70,6 +76,7 @@ const RouteButton = () => {
     }, [selectedDestination]);
 
     const selectedRobotOnMap = useSelector(selectSelectedRobot);
+    const selectedRobot = useSelector(selectRobotById(selectedRobotOnMap || ''));
 
     const handleSendRobot = () => {
         if (!selectedDestinationMapElement || !selectedRobotOnMap || !selectedDestination) {
@@ -145,7 +152,9 @@ const RouteButton = () => {
 
     return (
         <Button
-            className="icon-button pointer-events"
+            className={clsx('icon-button pointer-events', {
+                'button--secondary': !selectedRobot?.robotStatus?.currentRoute,
+            })}
             onClick={() => dispatch(changeIsPlanningRoute({ isPlanning: true }))}
         >
             <i className="fa fa-route"/>

@@ -11,7 +11,7 @@ import RobotSelectionButton from './robot-selection-buttons/RobotSelectionButton
 import RouteButton from './robot-controls-buttons/route/RouteButton';
 import ChargeButton from './robot-controls-buttons/charge/ChargeButton';
 import CancelButton from './robot-controls-buttons/cancel/CancelButton';
-import FollowRobotButton from './interaction-buttons/FollowRobotButton';
+import FollowRobotButton from './robot-controls-buttons/follow-robot/FollowRobotButton';
 import ResetViewButton from './interaction-buttons/ResetViewButton';
 import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
 
@@ -57,6 +57,7 @@ const UserModeButtons: FC = () => {
                     }}
                 >
                     <RouteButton/>
+                    {!isPlanningRoute && <FollowRobotButton/>}
                     {!isPlanningRoute && <ChargeButton/>}
                     {!isPlanningRoute && <CancelButton/>}
                 </div>
@@ -66,7 +67,6 @@ const UserModeButtons: FC = () => {
                     ))}
                 </div>
                 <div className="map-buttons position-right position-bottom">
-                    <FollowRobotButton/>
                     <ResetViewButton/>
                 </div>
             </div>
