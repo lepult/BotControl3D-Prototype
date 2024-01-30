@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 // @ts-ignore
-import { Button, Input, PersonFinder, SimpleWrapperContext } from 'chayns-components';
+import { Button } from 'chayns-components';
 import './routeButton.scss';
 import { useSelector } from 'react-redux';
 import { selectRobotEntities, selectRobotIds } from '../../redux-modules/robot-status/selectors';
@@ -47,7 +47,8 @@ const RouteButton = () => {
             .sort((a, b) => a.showName > b.showName ? 1 : -1)
         , [destinationEntities, destinationIds]);
 
-    const [selectedDestinations, setSelectedDestinations] = useState<number[]>([]);
+    // TODO Remove null from initial state and comment out map line below, to allow multi destination routes.
+    const [selectedDestinations, setSelectedDestinations] = useState<number[]>([null]);
     const [robot, setRobot] = useState<string | number | null>(null);
 
     const handleSendRobot = () => {
@@ -81,7 +82,8 @@ const RouteButton = () => {
                     className="far fa-times"
                     onClick={() => setIsPlanningRoute(false)}
                 />
-                {[...selectedDestinations, null].map((selectedDestination, index, array) => (
+                {/*{[...selectedDestinations, null].map((selectedDestination, index, array) => (*/}
+                {([...selectedDestinations]).map((selectedDestination, index, array) => (
                     <div>
                         {index > 0 && (
                             <div>
@@ -120,7 +122,7 @@ const RouteButton = () => {
                 <div className="send-button-wrapper">
                     <Button
                         onClick={() => handleSendRobot()}
-                        disabled={selectedDestinations.length === 0 || !robot}
+                        disabled={selectedDestinations.length === 0 || !selectedDestinations[0] || !robot}
                     >
                         <i style={{ marginRight: '5px' }} className="far fa-paper-plane"/>
                         Senden

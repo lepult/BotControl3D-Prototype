@@ -1,12 +1,11 @@
+import { TDestination } from '../../types/api/destination';
 import { PUDU_API_URL } from '../url';
 import { getDefaultHeaders } from '../helpers';
-import { TDestination } from '../../types/api/destination';
 
-export const postSendRobotFetch = async (robotId: string, destinations: TDestination[]): Promise<boolean> => {
-    const response = await fetch(`${PUDU_API_URL}/Robot/${robotId}/call`, {
+export const postChargeRobotFetch = async (robotId: string): Promise<boolean> => {
+    const response = await fetch(`${PUDU_API_URL}/Robot/${robotId}/charge`, {
         method: 'POST',
         headers: await getDefaultHeaders(),
-        body: JSON.stringify(destinations),
     }).catch((error) => {
         console.log('fetch error', error)
         throw new Error('Failed to Fetch');

@@ -9,6 +9,7 @@ import { selectRobotIds } from '../../redux-modules/robot-status/selectors';
 import RobotButton from './RobotButton';
 import { toggleFollowRobot } from '../../redux-modules/map/actions';
 import RouteButton from './RouteButton';
+import ChargeButton from './ChargeButton';
 
 const UserModeButtons: FC = () => {
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const UserModeButtons: FC = () => {
             </div>
             <div className="map-buttons position-right position-top">
                 <RouteButton/>
-
+                <ChargeButton/>
             </div>
             <div className="map-buttons position-left position-bottom">
                 {allMapIds.map((id) => (
