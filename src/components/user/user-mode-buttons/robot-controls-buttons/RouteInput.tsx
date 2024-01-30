@@ -19,11 +19,13 @@ const RouteInput: FC<{
     icon: string,
     setSelected: (id: string | number | null) => void,
     selected: TPersonFinderItem | null,
+    placeholder: string,
 }> = ({
     items,
     icon,
     setSelected,
-    selected
+    selected,
+    placeholder,
 }) => {
     console.log('selected', selected);
     const [personFinderInput, setPersonFinderInput] = useState('');
@@ -41,7 +43,7 @@ const RouteInput: FC<{
             <i className={`far fa-${icon} route-input-icon`}/>
             <PersonFinder
                 ref={personFinderRef}
-                placeholder="Ziel"
+                placeholder={placeholder}
                 showPersons={false}
                 // dynamic={Input.BOTTOM_DYNAMIC}
                 design={Input.BORDER_DESIGN}

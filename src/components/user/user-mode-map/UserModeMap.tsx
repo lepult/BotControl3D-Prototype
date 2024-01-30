@@ -157,9 +157,7 @@ const UserModeMap: FC<{
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination)
         : [],
         [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus]);
-    useEffect(() => {
-        console.log('iconLayerData', iconLayerData.filter((i) => i.routeData.isFinalDestination || i.routeData.isRouteDestination));
-    }, [iconLayerData]);
+
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,

@@ -50,21 +50,23 @@ const RouteButton = () => {
     // TODO Remove null from initial state and comment out map line below, to allow multi destination routes.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const [selectedDestinations, setSelectedDestinations] = useState<number[]>([null]);
-    const [robot, setRobot] = useState<string | number | null>(null);
+    const [selectedDestination, setSelectedDestination] = useState<number | null>(null);
+    const [selectedRobot, setSelectedRobot] = useState<string | number | null>(null);
 
     const handleSendRobot = () => {
-        if (selectedDestinations.length === 0 || !robot) {
+        if (!selectedDestination || !selectedRobot) {
             void errorDialog.open()
             return;
         }
 
-        const requestBody: TDestination[] = selectedDestinations.map((destinationId) => destinationEntities[destinationId]);
+        const requestBody: TDestination[] = [destinationEntities[selectedDestination]];
 
-        postSendRobotFetch(robot as string, requestBody)
+        postSendRobotFetch(selectedRobot as string, requestBody)
             .then((success) => {
                 if (success) {
                     setIsPlanningRoute(false);
+                    setSelectedDestination(null);
+                    setSelectedRobot(null);
                 } else {
                     void errorDialog.open()
                 }
@@ -79,52 +81,37 @@ const RouteButton = () => {
             <div
                 className="content__card route-planner"
             >
-                <i
-                    style={{ cursor: 'pointer', padding: '5px' }}
-                    className="far fa-times"
-                    onClick={() => setIsPlanningRoute(false)}
+                <div style={{ display: 'flex', justifyContent: 'right' }}>
+                    <i
+                        style={{ cursor: 'pointer', padding: '5px' }}
+                        className="far fa-times"
+                        onClick={() => setIsPlanningRoute(false)}
+                    />
+                </div>
+                <RouteInput
+                    items={destinations}
+                    icon="map-marker-alt"
+                    placeholder="Ziel"
+                    setSelected={(destinationId) => setSelectedDestination(destinationId as number | null)}
+                    selected={selectedDestination ? {
+                        id: selectedDestination,
+                        showName: getDestinationName(destinationEntities[selectedDestination]),
+                    } : null}
                 />
-                {/* {[...selectedDestinations, null].map((selectedDestination, index, array) => ( */}
-                {([...selectedDestinations]).map((selectedDestination, index, array) => (
-                    <div>
-                        {index > 0 && (
-                            <div>
-                                <i className="far fa-ellipsis-v route-input-icon"/>
-                            </div>
-                        )}
-                        <RouteInput
-                            items={destinations}
-                            icon={index === array.length - 1
-                                ? 'map-marker-alt'
-                                : 'dot-circle'}
-                            setSelected={(destinationId) => {
-                                console.log('setSelected', destinationId, index);
-                                setSelectedDestinations((prev) => {
-                                    const newSelectedDestinations = [...prev];
-                                    newSelectedDestinations[index] = destinationId as number;
-                                    return newSelectedDestinations;
-                                });
-                            }}
-                            selected={selectedDestinations[index] ? {
-                                id: selectedDestinations[index],
-                                showName: getDestinationName(destinationEntities[selectedDestinations[index]]),
-                            } : null}
-                        />
-                    </div>
-                ))}
                 <RouteInput
                     items={robots}
                     icon="robot"
-                    setSelected={setRobot}
-                    selected={robot ? {
-                        id: robot as string,
-                        showName: robotEntities[robot as string]?.robotStatus?.robotName as string
+                    placeholder="Roboter"
+                    setSelected={setSelectedRobot}
+                    selected={selectedRobot ? {
+                        id: selectedRobot as string,
+                        showName: robotEntities[selectedRobot as string]?.robotStatus?.robotName as string
                     } : null}
                 />
                 <div className="send-button-wrapper">
                     <Button
                         onClick={() => handleSendRobot()}
-                        disabled={selectedDestinations.length === 0 || !selectedDestinations[0] || !robot}
+                        disabled={!selectedDestination || !selectedRobot}
                     >
                         <i style={{ marginRight: '5px' }} className="far fa-paper-plane"/>
                         Senden
@@ -137,6 +124,7 @@ const RouteButton = () => {
     return (
         <div>
             <Button
+                className="icon-button"
                 onClick={() => setIsPlanningRoute(true)}
             >
                 <i className="fa fa-route"/>

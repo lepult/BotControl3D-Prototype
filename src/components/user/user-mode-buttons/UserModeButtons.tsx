@@ -27,7 +27,10 @@ const UserModeButtons: FC = () => {
                     <RobotSelectionButton robotId={id as string}/>
                 ))}
             </div>
-            <div className="map-buttons position-right position-top">
+            <div
+                className="map-buttons position-right position-top"
+                style={{ alignItems: 'end' }}
+            >
                 <RouteButton/>
                 <ChargeButton/>
                 <CancelButton/>

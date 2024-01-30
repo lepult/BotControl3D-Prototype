@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button } from 'chayns-components';
@@ -26,7 +27,10 @@ const FloorSelectionButton: FC<{
 
     return (
         <Button
-            className={`map-button ${selectedMap === mapId ? '' : 'button--secondary'} ${selectedRobot?.currentMap?.id === mapId && selectedMap !== mapId ? 'button--bordered' : ''}`}
+            className={clsx('list-button', {
+                'button--secondary': selectedMap !== mapId,
+                'button--bordered': selectedRobot?.currentMap?.id === mapId && selectedMap !== mapId,
+            })}
             onClick={() => {
                 dispatch(changeSelectedMap({ mapId }));
                 dispatch(setFollowRobot({ followRobot: false }));

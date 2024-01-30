@@ -23,6 +23,7 @@ import { TNotifyChaynsDeliveryStatus } from '../types/websocket/notifyChaynsDeli
 import { TSyncActivitiesData } from '../types/websocket/syncActivitiesData';
 import { TNotifyRobotPowerData } from '../types/websocket/notifyRobotPowerData';
 import { TNotifyRobotMoveStateData } from '../types/websocket/notifyRobotMoveStateData';
+import './app.scss';
 
 const App = () => {
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();

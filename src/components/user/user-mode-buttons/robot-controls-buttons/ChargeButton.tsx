@@ -28,6 +28,7 @@ const ChargeButton = () => {
 
     return (
         <Button
+            className="icon-button"
             onClick={() => {
                 if (selectedRobot) {
                     void confirmDialog.open()

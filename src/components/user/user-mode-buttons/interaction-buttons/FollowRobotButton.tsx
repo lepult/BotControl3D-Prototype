@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button } from 'chayns-components';
@@ -15,7 +16,9 @@ const FollowRobotButton = () => {
     return (
         <Button
             disabled={!selectedRobot}
-            className={followRobot ? '' : 'button--secondary'}
+            className={clsx('icon-button', {
+                'button--secondary': !followRobot,
+            })}
             onClick={() => dispatch(toggleFollowRobot())}
         >
             <i className="far fa-cctv"/>
