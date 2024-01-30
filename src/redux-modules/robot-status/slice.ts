@@ -23,7 +23,7 @@ type TInitialState = {
     sendToDestinations: Array<TDestination>;
 };
 
-type TState = {
+export type TState = {
     robotId: string;
     groupId?: string;
     robotStatus?: TRobotStatus;

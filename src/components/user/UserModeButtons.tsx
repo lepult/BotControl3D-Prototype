@@ -8,6 +8,7 @@ import FloorButton from './FloorButton';
 import { selectRobotIds } from '../../redux-modules/robot-status/selectors';
 import RobotButton from './RobotButton';
 import { toggleFollowRobot } from '../../redux-modules/map/actions';
+import RouteButton from './RouteButton';
 
 const UserModeButtons: FC = () => {
     const dispatch = useDispatch();
@@ -28,13 +29,8 @@ const UserModeButtons: FC = () => {
                 ))}
             </div>
             <div className="map-buttons position-right position-top">
-                <Button
-                    disabled={!selectedRobot}
-                    className={followRobot ? '' : 'button--secondary'}
-                    onClick={() => dispatch(toggleFollowRobot())}
-                >
-                    <i className="fa-solid fa-location-arrow"/>
-                </Button>
+                <RouteButton/>
+
             </div>
             <div className="map-buttons position-left position-bottom">
                 {allMapIds.map((id) => (
@@ -42,7 +38,13 @@ const UserModeButtons: FC = () => {
                 ))}
             </div>
             <div className="map-buttons position-right position-bottom">
-                Buttons Unten Rechts
+                <Button
+                    disabled={!selectedRobot}
+                    className={followRobot ? '' : 'button--secondary'}
+                    onClick={() => dispatch(toggleFollowRobot())}
+                >
+                    <i className="fa-solid fa-location-arrow"/>
+                </Button>
             </div>
         </div>
     )

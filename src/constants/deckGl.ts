@@ -91,7 +91,7 @@ export const CONTROLLER_DEFAULTS = {
     scrollZoom: true,
     dragPan: true,
     dragRotate: true,
-    doubleClickZoom: true,
+    doubleClickZoom: false,
     touchZoom: true,
     touchRotate: true,
     keyboard: true,

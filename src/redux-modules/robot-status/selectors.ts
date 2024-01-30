@@ -14,3 +14,4 @@ export const selectRobotsByCurrentMap = (mapId: number) => (state: RootState) =>
 export const selectRobotEntities = (state: RootState) => state[robotStatusName].entities;
 
 export const selectRobotStatusById = (robotId: string) => (state: RootState) => state[robotStatusName].entities[robotId]?.robotStatus;
+export const selectRobotById = (robotId: string) => (state: RootState) => state[robotStatusName].entities[robotId];

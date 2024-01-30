@@ -1,0 +1,26 @@
+.route-planner {
+  width: 500px;
+  min-height: 150px;
+}
+
+.route-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 0;
+
+  .cc__person-finder {
+    width: 100%;
+  }
+}
+
+.route-input-icon {
+  text-align: center;
+  width: 30px;
+}
+
+.send-button-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}

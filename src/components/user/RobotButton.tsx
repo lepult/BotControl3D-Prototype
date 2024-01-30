@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 // @ts-ignore
 import { FilterButton } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRobotStatusById } from '../../redux-modules/robot-status/selectors';
+import { selectRobotById } from '../../redux-modules/robot-status/selectors';
 import { selectSelectedRobot } from '../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../redux-modules/map/actions';
 
@@ -13,12 +13,16 @@ const RobotButton: FC<{
 }) => {
     const dispatch = useDispatch();
 
-    const robot = useSelector(selectRobotStatusById(robotId));
+    const robot = useSelector(selectRobotById(robotId));
     const selectedRobot = useSelector(selectSelectedRobot);
+
+    if (!robot?.puduRobotStatus?.robotPose) {
+        return null;
+    }
 
     return (
         <FilterButton
-            label={robot?.robotName}
+            label={robot?.robotStatus?.robotName}
             checked={selectedRobot === robotId}
             onChange={() => {
                 dispatch(toggleSelectedRobot({ robotId }));
