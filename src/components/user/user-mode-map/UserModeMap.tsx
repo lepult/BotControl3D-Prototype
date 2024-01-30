@@ -20,7 +20,7 @@ import {
     selectInitialViewStateByMapId,
     selectSelectedRobot
 } from '../../../redux-modules/map/selectors';
-import { selectSelectedDestination } from '../../../redux-modules/misc/selectors';
+import { selectSelectedDestination, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
 import { IIconData, MapRobotStatus, TViewState } from '../../../types/deckgl-map';
 import {
@@ -84,7 +84,7 @@ const UserModeMap: FC<{
     }, [initialViewState]);
 
 
-    const selectedDestination = useSelector(selectSelectedDestination(mapId));
+    const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
     const selectedRobot = useSelector(selectSelectedRobot);
 
     const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));

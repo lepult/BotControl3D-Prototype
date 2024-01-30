@@ -27,7 +27,6 @@ const RouteInput: FC<{
     selected,
     placeholder,
 }) => {
-    console.log('selected', selected);
     const [personFinderInput, setPersonFinderInput] = useState('');
 
     const personFinderRef = useRef<TPersonFinderRef>();

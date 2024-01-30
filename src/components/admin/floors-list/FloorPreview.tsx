@@ -17,7 +17,7 @@ import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../..
 import { TMapElement } from '../../../types/pudu-api/robotMap';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
 import { selectInitialViewStateByMapId } from '../../../redux-modules/map/selectors';
-import { selectSelectedDestination } from '../../../redux-modules/misc/selectors';
+import { selectSelectedDestination, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
 import { meterToCoordinate } from '../../../utils/deckGlHelpers';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
 
@@ -40,7 +40,7 @@ const FloorPreview: FC<{
     const dispatch = useDispatch();
     const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
 
-    const selectedDestination = useSelector(selectSelectedDestination(mapId));
+    const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
     const [viewState, setViewState] = useState<ViewState<any, any, any>>({
         ...INITIAL_VIEW_STATE,
         ...initialViewState,

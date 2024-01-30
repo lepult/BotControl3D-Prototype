@@ -1,15 +1,19 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { createDialog, DialogType } from 'chayns-api';
 import './routeButton.scss';
-import { useSelector } from 'react-redux';
-import { selectRobotEntities, selectRobotIds } from '../../../../redux-modules/robot-status/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectRobotEntities, selectRobotIds } from '../../../../../redux-modules/robot-status/selectors';
 import RouteInput from './RouteInput';
-import { selectDestinationEntities, selectDestinationIds } from '../../../../redux-modules/destination/selectors';
-import { CustomDestinationType, TDestination } from '../../../../types/api/destination';
-import { postSendRobotFetch } from '../../../../api/robot/postSendRobot';
+import { selectDestinationEntities, selectDestinationIds } from '../../../../../redux-modules/destination/selectors';
+import { CustomDestinationType, TDestination } from '../../../../../types/api/destination';
+import { postSendRobotFetch } from '../../../../../api/robot/postSendRobot';
+import { selectSelectedDestination } from '../../../../../redux-modules/misc/selectors';
+import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
+import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
+import { changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
 
 const getDestinationName = (destination: TDestination) => {
     if (destination.chaynsUser) {
@@ -24,6 +28,9 @@ const RouteButton = () => {
         type: DialogType.ALERT,
         text: 'Es ist ein Fehler aufgetreten',
     });
+
+    const dispatch = useDispatch();
+
 
     const [isPlanningRoute, setIsPlanningRoute] = useState(false);
 
@@ -47,26 +54,38 @@ const RouteButton = () => {
             .sort((a, b) => a.showName > b.showName ? 1 : -1)
         , [destinationEntities, destinationIds]);
 
-    // TODO Remove null from initial state and comment out map line below, to allow multi destination routes.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const [selectedDestination, setSelectedDestination] = useState<number | null>(null);
-    const [selectedRobot, setSelectedRobot] = useState<string | number | null>(null);
+    const selectedDestinationMapElement = useSelector(selectSelectedDestination);
+    const selectedDestination = useMemo(() => destinationIds
+        .map((id) => destinationEntities[id])
+        .find((destination) =>
+            destination.name === selectedDestinationMapElement?.destinationName
+            && destination.mapId === selectedDestinationMapElement?.mapId
+            && destination.customType === CustomDestinationType.target
+        ),
+        [destinationEntities, destinationIds, selectedDestinationMapElement]);
+    useEffect(() => {
+        console.log('selectedDestinationMapElement', selectedDestinationMapElement);
+    }, [selectedDestinationMapElement]);
+    useEffect(() => {
+        console.log('selectedDestination', selectedDestination);
+    }, [selectedDestination]);
+
+    const selectedRobotOnMap = useSelector(selectSelectedRobot);
 
     const handleSendRobot = () => {
-        if (!selectedDestination || !selectedRobot) {
+        if (!selectedDestinationMapElement || !selectedRobotOnMap || !selectedDestination) {
             void errorDialog.open()
             return;
         }
 
-        const requestBody: TDestination[] = [destinationEntities[selectedDestination]];
+        const requestBody: TDestination[] = [selectedDestination];
 
-        postSendRobotFetch(selectedRobot as string, requestBody)
+        postSendRobotFetch(selectedRobotOnMap, requestBody)
             .then((success) => {
                 if (success) {
                     setIsPlanningRoute(false);
-                    setSelectedDestination(null);
-                    setSelectedRobot(null);
+                    dispatch(changeSelectedDestination(undefined));
+                    // dispatch(toggleSelectedRobot({ robotId: undefined }));
                 } else {
                     void errorDialog.open()
                 }
@@ -92,26 +111,32 @@ const RouteButton = () => {
                     items={destinations}
                     icon="map-marker-alt"
                     placeholder="Ziel"
-                    setSelected={(destinationId) => setSelectedDestination(destinationId as number | null)}
+                    setSelected={(destinationId) => {
+                        dispatch(changeSelectedDestination(destinationId ? {
+                            mapId: destinationEntities[destinationId as number].mapId,
+                            destinationName: destinationEntities[destinationId as number].name,
+                        } : undefined));
+                        // setSelectedDestination(destinationId as number | null)
+                    }}
                     selected={selectedDestination ? {
-                        id: selectedDestination,
-                        showName: getDestinationName(destinationEntities[selectedDestination]),
+                        id: selectedDestination.id,
+                        showName: getDestinationName(selectedDestination),
                     } : null}
                 />
                 <RouteInput
                     items={robots}
                     icon="robot"
                     placeholder="Roboter"
-                    setSelected={setSelectedRobot}
-                    selected={selectedRobot ? {
-                        id: selectedRobot as string,
-                        showName: robotEntities[selectedRobot as string]?.robotStatus?.robotName as string
+                    setSelected={(robotId) => dispatch(toggleSelectedRobot({ robotId: (robotId as string | null) || undefined }))}
+                    selected={selectedRobotOnMap ? {
+                        id: selectedRobotOnMap,
+                        showName: robotEntities[selectedRobotOnMap]?.robotStatus?.robotName as string
                     } : null}
                 />
                 <div className="send-button-wrapper">
                     <Button
                         onClick={() => handleSendRobot()}
-                        disabled={!selectedDestination || !selectedRobot}
+                        disabled={!selectedDestination || !selectedRobotOnMap}
                     >
                         <i style={{ marginRight: '5px' }} className="far fa-paper-plane"/>
                         Senden

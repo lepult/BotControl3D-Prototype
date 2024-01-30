@@ -7,9 +7,9 @@ import { selectMapIds } from '../../../redux-modules/map/selectors';
 import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
 import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
 import RobotSelectionButton from './robot-selection-buttons/RobotSelectionButton';
-import RouteButton from './robot-controls-buttons/RouteButton';
-import ChargeButton from './robot-controls-buttons/ChargeButton';
-import CancelButton from './robot-controls-buttons/CancelButton';
+import RouteButton from './robot-controls-buttons/route/RouteButton';
+import ChargeButton from './robot-controls-buttons/charge/ChargeButton';
+import CancelButton from './robot-controls-buttons/cancel/CancelButton';
 import FollowRobotButton from './interaction-buttons/FollowRobotButton';
 
 const UserModeButtons: FC = () => {

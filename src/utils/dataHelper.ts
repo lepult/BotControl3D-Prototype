@@ -65,7 +65,6 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
  * @param previousDestination
  */
 export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string, currentRoute?: TRoute, mapId?: number, currentDestination?: TDestination, previousDestination?: TDestination): Array<IIconData> => {
-    console.log('currentRoute', currentRoute);
     const iconData: Array<IIconData> = [];
 
     const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
@@ -85,8 +84,6 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selecte
 
             const indexInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => (element.name === destination?.name || element.id === destination?.name) && mapId === destination.mapId);
             const routeDestination = currentRoute?.routeDestinations[indexInRoute === undefined ? -1 : indexInRoute];
-
-            if (indexInRoute !== -1) console.log('test', indexInRoute, routeDestination, currentRoute);
 
             iconData.push({
                 ...element,

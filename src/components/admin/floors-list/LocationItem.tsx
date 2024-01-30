@@ -4,7 +4,7 @@ import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDestinationById } from '../../../redux-modules/destination/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { selectSelectedDestination } from '../../../redux-modules/misc/selectors';
+import { selectSelectedDestination, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
 
 const LocationItem: FC<{
     destinationId: number,
@@ -20,7 +20,7 @@ const LocationItem: FC<{
         ? `${destination.chaynsUser.name}`
         : destination.name, [destination]);
 
-    const selectedDestination = useSelector(selectSelectedDestination(mapId));
+    const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
 
     const handleClick = useCallback(() => {
         if (selectedDestination?.destinationName === destination.name) {
