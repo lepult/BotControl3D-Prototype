@@ -84,7 +84,7 @@ export const robotsSimpleMeshLayerDefaults: Partial<SimpleMeshLayer> = {
     getScale: () => [1, 1, 1],
     pickable: true,
 
-    transitions: { getPosition: TRANSITION_DURATION },
+    transitions: { getPosition: TRANSITION_DURATION, getOrientation: TRANSITION_DURATION },
 };
 
 export const CONTROLLER_DEFAULTS = {
