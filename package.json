@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "build": "chayns-toolkit build",
+    "build-application": "npm i && npm run build",
     "dev": "chayns-toolkit dev",
     "start": "chayns-toolkit dev",
     "format": "prettier . --write",
