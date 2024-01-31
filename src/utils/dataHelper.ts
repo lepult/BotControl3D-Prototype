@@ -3,6 +3,7 @@ import { MapElementType, TMapElement } from '../types/pudu-api/robotMap';
 import { IIconData, IPathData } from '../types/deckgl-map';
 import { DestinationType, TDestination } from '../types/api/destination';
 import { TRoute, TRouteDestination } from '../types/api/route';
+import { findMapElementInDestinations } from './destinations';
 
 // region PathData
 /**
@@ -64,7 +65,7 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
  * @param currentDestination
  * @param previousDestination
  */
-export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string, currentRoute?: TRoute, mapId?: number, currentDestination?: TDestination, previousDestination?: TDestination): Array<IIconData> => {
+export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string, currentRoute?: TRoute, mapId?: number, currentDestination?: TDestination, previousDestination?: TDestination, destinations?: TDestination[]): Array<IIconData> => {
     const iconData: Array<IIconData> = [];
 
     const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
@@ -84,6 +85,7 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selecte
 
             const indexInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => (element.name === destination?.name || element.id === destination?.name) && mapId === destination.mapId);
             const routeDestination = currentRoute?.routeDestinations[indexInRoute === undefined ? -1 : indexInRoute];
+            const destination = findMapElementInDestinations(element, destinations);
 
             iconData.push({
                 ...element,
@@ -100,7 +102,8 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selecte
                     isPreviousDestination: !!previousDestination && routeDestination?.destination.id === previousDestination?.id,
                     isEarlierDestination: indexOfNextDestinationInRoute > -1 && indexInRoute !== undefined && indexOfNextDestinationInRoute > indexInRoute,
                     isFinalDestination: (currentRoute?.routeDestinations || []).length > 0 && indexInRoute === (currentRoute?.routeDestinations || []).length - 1,
-                }
+                },
+                customType: destination?.customType,
             });
         }
     });

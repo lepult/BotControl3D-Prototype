@@ -35,8 +35,8 @@ import { getMapRobotStatus } from '../../../utils/robotStatusHelper';
 import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../../utils/deckGlDataAccessors';
 import { meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
 import { svgToDataURL } from '../../../utils/marker';
-import { getIconByMapRobotStatus } from '../../../utils/icons';
-import { getColoredMarker } from '../../../assets/markers';
+import { getIconByDestinationType, getIconByMapRobotStatus } from '../../../utils/icons';
+import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
 
 type TGltfModel = {
     id: string,
@@ -85,7 +85,6 @@ const UserModeMap: FC<{
             ...initialViewState,
         }));
     }, [initialViewState]);
-
 
     const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
     const selectedRobot = useSelector(selectSelectedRobot);
@@ -172,16 +171,21 @@ const UserModeMap: FC<{
 
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
+    const destinationIds = useSelector(selectDestinationIdsByMapId(mapId));
+    const destinationEntities = useSelector(selectDestinationEntities);
+    const destinations = useMemo(() => destinationIds?.map((id) => destinationEntities[id]) || [],
+        [destinationIds, destinationEntities]);
 
     const iconLayerData = useMemo(() => pathData
-        ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination)
+        ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination, destinations)
         : [],
-        [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus]);
-
+        [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus, destinations]);
+    console.log('iconLayerData', iconLayerData, iconLayerData.filter((t) => !t.customType));
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,
         data: iconLayerData,
+        getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.8],
         onClick: (pickingInfo) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
@@ -194,20 +198,9 @@ const UserModeMap: FC<{
                 }));
             }
         },
-        getIcon: (d: IIconData) => ({
-            // eslint-disable-next-line no-nested-ternary
-            url: svgToDataURL(d.routeData.isFinalDestination
-                ? getColoredMarker(0, 255, 0)
-                // eslint-disable-next-line no-nested-ternary
-                : d.routeData.isNextDestination
-                    ? getColoredMarker(0, 50, 0)
-                    // eslint-disable-next-line no-nested-ternary
-                    : d.routeData.isRouteDestination && !d.routeData.isEarlierDestination
-                        ? getColoredMarker(255, 0, 0)
-                        : d.selected
-                            ? getColoredMarker(200, 200, 200)
-                            : getColoredMarker(0, 0, 255)
-            ),
+        getSize: 0.3,
+        getIcon: (iconData: IIconData) => ({
+            url: svgToDataURL(getIconByDestinationType(iconData)),
             height: 128,
             width: 128,
         }),

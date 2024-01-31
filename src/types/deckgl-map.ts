@@ -3,6 +3,7 @@ import { Position, Color, TransitionInterpolator } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer, PolygonLayer } from '@deck.gl/layers/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { IMergedMapElement, IZone } from './pudu-api/robotMap';
+import { CustomDestinationType } from './api/destination';
 // endregion
 
 export interface IIconData extends IMergedMapElement {
@@ -17,7 +18,8 @@ export interface IIconData extends IMergedMapElement {
         isEarlierDestination: boolean;
         isFinalDestination: boolean;
         isPreviousDestination: boolean;
-    }
+    },
+    customType?: CustomDestinationType;
 }
 
 export interface IPathData extends IMergedMapElement {
