@@ -5,7 +5,7 @@ import FloorsList from './floors-list/FloorsList';
 import { selectAdminModeType, selectEditingMapId } from '../../redux-modules/misc/selectors';
 import EditorMap from '../EditorMap';
 import { AdminModeType } from '../../types/misc';
-import { ChaynsViewMode, updateChaynsViewmode } from '../../utils/pageSizeHelper';
+import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import RobotsList from './robots-list/RobotsList';
 
 const AdminMode = () => {
@@ -15,6 +15,7 @@ const AdminMode = () => {
     useEffect(() => {
         if (adminModeType === AdminModeType.default) {
             updateChaynsViewmode(ChaynsViewMode.exclusive);
+            removeFooter(false);
         }
         if (adminModeType === AdminModeType.editMap) {
             void setRefreshScrollEnabled(false);
@@ -30,7 +31,7 @@ const AdminMode = () => {
     }
 
     return (
-        <div>
+        <div className="tapp">
             <h1>
                 Verwaltung
             </h1>

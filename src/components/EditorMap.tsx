@@ -12,7 +12,7 @@ import { demoPolygonLayer } from '../constants/layers';
 import { coordinateToMeter } from '../utils/deckGlHelpers';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../utils/dataHelper';
 import { TMapElement } from '../types/pudu-api/robotMap';
-import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
+import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
 import { getModelsByMapId, getPathDataByMapId } from '../constants/puduData';
 import { ModelType } from '../constants/models';
@@ -209,6 +209,7 @@ const EditorMap: FC<{
 
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.wide);
+        removeFooter(true);
         setGltfModels(getModelsByMapId(mapId));
     }, [mapId]);
 

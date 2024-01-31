@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { setRefreshScrollEnabled } from 'chayns-api';
 // @ts-ignore
 import { SmallWaitCursor } from 'chayns-components';
-import { ChaynsViewMode, updateChaynsViewmode } from '../../utils/pageSizeHelper';
+import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import UserModeMap from './user-mode-map/UserModeMap';
 import UserModeButtons from './user-mode-buttons/UserModeButtons';
 import { selectMapsFetchState, selectSelectedMap } from '../../redux-modules/map/selectors';
@@ -13,6 +13,7 @@ import { FetchState } from '../../types/fetch';
 const UserMode = () => {
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.wide);
+        removeFooter(true);
         void setRefreshScrollEnabled(false);
     }, []);
 
