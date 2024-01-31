@@ -1,8 +1,9 @@
 // region Imports
-import WebSocketClient from 'tobit-websocket-service-client';
 // endregion
 
 // region Types
+import WebSocketClient from './websocket';
+
 type TWebsocketConditions = {
     [condition: string]: string | number | boolean | string[] | number[];
 };

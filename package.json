@@ -8,6 +8,9 @@
     "chayns-toolkit",
     "react"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "chayns-toolkit build",
     "build-application": "npm i && npm run build",
@@ -41,8 +44,7 @@
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^8.0.5",
-    "tobit-websocket-service-client": "^1.1.4"
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.6",
