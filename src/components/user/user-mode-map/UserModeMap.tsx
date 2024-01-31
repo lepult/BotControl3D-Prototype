@@ -129,7 +129,7 @@ const UserModeMap: FC<{
             url: svgToDataURL(getIconByMapRobotStatus(
                 d.mapRobotStatus,
                 ...getRobotColor(d.id === selectedRobot
-                ))),
+            ))),
             height: 128,
             width: 128,
         }),
@@ -180,7 +180,7 @@ const UserModeMap: FC<{
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination, destinations)
         : [],
         [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus, destinations]);
-    console.log('iconLayerData', iconLayerData, iconLayerData.filter((t) => !t.customType));
+
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,

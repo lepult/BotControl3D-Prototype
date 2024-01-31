@@ -26,10 +26,13 @@ import { Color } from '@deck.gl/core/typed';
 import { IIconData, MapRobotStatus } from '../types/deckgl-map';
 import { CustomDestinationType, DestinationType } from '../types/api/destination';
 
+const STROKE_WIDTH = 30;
+const MIN_X_Y = -STROKE_WIDTH / 2;
+
 const getSvg = (faIcon, red: number, green: number, blue: number) => {
     return `
     <svg
-        viewBox="0 0 ${faIcon.icon[0]} ${faIcon.icon[1]}"
+        viewBox="${MIN_X_Y} ${MIN_X_Y} ${faIcon.icon[0] + STROKE_WIDTH} ${faIcon.icon[1] + STROKE_WIDTH}"
         xmlns="http://www.w3.org/2000/svg"
         height="400"
         width="400"
