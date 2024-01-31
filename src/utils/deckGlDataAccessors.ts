@@ -12,8 +12,8 @@ export const getRobotPosition = (robotPose: TRobotPose | undefined, z = 0): TDec
 );
 
 export const getRobotColor = (selected: boolean): TDeckglColor => selected
-    ? [0, 157, 0]
-    : [157, 0, 0];
+    ? [25,139,44]
+    : [7, 71, 9];
 
 export const getRobotOrientation = (angle: number): TDeckglOrientation => [
     0,

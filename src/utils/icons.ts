@@ -202,16 +202,16 @@ export const getIconByDestinationType = (iconData: IIconData): string => {
 
 const getIconColor = (iconData: IIconData): Color => {
     if (iconData.routeData.isFinalDestination) {
-        return [0, 255, 0];
+        return [255, 183, 77];
     }
     if (iconData.routeData.isNextDestination) {
-        return [0, 50, 0];
+        return [159, 95, 0];
     }
     if (iconData.routeData.isRouteDestination && !iconData.routeData.isEarlierDestination) {
-        return [255, 255, 0];
+        return [255, 152, 0];
     }
     if (iconData.selected) {
-        return [0, 255, 255];
+        return [3, 169, 244];
     }
-    return [0, 0, 255]
+    return [84, 134, 157]
 };
