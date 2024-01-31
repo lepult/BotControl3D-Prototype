@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
+import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { FilterButton } from 'chayns-components';
+import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
 import { selectSelectedRobot } from '../../../../redux-modules/map/selectors';
@@ -22,14 +23,16 @@ const RobotSelectionButton: FC<{
     }
 
     return (
-        <FilterButton
-            className="pointer-events"
-            label={robot?.robotStatus?.robotName}
-            checked={selectedRobot === robotId}
-            onChange={() => {
+        <Button
+            className={clsx('pointer-events robot-selection-button', {
+                'button--secondary': selectedRobot !== robotId
+            })}
+            onClick={() => {
                 dispatch(toggleSelectedRobot({ robotId }));
             }}
-        />
+        >
+            {robot?.robotStatus?.robotName}
+        </Button>
     )
 };
 
