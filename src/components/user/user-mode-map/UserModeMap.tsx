@@ -196,7 +196,7 @@ const UserModeMap: FC<{
         ...iconLayerDefaults,
         id: `icon-layer__${mapId}`,
         data: iconLayerData,
-        getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.8],
+        getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
         onClick: (pickingInfo) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
