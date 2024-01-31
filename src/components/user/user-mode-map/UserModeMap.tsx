@@ -21,7 +21,7 @@ import {
     selectInitialViewStateByMapId,
     selectSelectedRobot
 } from '../../../redux-modules/map/selectors';
-import { selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
+import { selectResetViewState, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
 import { IIconData, MapRobotStatus, TViewState } from '../../../types/deckgl-map';
 import {
@@ -85,6 +85,17 @@ const UserModeMap: FC<{
             ...initialViewState,
         }));
     }, [initialViewState]);
+    
+    const resetViewState = useSelector(selectResetViewState);
+    useEffect(() => {
+        if (resetViewState > 0) {
+            setViewState((prev) => ({
+                ...prev,
+                ...initialViewState,
+            }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [resetViewState]);
 
     const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
     const selectedRobot = useSelector(selectSelectedRobot);

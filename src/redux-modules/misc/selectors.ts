@@ -10,3 +10,5 @@ export const selectSelectedDestinationByMapId = (mapId: number) => (state: RootS
     : undefined;
 
 export const selectIsPlanningRoute = (state: RootState) => state.misc.isPlanningRoute;
+
+export const selectResetViewState = (state: RootState) => state.misc.resetViewState;

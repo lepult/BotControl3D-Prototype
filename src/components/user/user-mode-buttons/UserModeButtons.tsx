@@ -63,7 +63,10 @@ const UserModeButtons: FC = () => {
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
-                        <FloorSelectionButton mapId={id}/>
+                        <FloorSelectionButton
+                            key={id}
+                            mapId={id}
+                        />
                     ))}
                 </div>
                 <div className="map-buttons position-right position-bottom">
