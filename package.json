@@ -29,6 +29,8 @@
     "@deck.gl/layers": "^8.9.33",
     "@deck.gl/mesh-layers": "^8.9.33",
     "@deck.gl/react": "^8.9.33",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@loaders.gl/core": "^3.4.13",
     "@loaders.gl/obj": "^3.4.13",
     "@reduxjs/toolkit": "^1.9.5",
