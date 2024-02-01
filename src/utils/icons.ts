@@ -21,6 +21,7 @@ import {
     faTruckFast,
     faUpDown,
     faSquareParking,
+    faFlagCheckered,
 } from '@fortawesome/free-solid-svg-icons';
 import { Color } from '@deck.gl/core/typed';
 import { IIconData, MapRobotStatus } from '../types/deckgl-map';
@@ -68,6 +69,7 @@ const getSvg = (faIcon, red: number, green: number, blue: number) => {
     faUpDown,
     faBolt,
     faSquareParking,
+    faFlagCheckered,
 ].forEach((i) => library.add(i));
 
 const hourglass = icon({ prefix: 'fas', iconName: 'hourglass' });
@@ -91,6 +93,7 @@ const doorClosed = icon({ prefix: 'fas', iconName: 'door-closed' });
 const upDown = icon({ prefix: 'fas', iconName: 'up-down' });
 const bolt = icon({ prefix: 'fas', iconName: 'bolt' });
 const parking = icon({ prefix: 'fas', iconName: 'square-parking' });
+const flagCheckered = icon({ prefix: 'fas', iconName: 'flag-checkered' });
 
 export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: number, green: number, blue: number): string => {
     let i = null;
@@ -99,7 +102,7 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
             i = off;
             break;
         case MapRobotStatus.Idle:
-            i = hourglass;
+            i = check;
             break;
         case MapRobotStatus.Charged:
             i = charged;
@@ -111,7 +114,7 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
         case MapRobotStatus.ArrivedAtDestination:
         case MapRobotStatus.ArrivedAtDiningOutlet:
         case MapRobotStatus.ArrivedAtPickupDestination:
-            i = check;
+            i = flagCheckered;
             break;
         case MapRobotStatus.WaitForDoor:
             i = doorOpen;
@@ -121,7 +124,7 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
             i = upDown;
             break;
         case MapRobotStatus.PrepareDriveToDestination:
-            i = spinner;
+            i = hourglass;
             break;
         case MapRobotStatus.SendToDestination:
             i = truck;
