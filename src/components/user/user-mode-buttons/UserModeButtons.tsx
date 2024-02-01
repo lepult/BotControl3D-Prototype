@@ -32,10 +32,9 @@ const UserModeButtons: FC = () => {
             >
                 {(metrics.pageWidth > 900 || !isPlanningRoute) && (
                     <div
-                        className="map-buttons map-buttons-row position-left position-top"
+                        className="map-buttons map-buttons-row position-left position-top bot-selection-buttons"
                         style={{
                             flexWrap: 'wrap',
-                            width: 'calc(100% - 520px)',
                         }}
                     >
                         {allRobotIds.map((id) => (
