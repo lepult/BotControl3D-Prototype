@@ -1,13 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 // @ts-ignore
-import { Accordion, Badge } from 'chayns-components';
-import { CustomDestinationType } from '../../../types/api/destination';
-import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
-import LocationItem from './LocationItem';
-import './locationList.scss';
+import { Badge } from 'chayns-components';
+import { CustomDestinationType } from '../../../../types/api/destination';
+import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../../redux-modules/destination/selectors';
+import Destination from './Destination';
+import './destinationList.scss';
 
-const LocationList: FC<{
+const DestinationType: FC<{
     mapId: number
     customTypes: (CustomDestinationType | undefined)[],
     name: string,
@@ -47,7 +47,7 @@ const LocationList: FC<{
             {filteredDestinationIds.length > 0 && (
                 <div className="location-list-content">
                     {filteredDestinationIds.map((destinationId) => (
-                        <LocationItem
+                        <Destination
                             key={destinationId}
                             destinationId={destinationId}
                             mapId={mapId}
@@ -59,4 +59,4 @@ const LocationList: FC<{
     );
 }
 
-export default LocationList;
+export default DestinationType;

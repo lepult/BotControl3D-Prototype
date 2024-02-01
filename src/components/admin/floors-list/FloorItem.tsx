@@ -6,7 +6,7 @@ import { selectMapById } from '../../../redux-modules/map/selectors';
 import { changeAdminModeType } from '../../../redux-modules/misc/actions';
 import { AdminModeType } from '../../../types/misc';
 import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
-import FloorLocations from './FloorLocations';
+import DestinationList from '../shared/destination-list/DestinationList';
 import FloorPreview from '../shared/FloorPreview';
 
 const FloorItem: FC<{
@@ -49,7 +49,7 @@ const FloorItem: FC<{
                     <FloorPreview mapId={mapId} />
                 </div>
             )}
-            <FloorLocations mapId={mapId}/>
+            <DestinationList mapId={mapId}/>
             <div className="accordion__content">
                 {!showMapPreview && (
                     <div style={{ textAlign: 'center' }}>

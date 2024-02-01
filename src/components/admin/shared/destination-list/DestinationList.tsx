@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 // @ts-ignore
-import { Accordion } from 'chayns-components';
-import LocationList from './LocationList';
-import { CustomDestinationType } from '../../../types/api/destination';
+import DestinationType from './DestinationType';
+import { CustomDestinationType } from '../../../../types/api/destination';
 
 enum LocationType {
     target,
@@ -46,14 +45,14 @@ const LOCATION_TYPES = [{
     type: LocationType.misc,
 }]
 
-const FloorLocations: FC<{
+const DestinationList: FC<{
     mapId: number,
 }> = ({
     mapId,
 }) => (
     <div className="accordion__content">
         {LOCATION_TYPES.map((locationType, index) => (
-            <LocationList
+            <DestinationType
                 key={locationType.type}
                 mapId={mapId}
                 customTypes={locationType.customTypes}
@@ -66,4 +65,4 @@ const FloorLocations: FC<{
     </div>
 );
 
-export default FloorLocations;
+export default DestinationList;

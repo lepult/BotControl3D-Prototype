@@ -2,9 +2,9 @@ import React, { FC, useMemo, useState } from 'react';
 // @ts-ignore
 import { Accordion, SmallWaitCursor, ContextMenu, Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
-import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
-import FloorLocations from '../../floors-list/FloorLocations';
-import FloorPreview from '../../shared/FloorPreview';
+import { selectRobotById } from '../../../redux-modules/robot-status/selectors';
+import DestinationList from '../shared/destination-list/DestinationList';
+import FloorPreview from '../shared/FloorPreview';
 
 const CONTEXT_MENU_ITEMS = [{
     text: 'Name ändern',
@@ -99,7 +99,7 @@ const RobotItem: FC<{
                                 isWrapped
                                 dataGroup="robot-item"
                             >
-                                <FloorLocations mapId={robot?.robotStatus.currentMap.id}/>
+                                <DestinationList mapId={robot?.robotStatus.currentMap.id}/>
                             </Accordion>
                         </div>
                     )}
