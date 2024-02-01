@@ -61,8 +61,6 @@ const FloorPreview: FC<{
         id: `icon-layer__${mapId}`,
         data: iconData,
         onClick: (pickingInfo, event) => {
-            console.log('selectedDestination', selectedDestination);
-            console.log('pickingInfo', pickingInfo.object);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
                 dispatch(changeSelectedDestination(undefined));

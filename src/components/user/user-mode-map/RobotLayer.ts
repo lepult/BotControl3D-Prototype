@@ -101,8 +101,6 @@ class RobotLayer extends CompositeLayer<RobotLayerProps> {
             getScale,
         } = this.props;
 
-        console.log('RobotLayer', this.props.data);
-
         return [
             new IconLayer(this.getSubLayerProps({
                 id: 'icon',

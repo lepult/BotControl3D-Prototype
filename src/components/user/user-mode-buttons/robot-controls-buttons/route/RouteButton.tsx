@@ -68,12 +68,6 @@ const RouteButton = () => {
             && destination.customType === CustomDestinationType.target
         ),
         [destinationEntities, destinationIds, selectedDestinationMapElement]);
-    useEffect(() => {
-        console.log('selectedDestinationMapElement', selectedDestinationMapElement);
-    }, [selectedDestinationMapElement]);
-    useEffect(() => {
-        console.log('selectedDestination', selectedDestination);
-    }, [selectedDestination]);
 
     const selectedRobotOnMap = useSelector(selectSelectedRobot);
     const selectedRobot = useSelector(selectRobotById(selectedRobotOnMap || ''));

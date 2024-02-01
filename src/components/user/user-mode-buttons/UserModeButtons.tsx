@@ -20,9 +20,7 @@ const UserModeButtons: FC = () => {
     const allRobotIds = useSelector(selectRobotIds);
     const metrics = useWindowMetrics();
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
-    console.log('metrics', metrics.pageWidth);
-    console.log('isPlanningRoute', isPlanningRoute);
-    console.log('isPlanningRoute', isPlanningRoute);
+
     return (
         <div className="user-mode-buttons__wrapper">
             <div

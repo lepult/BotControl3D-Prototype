@@ -45,7 +45,6 @@ const reducer = createReducer(initialState, (builder) => {
             draft.ids.push(destination.id)
 
         });
-        console.log('draft', current(draft));
     });
 });
 
