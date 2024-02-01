@@ -38,7 +38,10 @@ const UserModeButtons: FC = () => {
                         }}
                     >
                         {allRobotIds.map((id) => (
-                            <RobotSelectionButton robotId={id as string}/>
+                            <RobotSelectionButton
+                                key={id}
+                                robotId={id as string}
+                            />
                         ))}
                     </div>
                 )}
