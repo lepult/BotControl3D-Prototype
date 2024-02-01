@@ -36,13 +36,7 @@ import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../..
 import { TRobotLayerData } from './RobotLayer';
 import { getRobotLayerData, getRobotLayers } from '../../../utils/robotLayers';
 import { TState } from '../../../redux-modules/robot-status/slice';
-
-type TGltfModel = {
-    id: string,
-    url: string,
-    position: [number, number, number],
-    orientation: [number, number, number],
-}
+import { getScenegraphLayer } from '../../../utils/scenegraphLayer';
 
 interface IPickingInfo extends PickingInfo {
     object: TRobotLayerData,
@@ -60,30 +54,20 @@ const UserModeMap: FC<{
 }) => {
     const dispatch = useDispatch();
 
-    const [controller] = useState(CONTROLLER_DEFAULTS);
-
     const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
+    const resetViewState = useSelector(selectResetViewState);
     const [viewState, setViewState] = useState<TViewState>({
         ...INITIAL_VIEW_STATE,
         ...initialViewState,
     });
+
     useEffect(() => {
         setViewState((prev) => ({
             ...prev,
             ...initialViewState,
         }));
-    }, [initialViewState]);
-    
-    const resetViewState = useSelector(selectResetViewState);
-    useEffect(() => {
-        if (resetViewState > 0) {
-            setViewState((prev) => ({
-                ...prev,
-                ...initialViewState,
-            }));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resetViewState]);
+    }, [initialViewState, resetViewState]);
+
 
     const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
     const selectedRobot = useSelector(selectSelectedRobot);
@@ -119,17 +103,8 @@ const UserModeMap: FC<{
     ), [dispatch, mapId, robotLayerData, selectedRobot]);
 
 
-    const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
-        ...scenegraphLayerDefaults,
-        id: `scenegraph-layer__${mapId}__${floorModel.id}`,
-        data: [{
-            position: floorModel.position,
-            orientation: floorModel.orientation,
-        }],
-        scenegraph: floorModel.url,
-        getPosition: (m: TGltfModel) => m.position,
-        getOrientation: (m: TGltfModel) => m.orientation,
-    })), [mapId]);
+    const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId)
+        .map((floorModel) => getScenegraphLayer(floorModel, mapId)), [mapId]);
 
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
@@ -246,7 +221,7 @@ const UserModeMap: FC<{
                     iconLayer,
                     ...robotLayers,
                 ]}
-                controller={controller}
+                controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={(viewStateChagneParameters) => {
                     handleNewViewState(viewStateChagneParameters)
                 }}
