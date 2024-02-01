@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import UserModeMap from '../../../user/user-mode-map/UserModeMap';
-import FollowRobotButton from '../../../user/user-mode-buttons/robot-controls-buttons/follow-robot/FollowRobotButton';
-import ResetViewButton from '../../../user/user-mode-buttons/interaction-buttons/ResetViewButton';
+import UserModeMap from '../../user/user-mode-map/UserModeMap';
+import FollowRobotButton from '../../user/user-mode-buttons/robot-controls-buttons/follow-robot/FollowRobotButton';
+import ResetViewButton from '../../user/user-mode-buttons/interaction-buttons/ResetViewButton';
 
-const RobotItemMap: FC<{
-    robotId: string,
+const FloorPreview: FC<{
+    robotId?: string,
     mapId: number,
 }> = ({
     robotId,
@@ -29,7 +29,7 @@ const RobotItemMap: FC<{
             }}
             className="map-buttons"
         >
-            <FollowRobotButton/>
+            {robotId && <FollowRobotButton/>}
             <ResetViewButton/>
         </div>
         <UserModeMap
@@ -40,4 +40,4 @@ const RobotItemMap: FC<{
     </div>
 );
 
-export default RobotItemMap;
+export default FloorPreview;

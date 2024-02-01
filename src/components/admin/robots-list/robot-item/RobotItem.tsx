@@ -4,7 +4,7 @@ import { Accordion, SmallWaitCursor, ContextMenu, Button } from 'chayns-componen
 import { useSelector } from 'react-redux';
 import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
 import FloorLocations from '../../floors-list/FloorLocations';
-import RobotItemMap from './RobotItemMap';
+import FloorPreview from '../../shared/FloorPreview';
 
 const CONTEXT_MENU_ITEMS = [{
     text: 'Name ändern',
@@ -86,7 +86,7 @@ const RobotItem: FC<{
                 <div>
                     {hasMap && showMapPreview && (
                         <div className="accordion__content">
-                            <RobotItemMap
+                            <FloorPreview
                                 robotId={robotId}
                                 mapId={robot?.robotStatus?.currentMap?.id as number}
                             />
