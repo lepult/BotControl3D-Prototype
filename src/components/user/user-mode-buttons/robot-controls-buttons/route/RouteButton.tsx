@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, SmallWaitCursor } from 'chayns-components';
 import { createDialog, DialogType } from 'chayns-api';
 import './routeButton.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,8 +19,6 @@ import { selectIsPlanningRoute, selectSelectedDestination } from '../../../../..
 import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
 import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
-import clsx from 'clsx';
-import { MapRobotStatus } from '../../../../../types/deckgl-map';
 
 const getDestinationName = (destination: TDestination) => {
     if (destination.chaynsUser) {
@@ -72,6 +71,7 @@ const RouteButton = () => {
     const selectedRobotOnMap = useSelector(selectSelectedRobot);
     const selectedRobot = useSelector(selectRobotById(selectedRobotOnMap || ''));
 
+    const [isFetching, setIsFetching] = useState(false);
     const handleSendRobot = () => {
         if (!selectedDestinationMapElement || !selectedRobotOnMap || !selectedDestination) {
             void errorDialog.open()
@@ -80,8 +80,10 @@ const RouteButton = () => {
 
         const requestBody: TDestination[] = [selectedDestination];
 
+        setIsFetching(true);
         postSendRobotFetch(selectedRobotOnMap, requestBody)
             .then((success) => {
+                setIsFetching(false);
                 if (success) {
                     dispatch(changeIsPlanningRoute({ isPlanning: false }))
                     dispatch(changeSelectedDestination(undefined));
@@ -91,6 +93,7 @@ const RouteButton = () => {
                 }
             })
             .catch((e) => {
+                setIsFetching(false);
                 void errorDialog.open()
             });
     }
@@ -132,13 +135,15 @@ const RouteButton = () => {
                     } : null}
                 />
                 <div className="send-button-wrapper">
-                    <Button
-                        onClick={() => handleSendRobot()}
-                        disabled={!selectedDestination || !selectedRobotOnMap}
-                    >
-                        <i style={{ marginRight: '5px' }} className="far fa-paper-plane"/>
-                        Senden
-                    </Button>
+                    {isFetching ? <SmallWaitCursor show/> : (
+                        <Button
+                            onClick={() => handleSendRobot()}
+                            disabled={!selectedDestination || !selectedRobotOnMap}
+                        >
+                            <i style={{ marginRight: '5px' }} className="far fa-paper-plane"/>
+                            Senden
+                        </Button>
+                    )}
                 </div>
             </div>
         )

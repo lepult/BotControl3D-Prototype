@@ -49,8 +49,12 @@ const flyToInterpolator =  new FlyToInterpolator({
 
 const UserModeMap: FC<{
     mapId: number,
+    robotId?: string,
+    isPreview?: boolean,
 }> = ({
     mapId,
+    robotId,
+    isPreview = false,
 }) => {
     const dispatch = useDispatch();
 
@@ -65,11 +69,13 @@ const UserModeMap: FC<{
         setViewState((prev) => ({
             ...prev,
             ...initialViewState,
+            zoom: initialViewState.zoom - 2,
         }));
     }, [initialViewState, resetViewState]);
 
 
     const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
+    console.log('selectedDestination', selectedDestination);
     const selectedRobot = useSelector(selectSelectedRobot);
 
     const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));
@@ -79,10 +85,13 @@ const UserModeMap: FC<{
     // TODO Write custom selector with change detection.
     const robotIds = useSelector(selectRobotIds);
     const robotEntities = useSelector(selectRobotEntities);
-    const robots = useMemo(() => {
-        const r = robotIds.map((id) => robotEntities[id]);
-        return r.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
-    }, [mapId, robotIds, robotEntities]);
+    const robots = useMemo(() => robotIds
+        .map((id) => robotEntities[id])
+        .filter((robot) => (
+            robot?.robotStatus?.currentMap?.id === mapId
+            && (robot?.robotStatus?.robotId === robotId || !robotId)
+        ))
+    , [mapId, robotIds, robotEntities, robotId]);
 
     const robotLayerData = useMemo<TRobotLayerData[]>(() => robots
             .filter((robot) => robot?.puduRobotStatus)
@@ -98,9 +107,13 @@ const UserModeMap: FC<{
     const robotLayers = useMemo(() => getRobotLayers(
         `robot-${mapId}`,
         robotLayerData,
-        (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({ robotId: (pickingInfo as IPickingInfo).object.robotId })),
+        isPreview
+            ? () => {}
+            : (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({
+                robotId: (pickingInfo as IPickingInfo).object.robotId
+            })),
         selectedRobot || '',
-    ), [dispatch, mapId, robotLayerData, selectedRobot]);
+    ), [dispatch, mapId, robotLayerData, selectedRobot, isPreview]);
 
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId)
@@ -170,6 +183,12 @@ const UserModeMap: FC<{
     }, [followRobot]);
 
     useEffect(() => {
+        if (!selectedRobot && robotId && isPreview) {
+            dispatch(toggleSelectedRobot({ robotId }));
+        }
+    }, [dispatch, robotId, isPreview, selectedRobot]);
+
+    useEffect(() => {
         if (followRobot && selectedRobot) {
             const robot = robotEntities[selectedRobot];
 
@@ -185,7 +204,7 @@ const UserModeMap: FC<{
                     latitude,
                     longitude,
                     pitch: 55,
-                    zoom: 23,
+                    zoom: isPreview ? 21 : 23,
                     bearing,
                 }));
 
