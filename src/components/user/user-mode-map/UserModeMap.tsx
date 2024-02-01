@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
-import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
+import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-import { FlyToInterpolator, Layer, PickingInfo } from '@deck.gl/core/typed';
+import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import {
     CONTROLLER_DEFAULTS,
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
     pathLayerDefaults,
-    robotsSimpleMeshLayerDefaults,
     scenegraphLayerDefaults
 } from '../../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
@@ -23,20 +22,20 @@ import {
 } from '../../../redux-modules/map/selectors';
 import { selectResetViewState, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { IIconData, MapRobotStatus, TViewState } from '../../../types/deckgl-map';
+import { IIconData, TViewState } from '../../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
     selectRobotStatusById
 } from '../../../redux-modules/robot-status/selectors';
-import { TPuduApiRobotStatus } from '../../../types/pudu-api/robotStatus';
 import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../../redux-modules/map/actions';
-import { getMapRobotStatus } from '../../../utils/robotStatusHelper';
-import { getRobotColor, getRobotOrientation, getRobotPosition } from '../../../utils/deckGlDataAccessors';
 import { meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
 import { svgToDataURL } from '../../../utils/marker';
-import { getIconByDestinationType, getIconByMapRobotStatus } from '../../../utils/icons';
+import { getIconByDestinationType } from '../../../utils/icons';
 import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
+import { TRobotLayerData } from './RobotLayer';
+import { getRobotLayerData, getRobotLayers } from '../../../utils/robotLayers';
+import { TState } from '../../../redux-modules/robot-status/slice';
 
 type TGltfModel = {
     id: string,
@@ -45,25 +44,14 @@ type TGltfModel = {
     orientation: [number, number, number],
 }
 
-type TRobotMapData = {
-    name: string,
-    id: string,
-    puduRobotStatus: TPuduApiRobotStatus,
-    mapRobotStatus: MapRobotStatus,
-}
-
 interface IPickingInfo extends PickingInfo {
-    object: TRobotMapData,
+    object: TRobotLayerData,
 }
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
     maxDuration: 1000,
 });
-
-// const flyToInterpolator =  new LinearInterpolator({
-//     transitionProps: ['longitude', 'latitude'],
-// });
 
 const UserModeMap: FC<{
     mapId: number,
@@ -103,6 +91,8 @@ const UserModeMap: FC<{
     const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));
     const currentRoute = useMemo(() => selectedRobotStatus?.currentRoute, [selectedRobotStatus]);
 
+
+    // TODO Write custom selector with change detection.
     const robotIds = useSelector(selectRobotIds);
     const robotEntities = useSelector(selectRobotEntities);
     const robots = useMemo(() => {
@@ -110,63 +100,24 @@ const UserModeMap: FC<{
         return r.filter((robot) => robot?.robotStatus?.currentMap?.id === mapId);
     }, [mapId, robotIds, robotEntities]);
 
-    const robotsPositionsLayerData = useMemo<TRobotMapData[]>(() => robots
+    const robotLayerData = useMemo<TRobotLayerData[]>(() => robots
             .filter((robot) => robot?.puduRobotStatus)
-            .map((robot) => ({
-                puduRobotStatus: robot?.puduRobotStatus as TPuduApiRobotStatus,
-                name: robot?.robotStatus?.robotName as string,
-                id: robot?.robotStatus?.robotId as string,
-                mapRobotStatus: getMapRobotStatus(
-                    robotEntities[robot?.robotStatus?.robotId || 0]?.robotStatus,
-                    robotEntities[robot?.robotStatus?.robotId || 0]?.puduRobotStatus
-                ),
-            })),
-        [robots, robotEntities]);
+            .map((robot) => getRobotLayerData(robot as TState, selectedRobot)),
+        [robots, selectedRobot]);
 
-    const robotLayerDataAccessors = useMemo<Partial<Layer>>(() => ({
-        data: robotsPositionsLayerData,
-        getOrientation: (d: TRobotMapData) => getRobotOrientation(d.puduRobotStatus.robotPose?.angle || 0),
-        getColor: (d: TRobotMapData) => getRobotColor(d.id === selectedRobot),
-        // @ts-ignore
-        onClick: (pickingInfo: IPickingInfo) => dispatch(toggleSelectedRobot({ robotId: pickingInfo.object.id })),
-        updateTriggers: {
-            getColor: [selectedRobot]
-        },
-    }), [dispatch, robotsPositionsLayerData, selectedRobot]);
-    
-    const robotIconLayerDataAccessors = useMemo<Partial<Layer>>(() => ({
-        data: robotsPositionsLayerData,
-        getIcon: (d: TRobotMapData) => ({
-            url: svgToDataURL(getIconByMapRobotStatus(
-                d.mapRobotStatus,
-                ...getRobotColor(d.id === selectedRobot
-            ))),
-            height: 128,
-            width: 128,
-        }),
-        getSize: 0.5,
-        // @ts-ignore
-        onClick: (pickingInfo: IPickingInfo) => dispatch(toggleSelectedRobot({ robotId: pickingInfo.object.id })),
-        transitions: { getPosition: 2000 },
-        updateTriggers: {
-            getIcon: [selectedRobot]
-        },
-    }), [dispatch, robotsPositionsLayerData, selectedRobot]);
+    // const robotLayer = useMemo(() => new RobotLayer({
+    //     id: `robotLayer-${mapId}`,
+    //     data: robotsPositionsLayerData,
+    //     updateTriggers: [selectedRobot],
+    // }), [mapId, robotsPositionsLayerData, selectedRobot]);
 
-    const robotLayers = useMemo<[IconLayer, SimpleMeshLayer]>(() => [
-        new IconLayer({
-            ...iconLayerDefaults,
-            ...robotIconLayerDataAccessors,
-            id: `robots-icon-layer12356__${mapId}`,
-            getPosition: (d: TRobotMapData) => getRobotPosition(d.puduRobotStatus.robotPose, 2),
-        }),
-        new SimpleMeshLayer({
-            ...robotsSimpleMeshLayerDefaults,
-            ...robotLayerDataAccessors,
-            id: `robots-positions-layer123__${mapId}`,
-            getPosition: (d: TRobotMapData) => getRobotPosition(d.puduRobotStatus.robotPose, 0),
-        }),
-    ], [mapId, robotIconLayerDataAccessors, robotLayerDataAccessors]);
+    const robotLayers = useMemo(() => getRobotLayers(
+        `robot-${mapId}`,
+        robotLayerData,
+        (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({ robotId: (pickingInfo as IPickingInfo).object.robotId })),
+        selectedRobot || '',
+    ), [dispatch, mapId, robotLayerData, selectedRobot]);
+
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId).map((floorModel) => new ScenegraphLayer({
         ...scenegraphLayerDefaults,
