@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { setRefreshScrollEnabled } from 'chayns-api';
 import FloorsList from './floors-list/FloorsList';
 import { selectAdminModeType, selectEditingMapId } from '../../redux-modules/misc/selectors';
-import EditorMap from '../EditorMap';
+import EditorMap from './floors-list/EditorMap';
 import { AdminModeType } from '../../types/misc';
 import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import RobotsList from './robots-list/RobotsList';

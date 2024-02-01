@@ -8,18 +8,18 @@ import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { PickingInfo } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-import { demoPolygonLayer } from '../constants/layers';
-import { coordinateToMeter } from '../utils/deckGlHelpers';
-import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../utils/dataHelper';
-import { TMapElement } from '../types/pudu-api/robotMap';
-import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../utils/pageSizeHelper';
-import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../constants/deckGl';
-import { getModelsByMapId, getPathDataByMapId } from '../constants/puduData';
-import { ModelType } from '../constants/models';
-import { changeAdminModeType } from '../redux-modules/misc/actions';
-import { AdminModeType } from '../types/misc';
-import { selectInitialViewStateByMapId } from '../redux-modules/map/selectors';
-import { changeInitialViewState } from '../redux-modules/map/actions';
+import { demoPolygonLayer } from '../../../constants/layers';
+import { coordinateToMeter } from '../../../utils/deckGlHelpers';
+import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
+import { TMapElement } from '../../../types/pudu-api/robotMap';
+import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../../utils/pageSizeHelper';
+import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../../../constants/deckGl';
+import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
+import { ModelType } from '../../../constants/models';
+import { changeAdminModeType } from '../../../redux-modules/misc/actions';
+import { AdminModeType } from '../../../types/misc';
+import { selectInitialViewStateByMapId } from '../../../redux-modules/map/selectors';
+import { changeInitialViewState } from '../../../redux-modules/map/actions';
 
 type TGltfModel = {
     id: string,
@@ -287,45 +287,52 @@ const EditorMap: FC<{
                     display: 'flex',
                     flexDirection: 'column',
                 }}
+                className="map-buttons"
             >
-                <Button onClick={() => {
-                    let input = document.createElement('input');
-                    input.type = 'file';
-                    input.accept = '.glb';
-                    input.onchange = _ => {
-                        // you can use this method to get file and perform respective operations
-                        let files =   Array.from(input.files);
-                        console.log(files);
-                    };
-                    input.click();
-                }}>
-                    <i className="fa fa-file-arrow-up"></i>
-                </Button>
-                <Button onClick={() => console.log('Models', gltfModels)}>
-                    <i className="fa fa-copy"></i>
-                </Button>
-                <Button onClick={() => setViewState((prev) => ({
-                    ...prev,
-                    ...initialViewState,
-                }))}>
-                    <i className="fa fa-location-crosshairs"/>
-                </Button>
-                <Button onClick={() => {
-                    const newInitialViewState = {
-                        bearing: viewState.bearing,
-                        latitude: viewState.latitude,
-                        longitude: viewState.longitude,
-                        pitch: viewState.pitch,
-                        zoom: viewState.zoom,
-                    };
-                    console.log('newInitialViewState', newInitialViewState);
-                    dispatch(changeInitialViewState({
-                        mapId,
-                        viewState: newInitialViewState,
-                    }))
+                <Button
+                    className="icon-button button--secondary"
+                    onClick={() => {
+                        let input = document.createElement('input');
+                        input.type = 'file';
+                        input.accept = '.glb';
+                        input.onchange = _ => {
+                            // you can use this method to get file and perform respective operations
+                            let files =   Array.from(input.files);
+                            console.log(files);
+                            // TODO Upload to chayns Space.
+                        };
+                        input.click();
                     }}
                 >
-                    <i className="fa fa-crosshairs-simple"></i>
+                    <i className="fa fa-file-arrow-up"></i>
+                </Button>
+                <Button
+                    className="icon-button button--secondary"
+                    onClick={() => setViewState((prev) => ({
+                        ...prev,
+                        ...initialViewState,
+                    }))}
+                >
+                    <i className="fa fa-location-crosshairs"/>
+                </Button>
+                <Button
+                    className="icon-button button--secondary"
+                    onClick={() => {
+                        const newInitialViewState = {
+                            bearing: viewState.bearing,
+                            latitude: viewState.latitude,
+                            longitude: viewState.longitude,
+                            pitch: viewState.pitch,
+                            zoom: viewState.zoom,
+                        };
+                        console.log('newInitialViewState', newInitialViewState);
+                        dispatch(changeInitialViewState({
+                            mapId,
+                            viewState: newInitialViewState,
+                        }))
+                    }}
+                >
+                    <i className="fa fa-crosshairs-simple"/>
                 </Button>
             </div>
             <div
@@ -341,7 +348,10 @@ const EditorMap: FC<{
             >
                 <div style={{ padding: '10px' }}>
                     <Button
-                        onClick={() => dispatch(changeAdminModeType({ adminModeType: AdminModeType.default }))}
+                        onClick={() => {
+                            console.log('Models', gltfModels)
+                            dispatch(changeAdminModeType({ adminModeType: AdminModeType.default }))
+                        }}
                     >
                         Speichern
                     </Button>
