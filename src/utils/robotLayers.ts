@@ -36,7 +36,7 @@ const defaultProps = {
     }),
     getSize: 1.5,
 
-    mesh: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.obj',
+    mesh: 'https://chayns.space/77896-05853/3D-Modelle/Kittybot.obj',
     loaders: [OBJLoader],
     getColor: ({ color }: TRobotLayerData) => color,
     getOrientation: ({ orientation }: TRobotLayerData) => orientation,
