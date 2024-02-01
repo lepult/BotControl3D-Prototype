@@ -76,17 +76,6 @@ export const robotStatusTextLayerDefaults: Partial<TextLayer> = {
     transitions: { getPosition: TRANSITION_DURATION },
 };
 
-export const robotsSimpleMeshLayerDefaults: Partial<SimpleMeshLayer> = {
-    coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,
-    mesh: 'https://w-lpinkernell-z.tobit.ag/models/Kittybot.obj',
-    loaders: [OBJLoader],
-    sizeScale: 1,
-    getScale: () => [1, 1, 1],
-    pickable: true,
-
-    transitions: { getPosition: TRANSITION_DURATION },
-};
-
 export const CONTROLLER_DEFAULTS = {
     scrollZoom: true,
     dragPan: true,

@@ -22,3 +22,11 @@ export const updateChaynsViewmode = (viewMode: ChaynsViewMode) => {
     });
 }
 
+export const removeFooter = (remove: boolean) => {
+    invokeCall({
+        action: 238,
+        value: {
+            hide: remove,
+        }
+    });
+};

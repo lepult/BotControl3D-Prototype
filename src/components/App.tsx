@@ -3,7 +3,6 @@ import { useIsAdminMode } from 'chayns-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import AdminMode from './admin/AdminMode';
-import { ChaynsViewMode, updateChaynsViewmode } from '../utils/pageSizeHelper';
 import { getAllMapsAction } from '../redux-modules/map/actions';
 import { getAllDestinationsAction } from '../redux-modules/destination/actions';
 import { selectRobotIds } from '../redux-modules/robot-status/selectors';
@@ -32,7 +31,6 @@ const App = () => {
     const robotIds = useSelector(selectRobotIds);
 
     useEffect(() => {
-        updateChaynsViewmode(ChaynsViewMode.exclusive);
         void dispatch(getAllMapsAction());
         void dispatch(getAllDestinationsAction());
         void dispatch(getDevicesDataAction());

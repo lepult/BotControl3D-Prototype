@@ -20,9 +20,7 @@ const UserModeButtons: FC = () => {
     const allRobotIds = useSelector(selectRobotIds);
     const metrics = useWindowMetrics();
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
-    console.log('metrics', metrics.pageWidth);
-    console.log('isPlanningRoute', isPlanningRoute);
-    console.log('isPlanningRoute', isPlanningRoute);
+
     return (
         <div className="user-mode-buttons__wrapper">
             <div
@@ -34,14 +32,16 @@ const UserModeButtons: FC = () => {
             >
                 {(metrics.pageWidth > 900 || !isPlanningRoute) && (
                     <div
-                        className="map-buttons map-buttons-row position-left position-top"
+                        className="map-buttons map-buttons-row position-left position-top bot-selection-buttons"
                         style={{
                             flexWrap: 'wrap',
-                            width: 'calc(100% - 520px)',
                         }}
                     >
                         {allRobotIds.map((id) => (
-                            <RobotSelectionButton robotId={id as string}/>
+                            <RobotSelectionButton
+                                key={id}
+                                robotId={id as string}
+                            />
                         ))}
                     </div>
                 )}

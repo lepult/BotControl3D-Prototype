@@ -2,11 +2,11 @@ import React, { FC, useCallback, useMemo } from 'react';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDestinationById } from '../../../redux-modules/destination/selectors';
-import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { selectSelectedDestination, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
+import { selectDestinationById } from '../../../../redux-modules/destination/selectors';
+import { changeSelectedDestination } from '../../../../redux-modules/misc/actions';
+import { selectSelectedDestinationByMapId } from '../../../../redux-modules/misc/selectors';
 
-const LocationItem: FC<{
+const Destination: FC<{
     destinationId: number,
     mapId: number,
 }> = ({
@@ -43,4 +43,4 @@ const LocationItem: FC<{
     );
 };
 
-export default LocationItem;
+export default Destination;

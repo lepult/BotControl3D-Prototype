@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 // @ts-ignore
-import { Accordion, SmallWaitCursor, ContextMenu } from 'chayns-components';
+import { Accordion, SmallWaitCursor, ContextMenu, Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
-import { selectRobotStatusById } from '../../../redux-modules/robot-status/selectors';
-import FloorPreview from '../floors-list/FloorPreview';
-import FloorLocations from '../floors-list/FloorLocations';
+import { selectRobotById } from '../../../redux-modules/robot-status/selectors';
+import DestinationList from '../shared/destination-list/DestinationList';
+import FloorPreview from '../shared/FloorPreview';
 
 const CONTEXT_MENU_ITEMS = [{
     text: 'Name ändern',
@@ -45,72 +45,91 @@ const RobotItem: FC<{
 }> = ({
     robotId,
 }) => {
-    const robotStatus = useSelector(selectRobotStatusById(robotId));
-    console.log('robotStatus', robotStatus?.robotName, robotStatus)
+    const robot = useSelector(selectRobotById(robotId));
+    const [showMapPreview, setShowMapPreview] = useState(false);
+    const hasMap = useMemo(() => robot?.robotStatus?.currentMap?.id && robot?.puduRobotStatus?.robotPose,[robot]);
+
+    const status = useMemo(() => [{
+        name: 'Roboter-Id',
+        value: robotId
+    }, {
+        name: 'Position',
+        value: robot?.robotStatus?.currentMap?.showName || 'Unbekannt'
+    }, {
+        name: 'Neustart-Zeit',
+        value: robot?.robotStatus?.rebootTime || 'Unbekannt'
+    }, {
+        name: 'Calling Code',
+        value: robot?.robotStatus?.callingCode?.code || 'Unbekannt'
+    }, {
+        name: 'Modus',
+        value: robot?.robotStatus?.driveMode || 'Unbekannt'
+    }, {
+        name: 'Ausgabepunkt',
+        value: robot?.robotStatus?.diningOutlet?.name || 'Unbekannt'
+    }, {
+        name: 'Ladestation',
+        value: robot?.robotStatus?.chargingStation?.name || 'Unbekannt'
+    }, {
+        name: 'Homebase',
+        value: robot?.robotStatus?.homeBaseMap?.showName || 'Unbekannt'
+    }], [robot, robotId]);
+
     return (
         <Accordion
-            head={robotStatus?.robotName || <SmallWaitCursor show/>}
+            head={robot?.robotStatus?.robotName || <SmallWaitCursor show/>}
             dataGroup="robots"
             isWrapped
             right={<ContextMenu items={CONTEXT_MENU_ITEMS}/>}
         >
-            {robotStatus ? (
+            {robot?.robotStatus ? (
                 <div>
-                    {robotStatus.currentMap?.id && (
+                    {hasMap && showMapPreview && (
+                        <div className="accordion__content">
+                            <FloorPreview
+                                robotId={robotId}
+                                mapId={robot?.robotStatus?.currentMap?.id as number}
+                            />
+                        </div>
+                    )}
+                    {robot?.robotStatus.currentMap?.id && (
                         <div>
-                            <div className="accordion__content">
-                                <FloorPreview mapId={robotStatus.currentMap.id}/>
-                            </div>
                             <Accordion
                                 head="Standorte"
                                 isWrapped
                                 dataGroup="robot-item"
                             >
-                                <FloorLocations mapId={robotStatus.currentMap.id}/>
+                                <DestinationList mapId={robot?.robotStatus.currentMap.id}/>
                             </Accordion>
                         </div>
                     )}
                     <Accordion
                         head="Status"
-                        defaultOpened
                         isWrapped
                         dataGroup="robot-item"
                     >
                         <div className="accordion__content">
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Roboter-Id</p>
-                                <p>{robotId}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Position</p>
-                                <p>{robotStatus.currentMap?.showName || 'Unbekannt'}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Neustart-Zeit</p>
-                                <p>{robotStatus.rebootTime || 'Unbekannt'}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Calling Code</p>
-                                <p>{robotStatus.callingCode?.code || 'Unbekannt'}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Modus</p>
-                                <p>{robotStatus.driveMode || 'Unbekannt'}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Ausgabepunkt</p>
-                                <p>{robotStatus.diningOutlet?.name || 'Unbekannt'}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Ladestation</p>
-                                <p>{robotStatus.chargingStation?.name || 'Unbekannt'}</p>
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <p>Homebase</p>
-                                <p>{robotStatus.homeBaseMap?.showName || 'Unbekannt'}</p>
-                            </div>
+                            {status.map(({ name, value }) => (
+                                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <p>{name}</p>
+                                    <p>{value}</p>
+                                </div>
+                            ))}
                         </div>
                     </Accordion>
+                    {hasMap && (
+                        <div className="accordion__content">
+                            {!showMapPreview && (
+                                <div style={{ textAlign: 'center' }}>
+                                    <Button
+                                        onClick={() => setShowMapPreview(true)}
+                                    >
+                                        Vorschau anzeigen
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             ) : (
                 <SmallWaitCursor show/>

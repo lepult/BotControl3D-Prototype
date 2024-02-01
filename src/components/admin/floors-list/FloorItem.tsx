@@ -1,14 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 // @ts-ignore
-import { Accordion, ContextMenu } from 'chayns-components';
+import { Accordion, ContextMenu, Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import FloorPreview from './FloorPreview';
 import { selectMapById } from '../../../redux-modules/map/selectors';
-import { selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
 import { changeAdminModeType } from '../../../redux-modules/misc/actions';
 import { AdminModeType } from '../../../types/misc';
 import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
-import FloorLocations from './FloorLocations';
+import DestinationList from '../shared/destination-list/DestinationList';
+import FloorPreview from '../shared/FloorPreview';
 
 const FloorItem: FC<{
     mapId: number
@@ -17,8 +16,9 @@ const FloorItem: FC<{
 }) => {
     const dispatch = useDispatch();
 
+    const [showMapPreview, setShowMapPreview] = useState(false);
+
     const map = useSelector(selectMapById(mapId));
-    const destinations = useSelector(selectDestinationIdsByMapId(mapId));
     const editingMapId = useSelector(selectEditingMapId);
 
     if (map.hidden === 1) {
@@ -44,10 +44,23 @@ const FloorItem: FC<{
                 />
             )}
         >
+            {showMapPreview && (
+                <div className="accordion__content">
+                    <FloorPreview mapId={mapId} />
+                </div>
+            )}
+            <DestinationList mapId={mapId}/>
             <div className="accordion__content">
-                <FloorPreview mapId={mapId}/>
+                {!showMapPreview && (
+                    <div style={{ textAlign: 'center' }}>
+                        <Button
+                            onClick={() => setShowMapPreview(true)}
+                        >
+                            Vorschau anzeigen
+                        </Button>
+                    </div>
+                )}
             </div>
-            <FloorLocations mapId={mapId}/>
         </Accordion>
     );
 }
