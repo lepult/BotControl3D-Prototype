@@ -51,8 +51,8 @@ const FloorLocations: FC<{
 }> = ({
     mapId,
 }) => (
-    <div>
-        {LOCATION_TYPES.map((locationType) => (
+    <div className="accordion__content">
+        {LOCATION_TYPES.map((locationType, index) => (
             <LocationList
                 key={locationType.type}
                 mapId={mapId}
@@ -60,6 +60,7 @@ const FloorLocations: FC<{
                 name={locationType.name}
                 defaultOpened={locationType.type === LocationType.target}
                 dataGroup="customTypes"
+                index={index}
             />
         ))}
     </div>

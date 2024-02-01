@@ -11,7 +11,6 @@ import {
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
     pathLayerDefaults,
-    scenegraphLayerDefaults
 } from '../../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
@@ -75,7 +74,7 @@ const UserModeMap: FC<{
 
 
     const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
-    console.log('selectedDestination', selectedDestination);
+
     const selectedRobot = useSelector(selectSelectedRobot);
 
     const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));

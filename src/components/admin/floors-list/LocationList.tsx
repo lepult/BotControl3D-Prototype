@@ -13,12 +13,14 @@ const LocationList: FC<{
     name: string,
     dataGroup: string,
     defaultOpened?: boolean,
+    index: number,
 }> = ({
     mapId,
     customTypes,
     name,
     dataGroup,
     defaultOpened = false,
+    index,
 }) => {
     const allDestinationsOfMap = useSelector(selectDestinationIdsByMapId(mapId));
     const allDestinationEntities = useSelector(selectDestinationEntities);
@@ -28,24 +30,32 @@ const LocationList: FC<{
         [allDestinationsOfMap, allDestinationEntities, customTypes]);
 
     return (
-        <Accordion
-            head={name}
-            isWrapped
-            dataGroup={dataGroup}
-            defaultOpened={defaultOpened}
-            right={<Badge>{filteredDestinationIds.length}</Badge>}
-            disabled={filteredDestinationIds.length === 0}
-        >
-            <div className="accordion__content location-list-content">
-                {filteredDestinationIds.map((destinationId) => (
-                    <LocationItem
-                        key={destinationId}
-                        destinationId={destinationId}
-                        mapId={mapId}
-                    />
-                ))}
+        <div>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '10px',
+                    marginTop: index > 0 ? '15px' : 0,
+                }}
+            >
+                <h3 style={{ margin: 0 }}>{name}</h3>
+                <Badge>{filteredDestinationIds.length}</Badge>
             </div>
-        </Accordion>
+            {filteredDestinationIds.length > 0 && (
+                <div className="location-list-content">
+                    {filteredDestinationIds.map((destinationId) => (
+                        <LocationItem
+                            key={destinationId}
+                            destinationId={destinationId}
+                            mapId={mapId}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
     );
 }
 

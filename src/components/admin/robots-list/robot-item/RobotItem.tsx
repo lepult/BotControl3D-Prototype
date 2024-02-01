@@ -2,9 +2,8 @@ import React, { FC, useMemo, useState } from 'react';
 // @ts-ignore
 import { Accordion, SmallWaitCursor, ContextMenu, Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
-import { selectRobotStatusById } from '../../../../redux-modules/robot-status/selectors';
+import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
 import FloorLocations from '../../floors-list/FloorLocations';
-import UserModeMap from '../../../user/user-mode-map/UserModeMap';
 import RobotItemMap from './RobotItemMap';
 
 const CONTEXT_MENU_ITEMS = [{
@@ -46,60 +45,61 @@ const RobotItem: FC<{
 }> = ({
     robotId,
 }) => {
-    const robotStatus = useSelector(selectRobotStatusById(robotId));
+    const robot = useSelector(selectRobotById(robotId));
     const [showMapPreview, setShowMapPreview] = useState(false);
+    const hasMap = useMemo(() => robot?.robotStatus?.currentMap?.id && robot?.puduRobotStatus?.robotPose,[robot]);
 
     const status = useMemo(() => [{
         name: 'Roboter-Id',
         value: robotId
     }, {
         name: 'Position',
-        value: robotStatus?.currentMap?.showName || 'Unbekannt'
+        value: robot?.robotStatus?.currentMap?.showName || 'Unbekannt'
     }, {
         name: 'Neustart-Zeit',
-        value: robotStatus?.rebootTime || 'Unbekannt'
+        value: robot?.robotStatus?.rebootTime || 'Unbekannt'
     }, {
         name: 'Calling Code',
-        value: robotStatus?.callingCode?.code || 'Unbekannt'
+        value: robot?.robotStatus?.callingCode?.code || 'Unbekannt'
     }, {
         name: 'Modus',
-        value: robotStatus?.driveMode || 'Unbekannt'
+        value: robot?.robotStatus?.driveMode || 'Unbekannt'
     }, {
         name: 'Ausgabepunkt',
-        value: robotStatus?.diningOutlet?.name || 'Unbekannt'
+        value: robot?.robotStatus?.diningOutlet?.name || 'Unbekannt'
     }, {
         name: 'Ladestation',
-        value: robotStatus?.chargingStation?.name || 'Unbekannt'
+        value: robot?.robotStatus?.chargingStation?.name || 'Unbekannt'
     }, {
         name: 'Homebase',
-        value: robotStatus?.homeBaseMap?.showName || 'Unbekannt'
-    }], [robotStatus, robotId]);
+        value: robot?.robotStatus?.homeBaseMap?.showName || 'Unbekannt'
+    }], [robot, robotId]);
 
     return (
         <Accordion
-            head={robotStatus?.robotName || <SmallWaitCursor show/>}
+            head={robot?.robotStatus?.robotName || <SmallWaitCursor show/>}
             dataGroup="robots"
             isWrapped
             right={<ContextMenu items={CONTEXT_MENU_ITEMS}/>}
         >
-            {robotStatus ? (
+            {robot?.robotStatus ? (
                 <div>
-                    {robotStatus.currentMap?.id && showMapPreview && (
+                    {hasMap && showMapPreview && (
                         <div className="accordion__content">
                             <RobotItemMap
                                 robotId={robotId}
-                                mapId={robotStatus.currentMap.id}
+                                mapId={robot?.robotStatus?.currentMap?.id as number}
                             />
                         </div>
                     )}
-                    {robotStatus.currentMap?.id && (
+                    {robot?.robotStatus.currentMap?.id && (
                         <div>
                             <Accordion
                                 head="Standorte"
                                 isWrapped
                                 dataGroup="robot-item"
                             >
-                                <FloorLocations mapId={robotStatus.currentMap.id}/>
+                                <FloorLocations mapId={robot?.robotStatus.currentMap.id}/>
                             </Accordion>
                         </div>
                     )}
@@ -117,7 +117,7 @@ const RobotItem: FC<{
                             ))}
                         </div>
                     </Accordion>
-                    {robotStatus.currentMap?.id && (
+                    {hasMap && (
                         <div className="accordion__content">
                             {!showMapPreview && (
                                 <div style={{ textAlign: 'center' }}>
