@@ -178,7 +178,6 @@ const UserModeMap: FC<{
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
                 id: `path-layer__${mapId}`,
                 data: pathLayerData,
-                // extensions: [new PathStyleExtension({ dash: true })],
             })
         ], [pathLayerData, mapId, isPreview, previewType]);
 

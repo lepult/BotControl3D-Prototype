@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { OBJLoader } from '@loaders.gl/obj';
-import { ScenegraphLayerProps, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
+import { ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
+import { PathStyleExtension } from '@deck.gl/extensions/typed';
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { IconLayerProps, PathLayerProps, TextLayer } from '@deck.gl/layers/typed';
-import { IIconData, TViewState } from '../types/deckgl-map';
+import { IIconData, IPathData, TViewState } from '../types/deckgl-map';
 import { svgToDataURL } from '../utils/marker';
 import { blueMarker, redMarker } from '../assets/markers';
+import { MapElementType } from '../types/pudu-api/robotMap';
 
 export const INITIAL_VIEW_STATE: TViewState = {
     longitude: 0,
@@ -40,6 +41,10 @@ export const pathLayerDefaults: Partial<PathLayerProps> = {
     capRounded: true,
     billboard: true,
     getColor: (d: { color: [number, number, number] }) => d.color || [0, 0, 0],
+    extensions: [new PathStyleExtension({ dash: true })],
+    getDashArray: (data: IPathData) => data.type === MapElementType.track
+        ? [0, 0]
+        : [20, 10],
 };
 
 export const iconLayerDefaults: Partial<IconLayerProps> = {
