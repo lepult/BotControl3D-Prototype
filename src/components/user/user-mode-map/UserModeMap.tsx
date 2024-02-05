@@ -10,7 +10,7 @@ import {
     CONTROLLER_DEFAULTS,
     iconLayerDefaults,
     INITIAL_VIEW_STATE,
-    pathLayerDefaults,
+    pathLayerDefaults
 } from '../../../constants/deckGl';
 import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
@@ -21,7 +21,7 @@ import {
 } from '../../../redux-modules/map/selectors';
 import { selectResetViewState, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { IIconData, TViewState } from '../../../types/deckgl-map';
+import { IIconData, PreviewType, TViewState } from '../../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
@@ -50,10 +50,12 @@ const UserModeMap: FC<{
     mapId: number,
     robotId?: string,
     isPreview?: boolean,
+    previewType?: PreviewType,
 }> = ({
     mapId,
     robotId,
     isPreview = false,
+    previewType = PreviewType.Robot,
 }) => {
     const dispatch = useDispatch();
 
@@ -103,16 +105,18 @@ const UserModeMap: FC<{
     //     updateTriggers: [selectedRobot],
     // }), [mapId, robotsPositionsLayerData, selectedRobot]);
 
-    const robotLayers = useMemo(() => getRobotLayers(
-        `robot-${mapId}`,
-        robotLayerData,
-        isPreview
-            ? () => {}
-            : (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({
-                robotId: (pickingInfo as IPickingInfo).object.robotId
-            })),
-        selectedRobot || '',
-    ), [dispatch, mapId, robotLayerData, selectedRobot, isPreview]);
+    const robotLayers = useMemo(() => (isPreview && previewType === PreviewType.Floor)
+        ? []
+        : getRobotLayers(
+            `robot-${mapId}`,
+            robotLayerData,
+            isPreview
+                ? () => {}
+                : (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({
+                    robotId: (pickingInfo as IPickingInfo).object.robotId
+                })),
+            selectedRobot || '',
+    ), [dispatch, mapId, robotLayerData, selectedRobot, isPreview, previewType]);
 
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId)
@@ -130,45 +134,53 @@ const UserModeMap: FC<{
         : [],
         [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus, destinations]);
 
-    const iconLayer = useMemo<IconLayer>(() => new IconLayer({
-        ...iconLayerDefaults,
-        id: `icon-layer__${mapId}`,
-        data: iconLayerData,
-        getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
-        onClick: (pickingInfo) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
-                dispatch(changeSelectedDestination(undefined));
-            } else {
-                dispatch(changeSelectedDestination({
-                    mapId,
+    const iconLayer = useMemo<IconLayer[]>(() => isPreview && previewType === PreviewType.Robot
+        ? []
+        : [
+            new IconLayer({
+                ...iconLayerDefaults,
+                id: `icon-layer__${mapId}`,
+                data: iconLayerData,
+                getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
+                onClick: (pickingInfo) => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    destinationName: pickingInfo.object.name as string || pickingInfo.object.id as string,
-                }));
-            }
-        },
-        getSize: 0.3,
-        getIcon: (iconData: IIconData) => ({
-            url: svgToDataURL(getIconByDestinationType(iconData)),
-            height: 128,
-            width: 128,
-        }),
-        updateTriggers: {
-            getPosition: [selectedDestination]
-        }
-    }), [iconLayerData, selectedDestination, mapId, dispatch]);
+                    if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
+                        dispatch(changeSelectedDestination(undefined));
+                    } else {
+                        dispatch(changeSelectedDestination({
+                            mapId,
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            destinationName: pickingInfo.object.name as string || pickingInfo.object.id as string,
+                        }));
+                    }
+                },
+                getSize: 0.3,
+                getIcon: (iconData: IIconData) => ({
+                    url: svgToDataURL(getIconByDestinationType(iconData)),
+                    height: 128,
+                    width: 128,
+                }),
+                updateTriggers: {
+                    getPosition: [selectedDestination]
+                }
+            })
+        ], [iconLayerData, selectedDestination, mapId, dispatch, isPreview, previewType]);
 
     const pathLayerData = useMemo(() => pathData
         ? mapRobotElementsToPathData(pathData.elements)
         : [],
         [pathData]);
-    const pathLayer = useMemo<PathLayer>(() => new PathLayer({
-        ...pathLayerDefaults,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-        id: `path-layer__${mapId}`,
-        data: pathLayerData,
-        // extensions: [new PathStyleExtension({ dash: true })],
-    }), [pathLayerData, mapId]);
+    const pathLayer = useMemo<PathLayer[]>(() => isPreview && previewType === PreviewType.Robot
+        ? []
+        : [
+            new PathLayer({
+                ...pathLayerDefaults,
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+                id: `path-layer__${mapId}`,
+                data: pathLayerData,
+                // extensions: [new PathStyleExtension({ dash: true })],
+            })
+        ], [pathLayerData, mapId, isPreview, previewType]);
 
 
     const followRobot = useSelector(selectFollowRobot);
@@ -235,8 +247,8 @@ const UserModeMap: FC<{
                 viewState={viewState}
                 layers={[
                     ...scenegraphLayers,
-                    pathLayer,
-                    iconLayer,
+                    ...pathLayer,
+                    ...iconLayer,
                     ...robotLayers,
                 ]}
                 controller={CONTROLLER_DEFAULTS}

@@ -88,3 +88,8 @@ export enum MapRobotStatus {
     'Error' = 'Error',
     'Pause' = 'Pause',
 }
+
+export enum PreviewType {
+    Robot,
+    Floor,
+}
