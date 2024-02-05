@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import './userModeButtons.scss';
 import { useSelector } from 'react-redux';
-import { useWindowMetrics } from 'chayns-api';
+import { useUser, useWindowMetrics } from 'chayns-api';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { selectMapIds } from '../../../redux-modules/map/selectors';
@@ -14,12 +14,18 @@ import CancelButton from './robot-controls-buttons/cancel/CancelButton';
 import FollowRobotButton from './robot-controls-buttons/follow-robot/FollowRobotButton';
 import ResetViewButton from './interaction-buttons/ResetViewButton';
 import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
+import { getUserType } from '../../../utils/getUserType';
+import { UserType } from '../../../types/misc';
 
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
     const allRobotIds = useSelector(selectRobotIds);
     const metrics = useWindowMetrics();
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
+
+    const user = useUser();
+    const userType = useMemo(() => getUserType(user), [user]);
+    const isGuest = useMemo(() => userType === UserType.guest, [userType]);
 
     return (
         <div className="user-mode-buttons__wrapper">
@@ -56,10 +62,10 @@ const UserModeButtons: FC = () => {
                         padding: '10px',
                     }}
                 >
-                    <RouteButton/>
+                    {!isGuest && <RouteButton/>}
                     {!isPlanningRoute && <FollowRobotButton/>}
-                    {!isPlanningRoute && <ChargeButton/>}
-                    {!isPlanningRoute && <CancelButton/>}
+                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
+                    {!isPlanningRoute && !isGuest && <CancelButton/>}
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
