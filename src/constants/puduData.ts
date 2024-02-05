@@ -50,6 +50,8 @@ export const getModelsByMapId = (mapId: number) => {
                 return floorModelsT21OG;
             case 27:
                 return floorModelsAtriumDome;
+            case 38:
+                return floorModelsEg;
             default:
                 return [];
         }

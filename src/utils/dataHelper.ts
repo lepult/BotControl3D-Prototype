@@ -27,7 +27,7 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
                 id: element.id,
                 type: element.type,
                 name: typeof element.name === 'string' ? element.name : element.id,
-                color: element.type === MapElementType.track ? [0, 0, 0] : [157, 0, 0],
+                color: element.type === MapElementType.track ? [255, 255, 255] : [157, 0, 0],
                 path: [...newVector]
             });
         } else {
