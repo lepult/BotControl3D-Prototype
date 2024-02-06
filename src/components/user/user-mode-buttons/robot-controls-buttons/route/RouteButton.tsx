@@ -12,10 +12,18 @@ import {
     selectRobotIds
 } from '../../../../../redux-modules/robot-status/selectors';
 import RouteInput from './RouteInput';
-import { selectDestinationEntities, selectDestinationIds } from '../../../../../redux-modules/destination/selectors';
+import {
+    selectDestinationById,
+    selectDestinationEntities,
+    selectDestinationIds
+} from '../../../../../redux-modules/destination/selectors';
 import { CustomDestinationType, TDestination } from '../../../../../types/api/destination';
 import { postSendRobotFetch } from '../../../../../api/robot/postSendRobot';
-import { selectIsPlanningRoute, selectSelectedDestination } from '../../../../../redux-modules/misc/selectors';
+import {
+    selectIsPlanningRoute,
+    selectSelectedDestination,
+    selectSelectedDestinationId
+} from '../../../../../redux-modules/misc/selectors';
 import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
 import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
@@ -49,35 +57,27 @@ const RouteButton = () => {
 
     const destinationEntities = useSelector(selectDestinationEntities);
     const destinationIds = useSelector(selectDestinationIds);
-    const destinations = useMemo(() => destinationIds
-        .filter((destinationId) => destinationEntities[destinationId].customType === CustomDestinationType.target)
+    const destinationItems = useMemo(() => destinationIds
+        .filter((destinationId) => destinationEntities[destinationId].destination.customType === CustomDestinationType.target)
         .map((destinationId) => ({
-            showName: getDestinationName(destinationEntities[destinationId]),
-            id: destinationEntities[destinationId].id,
+            showName: getDestinationName(destinationEntities[destinationId].destination),
+            id: destinationEntities[destinationId].destination.id,
         }))
     , [destinationEntities, destinationIds]);
 
-    const selectedDestinationMapElement = useSelector(selectSelectedDestination);
-    const selectedDestination = useMemo(() => destinationIds
-        .map((id) => destinationEntities[id])
-        .find((destination) =>
-            destination.name === selectedDestinationMapElement?.destinationName
-            && destination.mapId === selectedDestinationMapElement?.mapId
-            && destination.customType === CustomDestinationType.target
-        ),
-        [destinationEntities, destinationIds, selectedDestinationMapElement]);
+    const selectedDestination = useSelector(selectSelectedDestination);
 
     const selectedRobotOnMap = useSelector(selectSelectedRobot);
     const selectedRobot = useSelector(selectRobotById(selectedRobotOnMap || ''));
 
     const [isFetching, setIsFetching] = useState(false);
     const handleSendRobot = () => {
-        if (!selectedDestinationMapElement || !selectedRobotOnMap || !selectedDestination) {
+        if (!selectedRobotOnMap || !selectedDestination) {
             void errorDialog.open()
             return;
         }
 
-        const requestBody: TDestination[] = [selectedDestination];
+        const requestBody: TDestination[] = [selectedDestination.destination];
 
         setIsFetching(true);
         postSendRobotFetch(selectedRobotOnMap, requestBody)
@@ -108,19 +108,13 @@ const RouteButton = () => {
                     />
                 </div>
                 <RouteInput
-                    items={destinations}
+                    items={destinationItems}
                     icon="map-marker-alt"
                     placeholder="Ziel"
-                    setSelected={(destinationId) => {
-                        dispatch(changeSelectedDestination(destinationId ? {
-                            mapId: destinationEntities[destinationId as number].mapId,
-                            destinationName: destinationEntities[destinationId as number].name,
-                        } : undefined));
-                        // setSelectedDestination(destinationId as number | null)
-                    }}
+                    setSelected={(destinationId ) => dispatch(changeSelectedDestination(destinationId as number))}
                     selected={selectedDestination ? {
-                        id: selectedDestination.id,
-                        showName: getDestinationName(selectedDestination),
+                        id: selectedDestination.destination.id,
+                        showName: getDestinationName(selectedDestination.destination),
                     } : null}
                 />
                 <RouteInput

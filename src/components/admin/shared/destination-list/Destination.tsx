@@ -1,41 +1,39 @@
 import React, { FC, useCallback, useMemo } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button } from 'chayns-components';
+import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDestinationById } from '../../../../redux-modules/destination/selectors';
 import { changeSelectedDestination } from '../../../../redux-modules/misc/actions';
-import { selectSelectedDestinationByMapId } from '../../../../redux-modules/misc/selectors';
+import { selectSelectedDestinationId } from '../../../../redux-modules/misc/selectors';
 
 const Destination: FC<{
     destinationId: number,
-    mapId: number,
 }> = ({
     destinationId,
-    mapId,
 }) => {
     const dispatch = useDispatch();
 
-    const destination = useSelector(selectDestinationById(destinationId));
-    const destinationFullName = useMemo(() => destination.chaynsUser
-        ? `${destination.chaynsUser.name}`
-        : destination.name, [destination]);
+    const { destination } = useSelector(selectDestinationById(destinationId));
+    const destinationFullName = useMemo(() => destination.chaynsUser?.name || destination.name
+        , [destination]);
 
-    const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
+    const selectedDestinationId = useSelector(selectSelectedDestinationId);
 
     const handleClick = useCallback(() => {
-        if (selectedDestination?.destinationName === destination.name) {
+        if (selectedDestinationId === destination.id) {
             dispatch(changeSelectedDestination(undefined));
         } else {
-            dispatch(changeSelectedDestination({
-                mapId,
-                destinationName: destination.name,
-            }));
+            dispatch(changeSelectedDestination(destination.id));
         }
-    }, [selectedDestination, destinationId, mapId, destination, dispatch]);
+    }, [selectedDestinationId, destination, dispatch]);
 
     return (
         <Button
-            className={`destination-button${selectedDestination?.destinationName === destination.name ? '' : ' button--secondary'}`}
+            className={clsx('destination-button', {
+                'button--secondary': selectedDestinationId !== destinationId,
+            })}
             onClick={() => handleClick()}
         >
             {destinationFullName}
