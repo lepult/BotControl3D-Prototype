@@ -3,7 +3,7 @@ import React, { FC, useMemo, useState } from 'react';
 import { Accordion, SmallWaitCursor, ContextMenu, Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
 import { selectRobotById } from '../../../redux-modules/robot-status/selectors';
-import DestinationList from '../shared/destination-list/DestinationList';
+import DestinationList from '../floors-list/destination-list/DestinationList';
 import FloorPreview from '../shared/FloorPreview';
 import { PreviewType } from '../../../types/deckgl-map';
 
@@ -94,44 +94,26 @@ const RobotItem: FC<{
                             />
                         </div>
                     )}
-                    {robot?.robotStatus.currentMap?.id && (
-                        <div>
-                            <Accordion
-                                head="Standorte"
-                                isWrapped
-                                dataGroup="robot-item"
-                            >
-                                <DestinationList mapId={robot?.robotStatus.currentMap.id}/>
-                            </Accordion>
-                        </div>
-                    )}
-                    <Accordion
-                        head="Status"
-                        isWrapped
-                        dataGroup="robot-item"
-                    >
-                        <div className="accordion__content">
-                            {status.map(({ name, value }) => (
-                                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <p>{name}</p>
-                                    <p>{value}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </Accordion>
-                    {hasMap && (
-                        <div className="accordion__content">
-                            {!showMapPreview && (
-                                <div style={{ textAlign: 'center' }}>
-                                    <Button
-                                        onClick={() => setShowMapPreview(true)}
-                                    >
-                                        Vorschau anzeigen
-                                    </Button>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <div className="accordion__content">
+                        {hasMap && !showMapPreview && (
+                            <div style={{ textAlign: 'center' }}>
+                                <Button
+                                    onClick={() => setShowMapPreview(true)}
+                                >
+                                    Vorschau anzeigen
+                                </Button>
+                            </div>
+                        )}
+                        <h3>
+                            Status
+                        </h3>
+                        {status.map(({ name, value }) => (
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <p>{name}</p>
+                                <p>{value}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             ) : (
                 <SmallWaitCursor show/>

@@ -6,7 +6,7 @@ import { selectMapById } from '../../../redux-modules/map/selectors';
 import { changeAdminModeType } from '../../../redux-modules/misc/actions';
 import { AdminModeType } from '../../../types/misc';
 import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
-import DestinationList from '../shared/destination-list/DestinationList';
+import DestinationList from './destination-list/DestinationList';
 import FloorPreview from '../shared/FloorPreview';
 import { PreviewType } from '../../../types/deckgl-map';
 
