@@ -1,9 +1,8 @@
 import { Position } from '@deck.gl/core/typed';
 import { MapElementType, TMapElement } from '../types/pudu-api/robotMap';
-import { IIconData, IPathData } from '../types/deckgl-map';
-import { DestinationType, TDestination } from '../types/api/destination';
-import { TRoute, TRouteDestination } from '../types/api/route';
-import { findMapElementInDestinations } from './destinations';
+import { IPathData } from '../types/deckgl-map';
+import { CustomDestinationType, DestinationType, TDestination } from '../types/api/destination';
+import { TRoute } from '../types/api/route';
 
 // region PathData
 /**
@@ -55,47 +54,48 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
     return a;
 };
 
-// region IconData
-/**
- * Maps mapElements of type source and charging_pile to data that can be used for IconLayer
- * @param elements
- * @param selectedDestination
- * @param currentRoute
- * @param mapId
- * @param currentDestination
- * @param previousDestination
- */
-export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selectedDestination?: string, currentRoute?: TRoute, mapId?: number, currentDestination?: TDestination, previousDestination?: TDestination, destinations?: TDestination[]): Array<IIconData> => {
-    const iconData: Array<IIconData> = [];
+type TMappedDestination = {
+    destination: TDestination,
+    mapElement: TMapElement,
+}
 
+type MapElementMode = 'table' | 'dining_outlet' | 'transit' | 'dishwashing' | 'parking' | string;
+
+export type IIconData = {
+    id: number,
+    type: DestinationType,
+    customType: CustomDestinationType,
+    mapElementType: MapElementType,
+    mapElementMode: MapElementMode,
+    name: string,
+    position: Position,
+    selected: boolean,
+    routeData: {
+        isRouteDestination: boolean,
+        isNextDestination: boolean,
+        isPreviousDestination: boolean,
+        isEarlierDestination: boolean,
+        isFinalDestination: boolean,
+    },
+}
+
+export const getIconDataFromDestinations = (mappedDestinations: TMappedDestination[], selectedDestination?: number, currentRoute?: TRoute, currentDestination?: TDestination, previousDestination?: TDestination) => {
     const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
 
-    elements.forEach((element) => {
-        if (element.type === MapElementType.source || element.type === MapElementType.chargingPile) {
-            const position: Position = [element.vector[0], element.vector[1]];
+    const iconData = mappedDestinations
+        .map(({ destination, mapElement }) => {
+            const indexInRoute = currentRoute?.routeDestinations.findIndex((routeDestination) => routeDestination.destination.id === destination.id);
+            const routeDestination = currentRoute?.routeDestinations[indexInRoute || -1];
 
-            // Calculate name of element
-            // let name = element.name && typeof element.name === 'string' ? element.name : element.id;
-            // const destination = findMapElementInDestinations(element, destinations);
-            // if (destination) {
-            //     const destinationName = getDestinationName(destination);
-            //     // Use destination name, if it is different from the name of the element
-            //     name = destinationName !== undefined && destinationName !== name ? `${destinationName} (${name})` : name;
-            // }
-
-            const indexInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => (element.name === destination?.name || element.id === destination?.name) && mapId === destination.mapId);
-            const routeDestination = currentRoute?.routeDestinations[indexInRoute === undefined ? -1 : indexInRoute];
-            const destination = findMapElementInDestinations(element, destinations);
-
-            iconData.push({
-                ...element,
-                name: '',
-                // name,
-                position,
-                color: element.mode === DestinationType.diningOutlet || element.type === MapElementType.chargingPile
-                    ? [0, 255, 0]
-                    : [0, 0, 255],
-                selected: element.id === selectedDestination,
+            return {
+                id: destination.id,
+                type: destination.type,
+                customType: destination.customType,
+                mapElementType: mapElement.type,
+                mapElementMode: mapElement.mode as MapElementMode,
+                name: destination.chaynsUser?.name || destination.name,
+                position: mapElement.vector as Position,
+                selected: destination.id === selectedDestination,
                 routeData: {
                     isRouteDestination: !!routeDestination,
                     isNextDestination: !!currentDestination && routeDestination?.destination.id === currentDestination.id,
@@ -103,11 +103,7 @@ export const mapRobotElementsToIconData = (elements: Array<TMapElement>, selecte
                     isEarlierDestination: indexOfNextDestinationInRoute > -1 && indexInRoute !== undefined && indexOfNextDestinationInRoute > indexInRoute,
                     isFinalDestination: (currentRoute?.routeDestinations || []).length > 0 && indexInRoute === (currentRoute?.routeDestinations || []).length - 1,
                 },
-                customType: destination?.customType,
-            });
-        }
-    });
-
+            }
+        });
     return iconData;
-};
-// endregion
+}

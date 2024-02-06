@@ -6,18 +6,13 @@ type TChangeAdminModeType = {
     editingMapId?: number,
 }
 
-type TChangeSelectedDestination = {
-    mapId: number,
-    destinationName: string,
-}
-
 type TChangeIsPlanningRoute = {
     isPlanning: boolean,
 }
 
 export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType');
 
-export const changeSelectedDestination = createAction<TChangeSelectedDestination | undefined>('misc/changeSelectedDestination');
+export const changeSelectedDestination = createAction<number | undefined>('misc/changeSelectedDestination');
 
 export const changeIsPlanningRoute = createAction<TChangeIsPlanningRoute>('misc/changeIsPlanningRoute');
 

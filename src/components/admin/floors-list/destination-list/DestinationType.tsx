@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Badge } from 'chayns-components';
 import { CustomDestinationType } from '../../../../types/api/destination';
@@ -25,7 +26,7 @@ const DestinationType: FC<{
     const allDestinationsOfMap = useSelector(selectDestinationIdsByMapId(mapId));
     const allDestinationEntities = useSelector(selectDestinationEntities);
     const filteredDestinationIds = useMemo(() => allDestinationsOfMap
-            ? allDestinationsOfMap.filter((destinationId) => customTypes.includes(allDestinationEntities[destinationId].customType))
+            ? allDestinationsOfMap.filter((destinationId) => customTypes.includes(allDestinationEntities[destinationId].destination.customType))
             : [],
         [allDestinationsOfMap, allDestinationEntities, customTypes]);
 
@@ -50,7 +51,6 @@ const DestinationType: FC<{
                         <Destination
                             key={destinationId}
                             destinationId={destinationId}
-                            mapId={mapId}
                         />
                     ))}
                 </div>

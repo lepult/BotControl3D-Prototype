@@ -8,18 +8,22 @@ import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { PickingInfo } from '@deck.gl/core/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-import { demoPolygonLayer } from '../../../constants/layers';
-import { coordinateToMeter } from '../../../utils/deckGlHelpers';
-import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
-import { TMapElement } from '../../../types/pudu-api/robotMap';
-import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../../utils/pageSizeHelper';
-import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../../../constants/deckGl';
-import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
-import { ModelType } from '../../../constants/models';
-import { changeAdminModeType } from '../../../redux-modules/misc/actions';
-import { AdminModeType } from '../../../types/misc';
-import { selectInitialViewStateByMapId } from '../../../redux-modules/map/selectors';
-import { changeInitialViewState } from '../../../redux-modules/map/actions';
+import { demoPolygonLayer } from '../../../../constants/layers';
+import { coordinateToMeter } from '../../../../utils/deckGlHelpers';
+import {
+    getIconDataFromDestinations,
+    mapRobotElementsToPathData
+} from '../../../../utils/dataHelper';
+import { TMapElement } from '../../../../types/pudu-api/robotMap';
+import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../../../utils/pageSizeHelper';
+import { iconLayerDefaults, INITIAL_VIEW_STATE, pathLayerDefaults, scenegraphLayerDefaults } from '../../../../constants/deckGl';
+import { getModelsByMapId, getPathDataByMapId } from '../../../../constants/puduData';
+import { ModelType } from '../../../../constants/models';
+import { changeAdminModeType } from '../../../../redux-modules/misc/actions';
+import { AdminModeType } from '../../../../types/misc';
+import { selectInitialViewStateByMapId } from '../../../../redux-modules/map/selectors';
+import { changeInitialViewState } from '../../../../redux-modules/map/actions';
+import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../../redux-modules/destination/selectors';
 
 type TGltfModel = {
     id: string,
@@ -84,13 +88,18 @@ const EditorMap: FC<{
         data: pathData,
     }), [pathData]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-    const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements), [mapId]);
+    const destinationIds = useSelector(selectDestinationIdsByMapId(mapId));
+    const destinationEntities = useSelector(selectDestinationEntities);
+    const destinations = useMemo(() => destinationIds?.map((id) => destinationEntities[id]) || [],
+        [destinationIds, destinationEntities]);
+
+    const iconLayerData = useMemo(() => getIconDataFromDestinations(destinations),
+        [destinations]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
         pickable: false,
-        data: iconData,
-    }), [iconData]);
+        data: iconLayerData,
+    }), [iconLayerData]);
 
     const rotateModel = useCallback((info: PickingInfo, gltfModel: TGltfModel) => {
         const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);

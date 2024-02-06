@@ -11,41 +11,45 @@ import {
     faDoorClosed,
     faDoorOpen,
     faElevator,
+    faFlagCheckered,
     faHourglass,
     faLocationDot,
     faLocationPin,
     faPowerOff,
     faSpinner,
+    faSquareParking,
     faTrafficLight,
     faTriangleExclamation,
     faTruckFast,
-    faUpDown,
-    faSquareParking,
-    faFlagCheckered,
+    faUpDown
 } from '@fortawesome/free-solid-svg-icons';
 import { Color } from '@deck.gl/core/typed';
-import { IIconData, MapRobotStatus } from '../types/deckgl-map';
+import { MapRobotStatus } from '../types/deckgl-map';
 import { CustomDestinationType, DestinationType } from '../types/api/destination';
+import { IIconData } from './dataHelper';
+import { MapElementType } from '../types/pudu-api/robotMap';
 
 const STROKE_WIDTH = 30;
 const MIN_X_Y = -STROKE_WIDTH / 2;
 
-const getSvg = (faIcon, red: number, green: number, blue: number, alpha: number) => {
-    return `
-    <svg
-        viewBox="${MIN_X_Y} ${MIN_X_Y} ${faIcon.icon[0] + STROKE_WIDTH} ${faIcon.icon[1] + STROKE_WIDTH}"
-        xmlns="http://www.w3.org/2000/svg"
-        height="400"
-        width="400"
-    >
-        <path
-            d="${faIcon.icon[4]}"
-            fill="rgba(${red}, ${green}, ${blue}, ${alpha})"
-            stroke="rgba(255, 255, 255, ${alpha})"
-            stroke-width="30"
-        />
-    </svg>`
+type TFaIcon = {
+    icon: [number, number, any, any, string],
 }
+
+const getSvg = (faIcon: TFaIcon, red: number, green: number, blue: number, alpha: number) => `
+<svg
+    viewBox="${MIN_X_Y} ${MIN_X_Y} ${faIcon.icon[0] + STROKE_WIDTH} ${faIcon.icon[1] + STROKE_WIDTH}"
+    xmlns="http://www.w3.org/2000/svg"
+    height="400"
+    width="400"
+>
+    <path
+        d="${faIcon.icon[4]}"
+        fill="rgba(${red}, ${green}, ${blue}, ${alpha})"
+        stroke="rgba(255, 255, 255, ${alpha})"
+        stroke-width="30"
+    />
+</svg>`;
 
 [
     faHourglass,
@@ -145,7 +149,7 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
             i = exclamation;
             break;
     }
-    return getSvg(i, red, green, blue, 1);
+    return getSvg(i as TFaIcon, red, green, blue, 1);
 
 }
 
@@ -177,7 +181,7 @@ export const getIconByDestinationType = (iconData: IIconData, transparent: boole
             break;
     }
     if (!i) {
-        const type = iconData.type === 'source' ? iconData.mode : iconData.type;
+        const type = iconData.mapElementType === MapElementType.source ? iconData.mapElementMode : iconData.type;
         switch (type) {
             case DestinationType.table:
                 i = iconData.routeData.isRouteDestination
@@ -203,7 +207,7 @@ export const getIconByDestinationType = (iconData: IIconData, transparent: boole
 
     const colors = getIconColor(iconData, transparent);
 
-    return getSvg(i, colors[0], colors[1], colors[2], colors[3] || 1);
+    return getSvg(i as TFaIcon, colors[0], colors[1], colors[2], colors[3] || 1);
 };
 
 const getIconColor = (iconData: IIconData, transparent: boolean): Color => {
