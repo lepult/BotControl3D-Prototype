@@ -123,7 +123,7 @@ const UserModeMap: FC<{
     const destinations = useMemo(() => destinationIds?.map((id) => destinationEntities[id]) || [],
         [destinationIds, destinationEntities]);
 
-    const isPlaningRoute = useSelector(selectIsPlanningRoute);
+    const isPlanningRoute = useSelector(selectIsPlanningRoute);
 
     const iconLayerData = useMemo(() => pathData
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination, destinations)
@@ -141,7 +141,7 @@ const UserModeMap: FC<{
                 onClick: (pickingInfo) => {
                     const iconData = pickingInfo.object as IIconData;
                     // Disables Selection for non targets when planning the route.
-                    if (isPlaningRoute && iconData.customType !== CustomDestinationType.target) {
+                    if (isPlanningRoute && iconData.customType !== CustomDestinationType.target) {
                         return;
                     }
                     // Unselects selected icon or selects unselected icon.
@@ -158,17 +158,17 @@ const UserModeMap: FC<{
                 getIcon: (iconData: IIconData) => ({
                     url: svgToDataURL(getIconByDestinationType(
                         iconData,
-                        isPlaningRoute && iconData.customType !== CustomDestinationType.target,
+                        isPlanningRoute && iconData.customType !== CustomDestinationType.target,
                     )),
                     height: 128,
                     width: 128,
                 }),
                 updateTriggers: {
                     getPosition: [selectedDestination],
-                    getIcon: [isPlaningRoute],
+                    getIcon: [isPlanningRoute],
                 }
             })
-        ], [iconLayerData, selectedDestination, mapId, dispatch, isPreview, previewType, isPlaningRoute]);
+        ], [iconLayerData, selectedDestination, mapId, dispatch, isPreview, previewType, isPlanningRoute]);
 
     const pathLayerData = useMemo(() => pathData
         ? mapRobotElementsToPathData(pathData.elements)
