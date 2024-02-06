@@ -101,7 +101,7 @@ export const getRobotLayers = (
 
     return [
         new IconLayer({
-            id: `${id}-icon`,
+            id: `robots-${id}-icon`,
             ...defaults,
             billboard,
             sizeUnits,
@@ -114,7 +114,7 @@ export const getRobotLayers = (
             },
         }),
         new SimpleMeshLayer({
-            id: `${id}-mesh`,
+            id: `robots-${id}-mesh`,
             ...defaults,
             mesh,
             loaders,

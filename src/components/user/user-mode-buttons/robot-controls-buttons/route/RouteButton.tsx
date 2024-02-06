@@ -27,7 +27,7 @@ const getDestinationName = (destination: TDestination) => {
 
     return destination.name;
 };
-
+// TODO Unselect selectedDestination if it is an invalid destination.
 const RouteButton = () => {
     const errorDialog = createDialog({
         type: DialogType.ALERT,

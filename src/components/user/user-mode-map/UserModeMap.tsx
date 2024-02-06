@@ -135,7 +135,7 @@ const UserModeMap: FC<{
         : [
             new IconLayer({
                 ...iconLayerDefaults,
-                id: `icon-layer__${mapId}`,
+                id: `destinations__${mapId}`,
                 data: iconLayerData,
                 getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
                 onClick: (pickingInfo) => {
@@ -256,6 +256,37 @@ const UserModeMap: FC<{
                 controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={(viewStateChagneParameters) => {
                     handleNewViewState(viewStateChagneParameters)
+                }}
+                getTooltip={(a) => {
+                    if (a?.layer?.id?.startsWith('destinations') && a?.object) {
+                        const iconData = a.object as IIconData;
+                        const des = destinations
+                            .find((d) => d.name === iconData.name || d.name === iconData.id);
+                        return {
+                            html: `
+                                <h3 style='margin-top: 0'>
+                                    ${des?.chaynsUser?.name || des?.name || iconData.name || iconData.id}
+                                </h3>
+                                ${iconData.customType
+                                    ? `
+                                        <p>
+                                            ${iconData.customType}
+                                        </p>
+                                    ` : ''}
+                                `
+                        };
+                    }
+                    if (a?.layer?.id?.startsWith('robots') && a?.object) {
+                        const robotData = a.object as TRobotLayerData;
+                        return {
+                            html: `
+                                <h3 style='margin-top: 0'>
+                                    ${robotData.name}
+                                </h3>
+                            `,
+                        };
+                    }
+                    return null;
                 }}
             />
         </div>
