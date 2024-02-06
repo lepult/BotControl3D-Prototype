@@ -50,7 +50,6 @@ const DestinationType: FC<{
                         <Destination
                             key={destinationId}
                             destinationId={destinationId}
-                            mapId={mapId}
                         />
                     ))}
                 </div>

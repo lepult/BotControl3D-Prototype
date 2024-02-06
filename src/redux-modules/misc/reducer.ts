@@ -6,10 +6,7 @@ import { changeAdminModeType, changeIsPlanningRoute, changeSelectedDestination, 
 const initialState: {
     adminModeType: AdminModeType,
     editingMapId: number | undefined,
-    selectedDestination: {
-        mapId: number,
-        destinationName: string,
-    } | undefined,
+    selectedDestination: number | undefined,
     isPlanningRoute: boolean,
     resetViewState: number,
 } = {
@@ -27,6 +24,7 @@ const reducer = createReducer(initialState, (builder) => {
     });
 
     builder.addCase(changeSelectedDestination, (draft, { payload }) => {
+        console.log('payload', payload);
         draft.selectedDestination = payload;
     });
 

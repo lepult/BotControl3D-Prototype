@@ -13,7 +13,6 @@ import {
 } from '../../../constants/deckGl';
 import {
     getIconDataFromDestinations, IIconData,
-    mapRobotElementsToIconData,
     mapRobotElementsToPathData
 } from '../../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
@@ -25,7 +24,7 @@ import {
 import {
     selectIsPlanningRoute,
     selectResetViewState,
-    selectSelectedDestinationByMapId
+    selectSelectedDestinationId,
 } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
 import { PreviewType, TViewState } from '../../../types/deckgl-map';
@@ -79,11 +78,10 @@ const UserModeMap: FC<{
     }, [initialViewState, resetViewState, isPreview]);
 
 
-    const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
+    const selectedDestinationId = useSelector(selectSelectedDestinationId);
+    const selectedRobotId = useSelector(selectSelectedRobot);
 
-    const selectedRobot = useSelector(selectSelectedRobot);
-
-    const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobot || ''));
+    const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobotId || ''));
     const currentRoute = useMemo(() => selectedRobotStatus?.currentRoute, [selectedRobotStatus]);
 
 
@@ -100,8 +98,8 @@ const UserModeMap: FC<{
 
     const robotLayerData = useMemo<TRobotLayerData[]>(() => robots
             .filter((robot) => robot?.puduRobotStatus)
-            .map((robot) => getRobotLayerData(robot as TState, selectedRobot)),
-        [robots, selectedRobot]);
+            .map((robot) => getRobotLayerData(robot as TState, selectedRobotId)),
+        [robots, selectedRobotId]);
 
     const robotLayers = useMemo(() => (isPreview && previewType === PreviewType.Floor)
         ? []
@@ -113,8 +111,8 @@ const UserModeMap: FC<{
                 : (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({
                     robotId: (pickingInfo.object as TRobotLayerData).robotId
                 })),
-            selectedRobot || '',
-    ), [dispatch, mapId, robotLayerData, selectedRobot, isPreview, previewType]);
+            selectedRobotId || '',
+    ), [dispatch, mapId, robotLayerData, selectedRobotId, isPreview, previewType]);
 
 
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId)
@@ -129,8 +127,8 @@ const UserModeMap: FC<{
 
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
 
-    const iconLayerData = useMemo(() => getIconDataFromDestinations(destinations/* , selectedDestination */),
-        [destinations]);
+    const iconLayerData = useMemo(() => getIconDataFromDestinations(destinations, selectedDestinationId),
+        [destinations, selectedDestinationId]);
 
     const iconLayer = useMemo<IconLayer[]>(() => isPreview && previewType === PreviewType.Robot
         ? []
@@ -147,13 +145,11 @@ const UserModeMap: FC<{
                         return;
                     }
                     // Unselects selected icon or selects unselected icon.
-                    if (selectedDestination?.destinationName === iconData.name) {
+                    if (selectedDestinationId === iconData.id) {
                         dispatch(changeSelectedDestination(undefined));
                     } else {
-                        dispatch(changeSelectedDestination({
-                            mapId,
-                            destinationName: iconData.name,
-                        }));
+                        console.log('changeSelectedDestination', iconData.id);
+                        dispatch(changeSelectedDestination(iconData.id));
                     }
                 },
                 getSize: 0.3,
@@ -166,11 +162,11 @@ const UserModeMap: FC<{
                     width: 128,
                 }),
                 updateTriggers: {
-                    getPosition: [selectedDestination],
+                    getPosition: [selectedDestinationId],
                     getIcon: [isPlanningRoute],
                 }
             })
-        ], [iconLayerData, selectedDestination, mapId, dispatch, isPreview, previewType, isPlanningRoute]);
+        ], [iconLayerData, selectedDestinationId, mapId, dispatch, isPreview, previewType, isPlanningRoute]);
 
     const pathLayerData = useMemo(() => pathData
         ? mapRobotElementsToPathData(pathData.elements)
@@ -198,21 +194,21 @@ const UserModeMap: FC<{
     }, [followRobot]);
 
     useEffect(() => {
-        if (!selectedRobot && robotId && isPreview) {
+        if (!selectedRobotId && robotId && isPreview) {
             dispatch(toggleSelectedRobot({ robotId }));
         }
-    }, [dispatch, robotId, isPreview, selectedRobot]);
+    }, [dispatch, robotId, isPreview, selectedRobotId]);
 
     useEffect(() => {
-        if (followRobot && selectedRobot) {
-            const robot = robotEntities[selectedRobot];
+        if (followRobot && selectedRobotId) {
+            const robot = robotEntities[selectedRobotId];
 
             if (robot) {
                 const [longitude, latitude] = meterToCoordinate([
                     robot?.puduRobotStatus?.robotPose?.x || 0,
                     robot?.puduRobotStatus?.robotPose?.y || 0,
                 ]);
-                const bearing = robotAngleToViewStateBearing(robotEntities[selectedRobot]?.puduRobotStatus?.robotPose?.angle || 0);
+                const bearing = robotAngleToViewStateBearing(robotEntities[selectedRobotId]?.puduRobotStatus?.robotPose?.angle || 0);
 
                 setViewState((prev) => ({
                     ...prev,
@@ -228,7 +224,7 @@ const UserModeMap: FC<{
                 }
             }
         }
-    }, [dispatch, followRobot, selectedRobot, robotEntities, isPreview]);
+    }, [dispatch, followRobot, selectedRobotId, robotEntities, isPreview]);
 
     const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
         const interaction = viewStateChagneParameters.interactionState;
