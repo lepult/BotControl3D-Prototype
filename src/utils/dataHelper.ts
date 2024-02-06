@@ -1,7 +1,7 @@
 import { Position } from '@deck.gl/core/typed';
 import { MapElementType, TMapElement } from '../types/pudu-api/robotMap';
-import { IIconData, IPathData } from '../types/deckgl-map';
-import { DestinationType, TDestination } from '../types/api/destination';
+import { IPathData } from '../types/deckgl-map';
+import { CustomDestinationType, DestinationType, TDestination } from '../types/api/destination';
 import { TRoute, TRouteDestination } from '../types/api/route';
 import { findMapElementInDestinations } from './destinations';
 
@@ -54,6 +54,53 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
 
     return a;
 };
+
+type TMappedDestination = {
+    destination: TDestination,
+    mapElement: TMapElement,
+}
+
+type MapElementMode = 'table' | 'dining_outlet' | 'transit' | 'dishwashing' | 'parking' | string;
+
+export type IIconData = {
+    id: number,
+    type: DestinationType,
+    customType: CustomDestinationType,
+    mapElementType: MapElementType,
+    mapElementMode: MapElementMode,
+    name: string,
+    position: Position,
+    selected: boolean,
+    routeData: {
+        isRouteDestination: boolean,
+        isNextDestination: boolean,
+        isPreviousDestination: boolean,
+        isEarlierDestination: boolean,
+        isFinalDestination: boolean,
+    },
+}
+
+export const getIconDataFromDestinations = (mappedDestinations: TMappedDestination[], selectedDestination?: number) => {
+    const iconData = mappedDestinations
+        .map(({ destination, mapElement }) => ({
+            id: destination.id,
+            type: destination.type,
+            customType: destination.customType,
+            mapElementType: mapElement.type,
+            mapElementMode: mapElement.mode as MapElementMode,
+            name: destination.chaynsUser?.name || destination.name,
+            position: mapElement.vector as Position,
+            selected: destination.id === selectedDestination,
+            routeData: {
+                isRouteDestination: false,
+                isNextDestination: false,
+                isPreviousDestination: false,
+                isEarlierDestination: false,
+                isFinalDestination: false,
+            },
+        }));
+    return iconData;
+}
 
 // region IconData
 /**

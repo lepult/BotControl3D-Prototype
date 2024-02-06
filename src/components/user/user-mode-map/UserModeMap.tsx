@@ -11,7 +11,11 @@ import {
     INITIAL_VIEW_STATE,
     pathLayerDefaults
 } from '../../../constants/deckGl';
-import { mapRobotElementsToIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
+import {
+    getIconDataFromDestinations, IIconData,
+    mapRobotElementsToIconData,
+    mapRobotElementsToPathData
+} from '../../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
 import {
     selectFollowRobot,
@@ -24,7 +28,7 @@ import {
     selectSelectedDestinationByMapId
 } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { IIconData, PreviewType, TViewState } from '../../../types/deckgl-map';
+import { PreviewType, TViewState } from '../../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
@@ -72,7 +76,7 @@ const UserModeMap: FC<{
             ...initialViewState,
             zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
         }));
-    }, [initialViewState, resetViewState]);
+    }, [initialViewState, resetViewState, isPreview]);
 
 
     const selectedDestination = useSelector(selectSelectedDestinationByMapId(mapId));
@@ -125,10 +129,8 @@ const UserModeMap: FC<{
 
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
 
-    const iconLayerData = useMemo(() => pathData
-        ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination, destinations)
-        : [],
-        [selectedDestination, pathData, currentRoute, mapId, selectedRobotStatus, destinations]);
+    const iconLayerData = useMemo(() => getIconDataFromDestinations(destinations/* , selectedDestination */),
+        [destinations]);
 
     const iconLayer = useMemo<IconLayer[]>(() => isPreview && previewType === PreviewType.Robot
         ? []
@@ -145,12 +147,12 @@ const UserModeMap: FC<{
                         return;
                     }
                     // Unselects selected icon or selects unselected icon.
-                    if (selectedDestination?.destinationName === iconData.name || selectedDestination?.destinationName === iconData.id) {
+                    if (selectedDestination?.destinationName === iconData.name) {
                         dispatch(changeSelectedDestination(undefined));
                     } else {
                         dispatch(changeSelectedDestination({
                             mapId,
-                            destinationName: iconData.name || iconData.id,
+                            destinationName: iconData.name,
                         }));
                     }
                 },
@@ -260,12 +262,10 @@ const UserModeMap: FC<{
                 getTooltip={(a) => {
                     if (a?.layer?.id?.startsWith('destinations') && a?.object) {
                         const iconData = a.object as IIconData;
-                        const des = destinations
-                            .find((d) => d.name === iconData.name || d.name === iconData.id);
                         return {
                             html: `
                                 <h3 style='margin-top: 0'>
-                                    ${des?.chaynsUser?.name || des?.name || iconData.name || iconData.id}
+                                    ${iconData.name}
                                 </h3>
                                 ${iconData.customType
                                     ? `

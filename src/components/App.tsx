@@ -53,14 +53,12 @@ const App = () => {
                         robotId
                     },
                     events: {
-
                         chayns_delivery_status: (data: TNotifyChaynsDeliveryStatus) => {
                             void dispatch(updateRobotStatus({
                                 robotId: robotId as string,
                                 data
                             }));
                         },
-                        // Updates after requesting update
                         query_state: (data: TQueryStateData) => {
                             dispatch(updatePuduApiStatus({
                                 robotId: robotId as string,

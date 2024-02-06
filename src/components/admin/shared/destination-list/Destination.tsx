@@ -15,7 +15,7 @@ const Destination: FC<{
 }) => {
     const dispatch = useDispatch();
 
-    const destination = useSelector(selectDestinationById(destinationId));
+    const { destination } = useSelector(selectDestinationById(destinationId));
     const destinationFullName = useMemo(() => destination.chaynsUser
         ? `${destination.chaynsUser.name}`
         : destination.name, [destination]);
@@ -31,7 +31,7 @@ const Destination: FC<{
                 destinationName: destination.name,
             }));
         }
-    }, [selectedDestination, destinationId, mapId, destination, dispatch]);
+    }, [selectedDestination, mapId, destination, dispatch]);
 
     return (
         <Button
