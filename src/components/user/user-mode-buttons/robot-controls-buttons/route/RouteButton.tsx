@@ -55,8 +55,7 @@ const RouteButton = () => {
             showName: getDestinationName(destinationEntities[destinationId]),
             id: destinationEntities[destinationId].id,
         }))
-            .sort((a, b) => a.showName > b.showName ? 1 : -1)
-        , [destinationEntities, destinationIds]);
+    , [destinationEntities, destinationIds]);
 
     const selectedDestinationMapElement = useSelector(selectSelectedDestination);
     const selectedDestination = useMemo(() => destinationIds
