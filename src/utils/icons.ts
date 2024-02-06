@@ -30,7 +30,7 @@ import { CustomDestinationType, DestinationType } from '../types/api/destination
 const STROKE_WIDTH = 30;
 const MIN_X_Y = -STROKE_WIDTH / 2;
 
-const getSvg = (faIcon, red: number, green: number, blue: number) => {
+const getSvg = (faIcon, red: number, green: number, blue: number, alpha: number) => {
     return `
     <svg
         viewBox="${MIN_X_Y} ${MIN_X_Y} ${faIcon.icon[0] + STROKE_WIDTH} ${faIcon.icon[1] + STROKE_WIDTH}"
@@ -40,8 +40,8 @@ const getSvg = (faIcon, red: number, green: number, blue: number) => {
     >
         <path
             d="${faIcon.icon[4]}"
-            fill="rgb(${red}, ${green}, ${blue})"
-            stroke="rgb(255, 255, 255)"
+            fill="rgba(${red}, ${green}, ${blue}, ${alpha})"
+            stroke="rgba(255, 255, 255, ${alpha})"
             stroke-width="30"
         />
     </svg>`
@@ -145,11 +145,11 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
             i = exclamation;
             break;
     }
-    return getSvg(i, red, green, blue);
+    return getSvg(i, red, green, blue, 1);
 
 }
 
-export const getIconByDestinationType = (iconData: IIconData): string => {
+export const getIconByDestinationType = (iconData: IIconData, transparent: boolean): string => {
     let i = null;
     switch (iconData.customType) {
         case CustomDestinationType.target:
@@ -201,12 +201,12 @@ export const getIconByDestinationType = (iconData: IIconData): string => {
         }
     }
 
-    const colors = getIconColor(iconData);
+    const colors = getIconColor(iconData, transparent);
 
-    return getSvg(i, colors[0], colors[1], colors[2]);
+    return getSvg(i, colors[0], colors[1], colors[2], colors[3] || 1);
 };
 
-const getIconColor = (iconData: IIconData): Color => {
+const getIconColor = (iconData: IIconData, transparent: boolean): Color => {
     if (iconData.routeData.isFinalDestination) {
         return [255, 183, 77];
     }
@@ -219,5 +219,5 @@ const getIconColor = (iconData: IIconData): Color => {
     if (iconData.selected) {
         return [3, 169, 244];
     }
-    return [84, 134, 157]
+    return [84, 134, 157, transparent ? 0.5 : 1];
 };

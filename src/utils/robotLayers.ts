@@ -36,7 +36,7 @@ const defaultProps = {
     }),
     getSize: 1.5,
 
-    mesh: 'https://chayns.space/77896-05853/3D-Modelle/Kittybot.obj',
+    mesh: 'https://chayns.space/77896-05853/3D-Modelle/Kittybot_Compressed2.obj',
     loaders: [OBJLoader],
     getColor: ({ color }: TRobotLayerData) => color,
     getOrientation: ({ orientation }: TRobotLayerData) => orientation,
@@ -101,7 +101,7 @@ export const getRobotLayers = (
 
     return [
         new IconLayer({
-            id: `${id}-icon`,
+            id: `robots-${id}-icon`,
             ...defaults,
             billboard,
             sizeUnits,
@@ -114,7 +114,7 @@ export const getRobotLayers = (
             },
         }),
         new SimpleMeshLayer({
-            id: `${id}-mesh`,
+            id: `robots-${id}-mesh`,
             ...defaults,
             mesh,
             loaders,

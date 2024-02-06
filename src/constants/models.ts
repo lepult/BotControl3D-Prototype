@@ -19,12 +19,12 @@ export const floorModelsEg: ModelType[] = [{
 
 export const floorModelsAtriumDome: ModelType[] = [{
     id: "AtriumDome/Dome",
-    url: "https://chayns.space/77896-05853/3D-Modelle/EG/Dome.glb",
+    url: "https://chayns.space/77896-05853/3D-Modelle/AtriumDome/Dome.glb",
     position: [20.32632727184687, 39.79214004928562, 0],
     orientation: [0, -266.64199130034456, 90]
 }, {
     id: "AtriumDome/Atrium_Norden",
-    url: "https://chayns.space/77896-05853/3D-Modelle/EG/Atrium_Norden.glb",
+    url: "https://chayns.space/77896-05853/3D-Modelle/AtriumDome/Atrium_Norden.glb",
     position: [-6.916014565723497, 13.56714828324102, 0],
     orientation: [0, -9.541950183936365, 90]
 }];

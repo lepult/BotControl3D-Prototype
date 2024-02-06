@@ -29,8 +29,8 @@ type TGltfModel = {
 }
 
 enum EDragMode {
-    translate,
-    rotate,
+    translate = 'translate',
+    rotate = 'rotate',
 }
 
 type TUndoStackItem = {
@@ -56,6 +56,9 @@ const EditorMap: FC<{
         ...initialViewState,
     });
 
+    const [isDraggingMap, setIsDraggingMap] = useState(false);
+    const [hoveringOver, setHoveringOver] = useState<string>();
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     const [gltfModels, setGltfModels] = useState<ModelType[]>([]);
 
@@ -76,6 +79,7 @@ const EditorMap: FC<{
     const pathData = useMemo(() => mapRobotElementsToPathData(getPathDataByMapId(mapId).elements), [mapId]);
     const pathLayer = useMemo<PathLayer>(() => new PathLayer({
         ...pathLayerDefaults,
+        pickable: false,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         data: pathData,
     }), [pathData]);
@@ -84,6 +88,7 @@ const EditorMap: FC<{
     const iconData = useMemo(() => mapRobotElementsToIconData(getPathDataByMapId(mapId).elements), [mapId]);
     const iconLayer = useMemo<IconLayer>(() => new IconLayer({
         ...iconLayerDefaults,
+        pickable: false,
         data: iconData,
     }), [iconData]);
 
@@ -141,7 +146,7 @@ const EditorMap: FC<{
             position: gltfModel.position,
             orientation: gltfModel.orientation,
         }],
-        opacity: ((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed)) && ((draggingId && draggingId === gltfModel.id) || !draggingId)
+        opacity: (((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed)) && hoveringOver === gltfModel.id) || (draggingId && draggingId === gltfModel.id)
             ? 0.75
             : 1,
         scenegraph: gltfModel.url,
@@ -205,7 +210,7 @@ const EditorMap: FC<{
             // TODO Only update dragged model
             getPosition: [hasChanged]
         }
-    })), [gltfModels, hasChanged, draggingId, dragMode, ctrlPressed, shiftPressed, rotateModel, translateModel]);
+    })), [gltfModels, hasChanged, draggingId, dragMode, ctrlPressed, shiftPressed, rotateModel, translateModel, hoveringOver]);
 
     useEffect(() => {
         updateChaynsViewmode(ChaynsViewMode.wide);
@@ -375,6 +380,20 @@ const EditorMap: FC<{
                 ]}
                 controller={!draggingId}
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
+                getCursor={() => dragMode || isDraggingMap
+                    ? 'grabbing'
+                    : hoveringOver && (shiftPressed || ctrlPressed)
+                        ? 'pointer'
+                        : 'grab'}
+                onDragStart={() => setIsDraggingMap(true)}
+                onDragEnd={() => setIsDraggingMap(false)}
+                onHover={(a, b) => {
+                    if (a.layer) {
+                        setHoveringOver(a.layer.id);
+                    } else {
+                        setHoveringOver(undefined);
+                    }
+                }}
             />
         </div>
 

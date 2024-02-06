@@ -8,6 +8,7 @@ import { AdminModeType } from '../../../types/misc';
 import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
 import DestinationList from '../shared/destination-list/DestinationList';
 import FloorPreview from '../shared/FloorPreview';
+import { PreviewType } from '../../../types/deckgl-map';
 
 const FloorItem: FC<{
     mapId: number
@@ -46,7 +47,10 @@ const FloorItem: FC<{
         >
             {showMapPreview && (
                 <div className="accordion__content">
-                    <FloorPreview mapId={mapId} />
+                    <FloorPreview
+                        mapId={mapId}
+                        previewType={PreviewType.Floor}
+                    />
                 </div>
             )}
             <DestinationList mapId={mapId}/>

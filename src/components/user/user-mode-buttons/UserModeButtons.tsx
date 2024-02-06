@@ -1,9 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import './userModeButtons.scss';
 import { useSelector } from 'react-redux';
-import { useWindowMetrics } from 'chayns-api';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { useUser, useWindowMetrics } from 'chayns-api';
 import { selectMapIds } from '../../../redux-modules/map/selectors';
 import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
 import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
@@ -14,12 +12,19 @@ import CancelButton from './robot-controls-buttons/cancel/CancelButton';
 import FollowRobotButton from './robot-controls-buttons/follow-robot/FollowRobotButton';
 import ResetViewButton from './interaction-buttons/ResetViewButton';
 import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
+import { getUserType } from '../../../utils/getUserType';
+import { UserType } from '../../../types/misc';
+import InformationButton from './robot-controls-buttons/information/InformationButton';
 
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
     const allRobotIds = useSelector(selectRobotIds);
     const metrics = useWindowMetrics();
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
+
+    const user = useUser();
+    const userType = useMemo(() => getUserType(user), [user]);
+    const isGuest = useMemo(() => userType === UserType.guest, [userType]);
 
     return (
         <div className="user-mode-buttons__wrapper">
@@ -56,10 +61,11 @@ const UserModeButtons: FC = () => {
                         padding: '10px',
                     }}
                 >
-                    <RouteButton/>
+                    {!isGuest && <RouteButton/>}
+                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
+                    {!isPlanningRoute && !isGuest && <CancelButton/>}
                     {!isPlanningRoute && <FollowRobotButton/>}
-                    {!isPlanningRoute && <ChargeButton/>}
-                    {!isPlanningRoute && <CancelButton/>}
+                    {!isPlanningRoute && <InformationButton/>}
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (

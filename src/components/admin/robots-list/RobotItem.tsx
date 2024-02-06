@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectRobotById } from '../../../redux-modules/robot-status/selectors';
 import DestinationList from '../shared/destination-list/DestinationList';
 import FloorPreview from '../shared/FloorPreview';
+import { PreviewType } from '../../../types/deckgl-map';
 
 const CONTEXT_MENU_ITEMS = [{
     text: 'Name ändern',
@@ -89,6 +90,7 @@ const RobotItem: FC<{
                             <FloorPreview
                                 robotId={robotId}
                                 mapId={robot?.robotStatus?.currentMap?.id as number}
+                                previewType={PreviewType.Robot}
                             />
                         </div>
                     )}

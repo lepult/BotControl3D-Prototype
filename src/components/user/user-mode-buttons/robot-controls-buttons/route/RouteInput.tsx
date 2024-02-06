@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { PersonFinder, SimpleWrapperContext, Input } from 'chayns-components';
@@ -13,6 +13,13 @@ type TPersonFinderRef = {
 }
 
 type TPersonFinderValues = [TPersonFinderItem] | [];
+
+const isNumeric = (possibleNumber: string) => !Number.isNaN(Number(possibleNumber));
+
+type TCompare = number | string | boolean;
+const compare = (a2: TCompare, b2: TCompare) => a2 > b2
+    ? 1
+    : -1;
 
 const RouteInput: FC<{
     items: TPersonFinderItem[],
@@ -30,6 +37,16 @@ const RouteInput: FC<{
     const [personFinderInput, setPersonFinderInput] = useState('');
 
     const personFinderRef = useRef<TPersonFinderRef>();
+
+    const sortedItems = useMemo(() => items
+        .sort((a, b) => a.showName.localeCompare(
+            b.showName,
+            undefined,
+            {
+                numeric: true,
+                sensitivity: 'base',
+            },
+        )),[items]);
 
     const clearPersonFinder = () => {
         if (personFinderRef.current) {
@@ -62,7 +79,7 @@ const RouteInput: FC<{
                 value={personFinderInput}
                 values={selected ? [selected] : []}
                 contextProps={{
-                    data: items,
+                    data: sortedItems,
                     hasMore: false,
                     onInput: (input: string) => {
                         console.log('onInput', input)
