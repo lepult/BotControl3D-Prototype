@@ -127,8 +127,13 @@ const UserModeMap: FC<{
 
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
 
-    const iconLayerData = useMemo(() => getIconDataFromDestinations(destinations, selectedDestinationId),
-        [destinations, selectedDestinationId]);
+    const iconLayerData = useMemo(() => getIconDataFromDestinations(
+        destinations,
+        selectedDestinationId,
+        currentRoute,
+        selectedRobotStatus?.destination,
+        selectedRobotStatus?.currentDestination
+    ), [currentRoute, destinations, selectedDestinationId, selectedRobotStatus]);
 
     const iconLayer = useMemo<IconLayer[]>(() => isPreview && previewType === PreviewType.Robot
         ? []
