@@ -37,12 +37,13 @@ import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../..
 import { meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
 import { svgToDataURL } from '../../../utils/marker';
 import { getIconByDestinationType } from '../../../utils/icons';
-import { selectDestinationEntities, selectDestinationIdsByMapId } from '../../../redux-modules/destination/selectors';
+import { selectDestinationsByMapId } from '../../../redux-modules/destination/selectors';
 import { TRobotLayerData } from './RobotLayer';
 import { getRobotLayerData, getRobotLayers } from '../../../utils/robotLayers';
 import { TState } from '../../../redux-modules/robot-status/slice';
 import { getScenegraphLayer } from '../../../utils/scenegraphLayer';
 import { CustomDestinationType } from '../../../types/api/destination';
+import { RootState } from '../../../redux-modules';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -76,7 +77,6 @@ const UserModeMap: FC<{
             zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
         }));
     }, [initialViewState, resetViewState, isPreview]);
-
 
     const selectedDestinationId = useSelector(selectSelectedDestinationId);
     const selectedRobotId = useSelector(selectSelectedRobot);
@@ -120,10 +120,7 @@ const UserModeMap: FC<{
 
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
-    const destinationIds = useSelector(selectDestinationIdsByMapId(mapId));
-    const destinationEntities = useSelector(selectDestinationEntities);
-    const destinations = useMemo(() => destinationIds?.map((id) => destinationEntities[id]) || [],
-        [destinationIds, destinationEntities]);
+    const destinations = useSelector((state: RootState) => selectDestinationsByMapId(state, mapId));
 
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
 
