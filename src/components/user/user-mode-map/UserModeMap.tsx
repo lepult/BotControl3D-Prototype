@@ -70,7 +70,7 @@ const UserModeMap: FC<{
         setViewState((prev) => ({
             ...prev,
             ...initialViewState,
-            zoom: initialViewState.zoom - 2,
+            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
         }));
     }, [initialViewState, resetViewState]);
 
