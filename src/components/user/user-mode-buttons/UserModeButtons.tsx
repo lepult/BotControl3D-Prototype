@@ -2,8 +2,6 @@ import React, { FC, useMemo } from 'react';
 import './userModeButtons.scss';
 import { useSelector } from 'react-redux';
 import { useUser, useWindowMetrics } from 'chayns-api';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { selectMapIds } from '../../../redux-modules/map/selectors';
 import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
 import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
@@ -16,6 +14,7 @@ import ResetViewButton from './interaction-buttons/ResetViewButton';
 import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
 import { getUserType } from '../../../utils/getUserType';
 import { UserType } from '../../../types/misc';
+import InformationButton from './robot-controls-buttons/information/InformationButton';
 
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
@@ -63,9 +62,10 @@ const UserModeButtons: FC = () => {
                     }}
                 >
                     {!isGuest && <RouteButton/>}
-                    {!isPlanningRoute && <FollowRobotButton/>}
                     {!isPlanningRoute && !isGuest && <ChargeButton/>}
                     {!isPlanningRoute && !isGuest && <CancelButton/>}
+                    {!isPlanningRoute && <FollowRobotButton/>}
+                    {!isPlanningRoute && <InformationButton/>}
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
