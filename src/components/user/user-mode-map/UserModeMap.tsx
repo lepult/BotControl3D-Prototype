@@ -3,13 +3,12 @@ import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
+import { COORDINATE_SYSTEM, FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
+import { PathStyleExtension } from '@deck.gl/extensions/typed';
 import {
     CONTROLLER_DEFAULTS,
-    iconLayerDefaults,
     INITIAL_VIEW_STATE,
-    pathLayerDefaults
 } from '../../../constants/deckGl';
 import {
     getIconDataFromDestinations, IIconData,
@@ -27,7 +26,7 @@ import {
     selectSelectedDestinationId,
 } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { PreviewType, TViewState } from '../../../types/deckgl-map';
+import { IPathData, PreviewType, TViewState } from '../../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
@@ -44,6 +43,7 @@ import { TState } from '../../../redux-modules/robot-status/slice';
 import { getScenegraphLayer } from '../../../utils/scenegraphLayer';
 import { CustomDestinationType } from '../../../types/api/destination';
 import { RootState } from '../../../redux-modules';
+import { MapElementType } from '../../../types/pudu-api/robotMap';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -114,7 +114,7 @@ const UserModeMap: FC<{
             selectedRobotId || '',
     ), [dispatch, mapId, robotLayerData, selectedRobotId, isPreview, previewType]);
 
-
+    const scenegraphLayersData = useMemo(() => getModelsByMapId(mapId), [mapId]);
     const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId)
         .map((floorModel) => getScenegraphLayer(floorModel, mapId)), [mapId]);
 
@@ -132,58 +132,7 @@ const UserModeMap: FC<{
         selectedRobotStatus?.currentDestination
     ), [currentRoute, destinations, selectedDestinationId, selectedRobotStatus]);
 
-    const iconLayer = useMemo<IconLayer[]>(() => isPreview && previewType === PreviewType.Robot
-        ? []
-        : [
-            new IconLayer({
-                ...iconLayerDefaults,
-                id: `destinations__${mapId}`,
-                data: iconLayerData,
-                getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
-                onClick: (pickingInfo) => {
-                    const iconData = pickingInfo.object as IIconData;
-                    // Disables Selection for non targets when planning the route.
-                    if (isPlanningRoute && iconData.customType !== CustomDestinationType.target) {
-                        return;
-                    }
-                    // Unselects selected icon or selects unselected icon.
-                    if (selectedDestinationId === iconData.id) {
-                        dispatch(changeSelectedDestination(undefined));
-                    } else {
-                        console.log('changeSelectedDestination', iconData.id);
-                        dispatch(changeSelectedDestination(iconData.id));
-                    }
-                },
-                getSize: 0.3,
-                getIcon: (iconData: IIconData) => ({
-                    url: svgToDataURL(getIconByDestinationType(
-                        iconData,
-                        isPlanningRoute && iconData.customType !== CustomDestinationType.target,
-                    )),
-                    height: 128,
-                    width: 128,
-                }),
-                updateTriggers: {
-                    getPosition: [selectedDestinationId],
-                    getIcon: [isPlanningRoute],
-                }
-            })
-        ], [iconLayerData, selectedDestinationId, mapId, dispatch, isPreview, previewType, isPlanningRoute]);
-
-    const pathLayerData = useMemo(() => pathData
-        ? mapRobotElementsToPathData(pathData.elements)
-        : [],
-        [pathData]);
-    const pathLayer = useMemo<PathLayer[]>(() => isPreview && previewType === PreviewType.Robot
-        ? []
-        : [
-            new PathLayer({
-                ...pathLayerDefaults,
-                id: `path-layer__${mapId}`,
-                data: pathLayerData,
-            })
-        ], [pathLayerData, mapId, isPreview, previewType]);
-
+    const pathLayerData = useMemo(() => mapRobotElementsToPathData(pathData?.elements || []), [pathData]);
 
     const followRobot = useSelector(selectFollowRobot);
 
@@ -240,6 +189,37 @@ const UserModeMap: FC<{
         }));
     }, [dispatch, followRobot]);
 
+    const getTooltip = (pickingInfo: PickingInfo) => {
+        if (pickingInfo?.layer?.id?.startsWith('destinations') && pickingInfo?.object) {
+            const iconData = pickingInfo.object as IIconData;
+            return {
+                html: `
+                                <h3 style='margin-top: 0'>
+                                    ${iconData.name}
+                                </h3>
+                                ${iconData.customType
+                    ? `
+                                        <p>
+                                            ${iconData.customType}
+                                        </p>
+                                    ` : ''}
+                                `
+            };
+        }
+
+        if (pickingInfo?.layer?.id?.startsWith('robots') && pickingInfo?.object) {
+            const robotData = pickingInfo.object as TRobotLayerData;
+            return {
+                html: `
+                                <h3 style='margin-top: 0'>
+                                    ${robotData.name}
+                                </h3>
+                            `,
+            };
+        }
+
+        return null;
+    }
 
     return (
         <div
@@ -248,45 +228,98 @@ const UserModeMap: FC<{
             <DeckGL
                 viewState={viewState}
                 layers={[
-                    ...scenegraphLayers,
-                    ...pathLayer,
-                    ...iconLayer,
                     ...robotLayers,
                 ]}
                 controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={(viewStateChagneParameters) => {
                     handleNewViewState(viewStateChagneParameters)
                 }}
-                getTooltip={(a) => {
-                    if (a?.layer?.id?.startsWith('destinations') && a?.object) {
-                        const iconData = a.object as IIconData;
-                        return {
-                            html: `
-                                <h3 style='margin-top: 0'>
-                                    ${iconData.name}
-                                </h3>
-                                ${iconData.customType
-                                    ? `
-                                        <p>
-                                            ${iconData.customType}
-                                        </p>
-                                    ` : ''}
-                                `
-                        };
-                    }
-                    if (a?.layer?.id?.startsWith('robots') && a?.object) {
-                        const robotData = a.object as TRobotLayerData;
-                        return {
-                            html: `
-                                <h3 style='margin-top: 0'>
-                                    ${robotData.name}
-                                </h3>
-                            `,
-                        };
-                    }
-                    return null;
-                }}
-            />
+                getTooltip={getTooltip}
+            >
+                {(!isPreview || (isPreview && previewType === PreviewType.Floor)) && (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <IconLayer
+                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
+                        pickable
+                        sizeScale={3}
+                        getSize={0.3}
+                        alphaCutoff={0.5}
+                        sizeUnits="meters"
+                        id={`destinations__${mapId}`}
+                        data={iconLayerData}
+                        getPosition={(d: IIconData): [number, number, number] => [d.position[0], d.position[1], 0.5]}
+                        onClick={(pickingInfo: PickingInfo) => {
+                            const iconData = pickingInfo.object as IIconData;
+                            // Disables Selection for non targets when planning the route.
+                            if (isPlanningRoute && iconData.customType !== CustomDestinationType.target) {
+                                return;
+                            }
+                            // Unselects selected icon or selects unselected icon.
+                            if (selectedDestinationId === iconData.id) {
+                                dispatch(changeSelectedDestination(undefined));
+                            } else {
+                                dispatch(changeSelectedDestination(iconData.id));
+                            }
+                        }}
+                        getIcon={(iconData: IIconData) => ({
+                            url: svgToDataURL(getIconByDestinationType(
+                                iconData,
+                                isPlanningRoute && iconData.customType !== CustomDestinationType.target,
+                            )),
+                            height: 128,
+                            width: 128,
+                        })}
+                        updateTriggers={{
+                            getPosition: [selectedDestinationId],
+                            getIcon: [isPlanningRoute],
+                        }}
+                    />
+                )}
+                {(!isPreview || (isPreview && previewType === PreviewType.Floor)) && (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <PathLayer
+                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
+                        pickable
+                        jointRounded
+                        capRounded
+                        billboard
+                        widthScale={1}
+                        getWidth={0.025}
+                        widthMinPixels={0}
+                        getColor={(d: { color: [number, number, number] }) => d.color || [0, 0, 0]}
+                        extensions={[new PathStyleExtension({ dash: true })]}
+                        getDashArray={(data: IPathData) => data.type === MapElementType.track
+                            ? [0, 0]
+                            : [20, 10]}
+                        id={`path-layer__${mapId}`}
+                        data={pathLayerData}
+                    />
+                )}
+                {scenegraphLayersData.map((layerData) => (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <ScenegraphLayer
+                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
+                        pickable
+                        sizeScale={1}
+                        parameters={{ cull: true }}
+                        _lighting="pbr"
+                        id={`scenegraphLayer-${mapId}-${layerData.id}`}
+                        data={[layerData]}
+                        scenegraph={layerData.url}
+                        getPosition={layerData.position}
+                        getOrientation={layerData.orientation}
+                    />
+                ))}
+                {/*{(!isPreview || (isPreview && previewType === PreviewType.Robot)) && [*/}
+                {/*    <div>test</div>,*/}
+                {/*    <IconLayer*/}
+                {/*    */}
+                {/*    />*/}
+                {/*]}*/}
+            </DeckGL>
         </div>
     );
 };
