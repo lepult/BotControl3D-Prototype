@@ -1,11 +1,12 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
-import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
+import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { COORDINATE_SYSTEM, FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import { PathStyleExtension } from '@deck.gl/extensions/typed';
+import { OBJLoader } from '@loaders.gl/obj';
 import {
     CONTROLLER_DEFAULTS,
     INITIAL_VIEW_STATE,
@@ -227,9 +228,6 @@ const UserModeMap: FC<{
         >
             <DeckGL
                 viewState={viewState}
-                layers={[
-                    ...robotLayers,
-                ]}
                 controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={(viewStateChagneParameters) => {
                     handleNewViewState(viewStateChagneParameters)
@@ -313,12 +311,63 @@ const UserModeMap: FC<{
                         getOrientation={layerData.orientation}
                     />
                 ))}
-                {/*{(!isPreview || (isPreview && previewType === PreviewType.Robot)) && [*/}
-                {/*    <div>test</div>,*/}
-                {/*    <IconLayer*/}
-                {/*    */}
-                {/*    />*/}
-                {/*]}*/}
+                {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <IconLayer
+                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
+                        sizeScale={1}
+                        pickable
+                        transitions={{ getPosition: 2000 }}
+                        data={robotLayerData}
+                        onClick={(pickingInfo: PickingInfo) => {
+                            if (isPreview) return;
+                            dispatch(toggleSelectedRobot({
+                                robotId: (pickingInfo.object as TRobotLayerData).robotId
+                            }));
+                        }}
+                        id={`robots-${mapId}-icon`}
+                        billboard
+                        sizeUnits="meters"
+                        alphaCutoff={0.5}
+                        getPosition={(d: TRobotLayerData) => [...d.position, 2]}
+                        getIcon={({ icon }: TRobotLayerData) => ({
+                            url: icon,
+                            height: 128,
+                            width: 128,
+                        })}
+                        getSize={1.5}
+                        updateTriggers={{ getIcon: [selectedRobotId] }}
+                    />
+                )}
+                {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <SimpleMeshLayer
+                        sizeScale={1}
+                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
+                        pickable
+                        transitions={{
+                            getPosition: 2000,
+                            getOrientation: 2000,
+                        }}
+                        data={robotLayerData}
+                        onClick={(pickingInfo: PickingInfo) => {
+                            if (isPreview) return;
+                            dispatch(toggleSelectedRobot({
+                                robotId: (pickingInfo.object as TRobotLayerData).robotId
+                            }));
+                        }}
+                        id={`robots-${mapId}-mesh`}
+                        mesh="https://chayns.space/77896-05853/3D-Modelle/Kittybot_Compressed2.obj"
+                        loaders={[OBJLoader]}
+                        getPosition={(d: TRobotLayerData) => [...d.position, 0]}
+                        getColor={({ color }: TRobotLayerData) => color}
+                        getOrientation={({ orientation }: TRobotLayerData) => orientation}
+                        getScale={[1, 1, 1]}
+                        updateTriggers={{ getColor: [selectedRobotId] }}
+                    />
+                )}
             </DeckGL>
         </div>
     );
