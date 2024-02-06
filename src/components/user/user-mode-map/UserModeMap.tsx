@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer } from '@deck.gl/mesh-layers/typed';
@@ -19,7 +18,11 @@ import {
     selectInitialViewStateByMapId,
     selectSelectedRobot
 } from '../../../redux-modules/map/selectors';
-import { selectResetViewState, selectSelectedDestinationByMapId } from '../../../redux-modules/misc/selectors';
+import {
+    selectIsPlanningRoute,
+    selectResetViewState,
+    selectSelectedDestinationByMapId
+} from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
 import { IIconData, PreviewType, TViewState } from '../../../types/deckgl-map';
 import {
@@ -36,10 +39,7 @@ import { TRobotLayerData } from './RobotLayer';
 import { getRobotLayerData, getRobotLayers } from '../../../utils/robotLayers';
 import { TState } from '../../../redux-modules/robot-status/slice';
 import { getScenegraphLayer } from '../../../utils/scenegraphLayer';
-
-interface IPickingInfo extends PickingInfo {
-    object: TRobotLayerData,
-}
+import { CustomDestinationType } from '../../../types/api/destination';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -99,12 +99,6 @@ const UserModeMap: FC<{
             .map((robot) => getRobotLayerData(robot as TState, selectedRobot)),
         [robots, selectedRobot]);
 
-    // const robotLayer = useMemo(() => new RobotLayer({
-    //     id: `robotLayer-${mapId}`,
-    //     data: robotsPositionsLayerData,
-    //     updateTriggers: [selectedRobot],
-    // }), [mapId, robotsPositionsLayerData, selectedRobot]);
-
     const robotLayers = useMemo(() => (isPreview && previewType === PreviewType.Floor)
         ? []
         : getRobotLayers(
@@ -113,7 +107,7 @@ const UserModeMap: FC<{
             isPreview
                 ? () => {}
                 : (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({
-                    robotId: (pickingInfo as IPickingInfo).object.robotId
+                    robotId: (pickingInfo.object as TRobotLayerData).robotId
                 })),
             selectedRobot || '',
     ), [dispatch, mapId, robotLayerData, selectedRobot, isPreview, previewType]);
@@ -129,6 +123,8 @@ const UserModeMap: FC<{
     const destinations = useMemo(() => destinationIds?.map((id) => destinationEntities[id]) || [],
         [destinationIds, destinationEntities]);
 
+    const isPlaningRoute = useSelector(selectIsPlanningRoute);
+
     const iconLayerData = useMemo(() => pathData
         ? mapRobotElementsToIconData(pathData.elements, selectedDestination?.destinationName, currentRoute, mapId, selectedRobotStatus?.destination, selectedRobotStatus?.currentDestination, destinations)
         : [],
@@ -143,28 +139,36 @@ const UserModeMap: FC<{
                 data: iconLayerData,
                 getPosition: (d: IIconData) => [d.position[0], d.position[1], 0.5],
                 onClick: (pickingInfo) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    if (selectedDestination?.destinationName === pickingInfo.object.name as string || selectedDestination?.destinationName === pickingInfo.object.id as string) {
+                    const iconData = pickingInfo.object as IIconData;
+                    // Disables Selection for non targets when planning the route.
+                    if (isPlaningRoute && iconData.customType !== CustomDestinationType.target) {
+                        return;
+                    }
+                    // Unselects selected icon or selects unselected icon.
+                    if (selectedDestination?.destinationName === iconData.name || selectedDestination?.destinationName === iconData.id) {
                         dispatch(changeSelectedDestination(undefined));
                     } else {
                         dispatch(changeSelectedDestination({
                             mapId,
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            destinationName: pickingInfo.object.name as string || pickingInfo.object.id as string,
+                            destinationName: iconData.name || iconData.id,
                         }));
                     }
                 },
                 getSize: 0.3,
                 getIcon: (iconData: IIconData) => ({
-                    url: svgToDataURL(getIconByDestinationType(iconData)),
+                    url: svgToDataURL(getIconByDestinationType(
+                        iconData,
+                        isPlaningRoute && iconData.customType !== CustomDestinationType.target,
+                    )),
                     height: 128,
                     width: 128,
                 }),
                 updateTriggers: {
-                    getPosition: [selectedDestination]
+                    getPosition: [selectedDestination],
+                    getIcon: [isPlaningRoute],
                 }
             })
-        ], [iconLayerData, selectedDestination, mapId, dispatch, isPreview, previewType]);
+        ], [iconLayerData, selectedDestination, mapId, dispatch, isPreview, previewType, isPlaningRoute]);
 
     const pathLayerData = useMemo(() => pathData
         ? mapRobotElementsToPathData(pathData.elements)
@@ -175,7 +179,6 @@ const UserModeMap: FC<{
         : [
             new PathLayer({
                 ...pathLayerDefaults,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
                 id: `path-layer__${mapId}`,
                 data: pathLayerData,
             })
@@ -223,7 +226,7 @@ const UserModeMap: FC<{
                 }
             }
         }
-    }, [dispatch, followRobot, selectedRobot, robotEntities]);
+    }, [dispatch, followRobot, selectedRobot, robotEntities, isPreview]);
 
     const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
         const interaction = viewStateChagneParameters.interactionState;
