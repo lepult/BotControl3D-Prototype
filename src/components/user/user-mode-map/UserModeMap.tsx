@@ -54,6 +54,8 @@ const UserModeMap: FC<{
 }) => {
     const dispatch = useDispatch();
 
+    // region Selectors
+
     const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
     const resetViewState = useSelector(selectResetViewState);
     const [viewState, setViewState] = useState<TViewState>({
@@ -61,18 +63,13 @@ const UserModeMap: FC<{
         ...initialViewState,
     });
 
-    useEffect(() => {
-        setViewState((prev) => ({
-            ...prev,
-            ...initialViewState,
-            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
-        }));
-    }, [initialViewState, resetViewState, isPreview]);
-
     const selectedRobotId = useSelector(selectSelectedRobotId);
     const selectedRobot = useSelector(selectSelectedRobot);
 
+    const followRobot = useSelector(selectFollowRobot);
+
     // region LayerData
+
     const iconLayerData = useSelector((state: RootState) => selectDestinationsLayerData(state, mapId));
     const pathLayerData = useMemo(() => mapRobotElementsToPathData(
         getPathDataByMapId(mapId)?.elements || []
@@ -83,10 +80,23 @@ const UserModeMap: FC<{
         mapId,
     }));
     const scenegraphLayersData = useMemo(() => getModelsByMapId(mapId), [mapId]);
+
     // endregion
 
-    const followRobot = useSelector(selectFollowRobot);
+    // endregion
 
+    // region Updates
+
+    // Resets the ViewState E.g. if the corresponding Button is clicked.
+    useEffect(() => {
+        setViewState((prev) => ({
+            ...prev,
+            ...initialViewState,
+            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
+        }));
+    }, [initialViewState, resetViewState, isPreview]);
+
+    // Sets the transitionDuration and -Interpolator, when followRobot changes.
     useEffect(() => {
         setViewState((prev) => ({
             ...prev,
@@ -95,13 +105,14 @@ const UserModeMap: FC<{
         }))
     }, [followRobot]);
 
+    // I forgot what this does. TODO Find out!
     useEffect(() => {
         if (!selectedRobotId && robotId && isPreview) {
             dispatch(toggleSelectedRobot({ robotId }));
         }
     }, [dispatch, robotId, isPreview, selectedRobotId]);
 
-    // Makes the camera follow the selected Robot, when followRobot is true.
+    // Makes the ViewState follow the selected Robot automatically, when followRobot is true.
     useEffect(() => {
         if (followRobot && selectedRobotId) {
             if (selectedRobot) {
@@ -127,17 +138,32 @@ const UserModeMap: FC<{
         }
     }, [dispatch, followRobot, selectedRobotId, selectedRobot, isPreview]);
 
+    // endregion
+
+    // region Event Handlers
+
     const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
+        // Stop following the Robot automatically, if User moved the View by interacting with the Map.
         const interaction = viewStateChagneParameters.interactionState;
         if (followRobot && (interaction.isDragging || interaction.isPanning || interaction.isZooming || interaction.isRotating)) {
             dispatch(toggleFollowRobot());
         }
 
+        // Updates the ViewState.
         setViewState((prev) => ({
             ...prev,
             ...viewStateChagneParameters.viewState,
         }));
     }, [dispatch, followRobot]);
+
+    const handleRobotLayerClick = useCallback((pickingInfo: PickingInfo) => {
+        if (isPreview) return;
+        dispatch(toggleSelectedRobot({
+            robotId: (pickingInfo.object as TRobotLayerData).robotId
+        }));
+    }, [dispatch, isPreview]);
+
+    // endregion
 
     const getTooltip = (pickingInfo: PickingInfo) => {
         if (pickingInfo?.layer?.id?.startsWith('destinations') && pickingInfo?.object) {
@@ -156,13 +182,6 @@ const UserModeMap: FC<{
         return null;
     };
 
-    const handleRobotLayerClick = useCallback((pickingInfo: PickingInfo) => {
-        if (isPreview) return;
-        dispatch(toggleSelectedRobot({
-            robotId: (pickingInfo.object as TRobotLayerData).robotId
-        }));
-    }, [dispatch, isPreview]);
-
     return (
         <div
             onContextMenu={(event) => event.preventDefault()}
@@ -170,9 +189,7 @@ const UserModeMap: FC<{
             <DeckGL
                 viewState={viewState}
                 controller={CONTROLLER_DEFAULTS}
-                onViewStateChange={(viewStateChagneParameters) => {
-                    handleNewViewState(viewStateChagneParameters)
-                }}
+                onViewStateChange={handleNewViewState}
                 getTooltip={getTooltip}
             >
                 {(!isPreview || (isPreview && previewType === PreviewType.Floor)) && (
