@@ -1,6 +1,6 @@
 <div align="center">
     <h1>bot-control-3d</h1>
-    <p>An application that can be used to supervise service robots.</p>
+    <p>An application that can be used to supervise service-robots</p>
     <a href="https://github.com/TobitSoftware/chayns-toolkit">
         <img 
             alt="Managed with chayns-toolkit" 
@@ -8,6 +8,12 @@
         />
     </a>
 </div>
+
+---
+
+## Basics
+
+TODO: Add text
 
 ---
 
