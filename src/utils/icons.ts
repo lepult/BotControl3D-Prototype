@@ -153,7 +153,7 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
 
 }
 
-export const getIconByDestinationType = (iconData: IIconData, invalid: boolean): string => {
+export const getIconByDestinationType = (iconData: IIconData): string => {
     let i = null;
     switch (iconData.customType) {
         case CustomDestinationType.target:
@@ -205,12 +205,12 @@ export const getIconByDestinationType = (iconData: IIconData, invalid: boolean):
         }
     }
 
-    const colors = getIconColor(iconData, invalid);
+    const colors = getIconColor(iconData);
 
     return getSvg(i as TFaIcon, colors[0], colors[1], colors[2], colors[3] || 1);
 };
 
-const getIconColor = (iconData: IIconData, invalid: boolean): Color => {
+const getIconColor = (iconData: IIconData): Color => {
     if (iconData.routeData.isFinalDestination) {
         return [255, 183, 77];
     }
@@ -223,5 +223,5 @@ const getIconColor = (iconData: IIconData, invalid: boolean): Color => {
     if (iconData.selected) {
         return [3, 169, 244];
     }
-    return [84, 134, 157, invalid ? 0.5 : 1];
+    return [84, 134, 157, iconData.invalid ? 0.5 : 1];
 };

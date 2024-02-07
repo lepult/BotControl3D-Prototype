@@ -1,7 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
 import { AdminModeType } from '../../types/misc';
-import { changeAdminModeType, changeIsPlanningRoute, changeSelectedDestination, resetViewState } from './actions';
+import {
+    changeAdminModeType,
+    changeIsPlanningRoute,
+    changeSelectedDestination,
+    resetViewState,
+    toggleSelectedDestination
+} from './actions';
 
 const initialState: {
     adminModeType: AdminModeType,
@@ -26,6 +32,15 @@ const reducer = createReducer(initialState, (builder) => {
     builder.addCase(changeSelectedDestination, (draft, { payload }) => {
         draft.selectedDestination = payload;
     });
+
+    builder.addCase(toggleSelectedDestination, (draft, { payload }) => {
+        console.log('payload', payload, draft.selectedDestination);
+        if (payload === draft.selectedDestination) {
+            draft.selectedDestination = undefined;
+        } else {
+            draft.selectedDestination = payload;
+        }
+    })
 
     builder.addCase(changeIsPlanningRoute, (draft, { payload }) => {
         if (payload.unselectDestination) {

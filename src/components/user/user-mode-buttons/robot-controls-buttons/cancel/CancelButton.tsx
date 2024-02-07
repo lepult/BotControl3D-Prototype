@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
 import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
-import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
+import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { postCancelRobotFetch } from '../../../../../api/robot/postCancelRobot';
 import { selectRobotById } from '../../../../../redux-modules/robot-status/selectors';
 import { getMapRobotStatus } from '../../../../../utils/robotStatusHelper';
@@ -24,7 +24,7 @@ const CancelButton = () => {
         }]
     });
 
-    const selectedRobotId = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
     const selectedRobot = useSelector(selectRobotById(selectedRobotId || ''));
     const mapRobotStatus = useMemo(() => getMapRobotStatus(selectedRobot?.robotStatus, selectedRobot?.puduRobotStatus),
         [selectedRobot]);

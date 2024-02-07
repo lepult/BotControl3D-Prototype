@@ -14,6 +14,7 @@ type TChangeIsPlanningRoute = {
 export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType');
 
 export const changeSelectedDestination = createAction<number | undefined>('misc/changeSelectedDestination');
+export const toggleSelectedDestination = createAction<number>('misc/toggleSelectedDestination');
 
 export const changeIsPlanningRoute = createAction<TChangeIsPlanningRoute>('misc/changeIsPlanningRoute');
 

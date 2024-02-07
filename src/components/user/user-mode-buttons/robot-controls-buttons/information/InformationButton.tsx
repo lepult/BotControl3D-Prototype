@@ -5,14 +5,14 @@ import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
 import { Button } from 'chayns-components';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
+import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { selectRobotById } from '../../../../../redux-modules/robot-status/selectors';
 import { getMapRobotStatus } from '../../../../../utils/robotStatusHelper';
 
 const InformationButton = () => {
-    const selectedRobot = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
 
-    const robot = useSelector(selectRobotById(selectedRobot || ''));
+    const robot = useSelector(selectRobotById(selectedRobotId || ''));
 
     const status = useMemo(() => [{
         name: 'Status',
@@ -46,7 +46,7 @@ const InformationButton = () => {
 
     return (
         <Button
-            disabled={!selectedRobot}
+            disabled={!selectedRobotId}
             className={clsx('icon-button pointer-events', {
                 'button--secondary': !isDialogOpen,
             })}

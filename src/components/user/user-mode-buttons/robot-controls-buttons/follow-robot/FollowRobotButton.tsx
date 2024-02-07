@@ -5,17 +5,17 @@ import clsx from 'clsx';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { toggleFollowRobot } from '../../../../../redux-modules/map/actions';
-import { selectFollowRobot, selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
+import { selectFollowRobot, selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 
 const FollowRobotButton = () => {
     const dispatch = useDispatch();
 
-    const selectedRobot = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
     const followRobot = useSelector(selectFollowRobot);
 
     return (
         <Button
-            disabled={!selectedRobot}
+            disabled={!selectedRobotId}
             className={clsx('icon-button pointer-events', {
                 'button--secondary': !followRobot,
             })}

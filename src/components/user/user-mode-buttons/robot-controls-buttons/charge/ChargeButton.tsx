@@ -4,7 +4,7 @@ import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useSelector } from 'react-redux';
-import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
+import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { postChargeRobotFetch } from '../../../../../api/robot/postChargeRobot';
 import { selectRobotById } from '../../../../../redux-modules/robot-status/selectors';
 import { getMapRobotStatus } from '../../../../../utils/robotStatusHelper';
@@ -13,7 +13,7 @@ import { MapRobotStatus } from '../../../../../types/deckgl-map';
 import { CustomDestinationType } from '../../../../../types/api/destination';
 
 const ChargeButton = () => {
-    const selectedRobotId = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
     const selectedRobot = useSelector(selectRobotById(selectedRobotId || ''));
     const mapRobotStatus = useMemo(() => getMapRobotStatus(selectedRobot?.robotStatus, selectedRobot?.puduRobotStatus),
         [selectedRobot]);

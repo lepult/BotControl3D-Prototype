@@ -6,34 +6,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../../constants/deckGl';
-import { getIconDataFromDestinations, IIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
+import { IIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
-    selectSelectedRobot
+    selectSelectedRobotId
 } from '../../../redux-modules/map/selectors';
-import {
-    selectIsPlanningRoute,
-    selectResetViewState,
-    selectSelectedDestinationId,
-} from '../../../redux-modules/misc/selectors';
-import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
+import { selectResetViewState, } from '../../../redux-modules/misc/selectors';
+import { toggleSelectedDestination } from '../../../redux-modules/misc/actions';
 import { PreviewType, TViewState } from '../../../types/deckgl-map';
-import {
-    selectRobotEntities,
-    selectRobotIds,
-    selectRobotStatusById
-} from '../../../redux-modules/robot-status/selectors';
+import { selectRobotLayerData, selectSelectedRobot } from '../../../redux-modules/robot-status/selectors';
 import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../../redux-modules/map/actions';
 import { meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
 import { svgToDataURL } from '../../../utils/marker';
 import { getIconByDestinationType } from '../../../utils/icons';
-import { selectDestinationsByMapId } from '../../../redux-modules/destination/selectors';
+import { selectDestinationsLayerData } from '../../../redux-modules/destination/selectors';
 import { TRobotLayerData } from './RobotLayer';
-import { getRobotLayerData } from '../../../utils/robotLayers';
-import { TState } from '../../../redux-modules/robot-status/slice';
-import { CustomDestinationType } from '../../../types/api/destination';
 import { RootState } from '../../../redux-modules';
 import {
     DEFAULT_DESTINATION_LAYER_PROPS,
@@ -80,46 +69,21 @@ const UserModeMap: FC<{
         }));
     }, [initialViewState, resetViewState, isPreview]);
 
-    const selectedDestinationId = useSelector(selectSelectedDestinationId);
-    const selectedRobotId = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
+    const selectedRobot = useSelector(selectSelectedRobot);
 
-    const selectedRobotStatus = useSelector(selectRobotStatusById(selectedRobotId || ''));
-    const currentRoute = useMemo(() => selectedRobotStatus?.currentRoute, [selectedRobotStatus]);
-
-
-    // TODO Write custom selector with change detection.
-    const robotIds = useSelector(selectRobotIds);
-    const robotEntities = useSelector(selectRobotEntities);
-    const robots = useMemo(() => robotIds
-        .map((id) => robotEntities[id])
-        .filter((robot) => (
-            robot?.robotStatus?.currentMap?.id === mapId
-            && (robot?.robotStatus?.robotId === robotId || !robotId)
-        ))
-    , [mapId, robotIds, robotEntities, robotId]);
-
-    const robotLayerData = useMemo<TRobotLayerData[]>(() => robots
-            .filter((robot) => robot?.puduRobotStatus)
-            .map((robot) => getRobotLayerData(robot as TState, selectedRobotId)),
-        [robots, selectedRobotId]);
-
+    // region LayerData
+    const iconLayerData = useSelector((state: RootState) => selectDestinationsLayerData(state, mapId));
+    const pathLayerData = useMemo(() => mapRobotElementsToPathData(
+        getPathDataByMapId(mapId)?.elements || []
+    ), [mapId]);
+    const robotLayerData = useSelector((state: RootState) => selectRobotLayerData(state, {
+        isPreview,
+        previewMapRobotId: robotId,
+        mapId,
+    }));
     const scenegraphLayersData = useMemo(() => getModelsByMapId(mapId), [mapId]);
-
-
-    const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
-    const destinations = useSelector((state: RootState) => selectDestinationsByMapId(state, mapId));
-
-    const isPlanningRoute = useSelector(selectIsPlanningRoute);
-
-    const iconLayerData = useMemo(() => getIconDataFromDestinations(
-        destinations,
-        selectedDestinationId,
-        currentRoute,
-        selectedRobotStatus?.destination,
-        selectedRobotStatus?.currentDestination
-    ), [currentRoute, destinations, selectedDestinationId, selectedRobotStatus]);
-
-    const pathLayerData = useMemo(() => mapRobotElementsToPathData(pathData?.elements || []), [pathData]);
+    // endregion
 
     const followRobot = useSelector(selectFollowRobot);
 
@@ -137,16 +101,15 @@ const UserModeMap: FC<{
         }
     }, [dispatch, robotId, isPreview, selectedRobotId]);
 
+    // Makes the camera follow the selected Robot, when followRobot is true.
     useEffect(() => {
         if (followRobot && selectedRobotId) {
-            const robot = robotEntities[selectedRobotId];
-
-            if (robot) {
+            if (selectedRobot) {
                 const [longitude, latitude] = meterToCoordinate([
-                    robot?.puduRobotStatus?.robotPose?.x || 0,
-                    robot?.puduRobotStatus?.robotPose?.y || 0,
+                    selectedRobot?.puduRobotStatus?.robotPose?.x || 0,
+                    selectedRobot?.puduRobotStatus?.robotPose?.y || 0,
                 ]);
-                const bearing = robotAngleToViewStateBearing(robotEntities[selectedRobotId]?.puduRobotStatus?.robotPose?.angle || 0);
+                const bearing = robotAngleToViewStateBearing(selectedRobot.puduRobotStatus?.robotPose?.angle || 0);
 
                 setViewState((prev) => ({
                     ...prev,
@@ -157,12 +120,12 @@ const UserModeMap: FC<{
                     bearing,
                 }));
 
-                if (robot.robotStatus?.currentMap) {
-                    dispatch(changeSelectedMap({ mapId: robot.robotStatus.currentMap?.id }))
+                if (selectedRobot.robotStatus?.currentMap) {
+                    dispatch(changeSelectedMap({ mapId: selectedRobot.robotStatus.currentMap?.id }))
                 }
             }
         }
-    }, [dispatch, followRobot, selectedRobotId, robotEntities, isPreview]);
+    }, [dispatch, followRobot, selectedRobotId, selectedRobot, isPreview]);
 
     const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
         const interaction = viewStateChagneParameters.interactionState;
@@ -180,29 +143,14 @@ const UserModeMap: FC<{
         if (pickingInfo?.layer?.id?.startsWith('destinations') && pickingInfo?.object) {
             const iconData = pickingInfo.object as IIconData;
             return {
-                html: `
-                                <h3 style='margin-top: 0'>
-                                    ${iconData.name}
-                                </h3>
-                                ${iconData.customType
-                    ? `
-                                        <p>
-                                            ${iconData.customType}
-                                        </p>
-                                    ` : ''}
-                                `
+                html: `<h3 style='margin-top: 0'>${iconData.name}</h3>
+                    ${iconData.customType ? `<p>${iconData.customType}</p>` : ''}`
             };
         }
 
         if (pickingInfo?.layer?.id?.startsWith('robots') && pickingInfo?.object) {
             const robotData = pickingInfo.object as TRobotLayerData;
-            return {
-                html: `
-                                <h3 style='margin-top: 0'>
-                                    ${robotData.name}
-                                </h3>
-                            `,
-            };
+            return { html: `<h3 style='margin-top: 0'>${robotData.name}</h3>` };
         }
 
         return null;
@@ -236,26 +184,15 @@ const UserModeMap: FC<{
                         {...DEFAULT_DESTINATION_LAYER_PROPS}
                         data={iconLayerData}
                         id={`destinations__${mapId}`}
-                        getIcon={(iconData: IIconData) => getLayerIcon(svgToDataURL(getIconByDestinationType(
-                            iconData,
-                            isPlanningRoute && iconData.customType !== CustomDestinationType.target,
-                        )))}
+                        getIcon={(iconData: IIconData) => getLayerIcon(svgToDataURL(getIconByDestinationType(iconData)))}
                         onClick={(pickingInfo: PickingInfo) => {
                             const iconData = pickingInfo.object as IIconData;
                             // Disables Selection for non targets when planning the route.
-                            if (isPlanningRoute && iconData.customType !== CustomDestinationType.target) {
+                            if (iconData.invalid) {
                                 return;
                             }
                             // Unselects selected icon or selects unselected icon.
-                            if (selectedDestinationId === iconData.id) {
-                                dispatch(changeSelectedDestination(undefined));
-                            } else {
-                                dispatch(changeSelectedDestination(iconData.id));
-                            }
-                        }}
-                        updateTriggers={{
-                            getPosition: [selectedDestinationId],
-                            getIcon: [isPlanningRoute],
+                            dispatch(toggleSelectedDestination(iconData.id));
                         }}
                     />
                 )}

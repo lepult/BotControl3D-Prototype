@@ -13,7 +13,6 @@ import {
 } from '../../../../../redux-modules/robot-status/selectors';
 import RouteInput from './RouteInput';
 import {
-    selectDestinationById,
     selectDestinationEntities,
     selectDestinationIds
 } from '../../../../../redux-modules/destination/selectors';
@@ -22,9 +21,8 @@ import { postSendRobotFetch } from '../../../../../api/robot/postSendRobot';
 import {
     selectIsPlanningRoute,
     selectSelectedDestination,
-    selectSelectedDestinationId
 } from '../../../../../redux-modules/misc/selectors';
-import { selectSelectedRobot } from '../../../../../redux-modules/map/selectors';
+import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
 import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
 
@@ -66,12 +64,12 @@ const RouteButton = () => {
 
     const selectedDestination = useSelector(selectSelectedDestination);
 
-    const selectedRobotOnMap = useSelector(selectSelectedRobot);
-    const selectedRobot = useSelector(selectRobotById(selectedRobotOnMap || ''));
+    const selectedRobotId = useSelector(selectSelectedRobotId);
+    const selectedRobot = useSelector(selectRobotById(selectedRobotId || ''));
 
     const [isFetching, setIsFetching] = useState(false);
     const handleSendRobot = () => {
-        if (!selectedRobotOnMap || !selectedDestination) {
+        if (!selectedRobotId || !selectedDestination) {
             void errorDialog.open()
             return;
         }
@@ -79,7 +77,7 @@ const RouteButton = () => {
         const requestBody: TDestination[] = [selectedDestination.destination];
 
         setIsFetching(true);
-        postSendRobotFetch(selectedRobotOnMap, requestBody)
+        postSendRobotFetch(selectedRobotId, requestBody)
             .then((success) => {
                 setIsFetching(false);
                 if (success) {
@@ -121,16 +119,16 @@ const RouteButton = () => {
                     icon="robot"
                     placeholder="Roboter"
                     setSelected={(robotId) => dispatch(toggleSelectedRobot({ robotId: (robotId as string | null) || undefined }))}
-                    selected={selectedRobotOnMap ? {
-                        id: selectedRobotOnMap,
-                        showName: robotEntities[selectedRobotOnMap]?.robotStatus?.robotName as string
+                    selected={selectedRobotId ? {
+                        id: selectedRobotId,
+                        showName: robotEntities[selectedRobotId]?.robotStatus?.robotName as string
                     } : null}
                 />
                 <div className="send-button-wrapper">
                     {isFetching ? <SmallWaitCursor show/> : (
                         <Button
                             onClick={() => handleSendRobot()}
-                            disabled={!selectedDestination || !selectedRobotOnMap}
+                            disabled={!selectedDestination || !selectedRobotId}
                         >
                             <i style={{ marginRight: '5px' }} className="far fa-paper-plane"/>
                             Senden
@@ -148,7 +146,7 @@ const RouteButton = () => {
             })}
             onClick={() => dispatch(changeIsPlanningRoute({
                 isPlanning: true,
-                unselectDestination: selectedDestination.destination.customType !== CustomDestinationType.target,
+                unselectDestination: selectedDestination?.destination.customType !== CustomDestinationType.target,
             }))}
         >
             <i className="fa fa-route"/>
