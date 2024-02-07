@@ -8,7 +8,7 @@ import { getAllDestinationsAction } from '../redux-modules/destination/actions';
 import { selectRobotIds } from '../redux-modules/robot-status/selectors';
 import { getDevicesDataAction, getRobotDataAction } from '../redux-modules/robot-status/actions';
 import UserMode from './user/UserMode';
-import addWebsocket from '../utils/websocketHelper';
+import addWebsocket from '../utils/websocket/websocketHelper';
 import { useProductionBackend } from '../constants/env';
 import {
     updatePuduApiStatus,

@@ -22,6 +22,4 @@ export const sortMaps = (maps?: TMapWithDestinations[]) => maps?.sort((a, b) => 
     return aName.localeCompare(bName);
 });
 
-export const sortSelectMaps = (maps: TSelectMap[]) => maps.sort((a, b) => a.showName.localeCompare(b.showName));
-
 export const sortDestinations = (destinations?: TDestination[]) => destinations?.sort((a, b) => a.name.localeCompare(b.name));

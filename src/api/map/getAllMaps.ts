@@ -1,6 +1,6 @@
 import { PUDU_API_URL } from '../url';
 import { getDefaultHeaders } from '../helpers';
-import { BadResponseCodeError } from '../../utils/error';
+import { BadResponseCodeError } from '../error';
 import { TMap } from '../../types/api/map';
 
 export const getAllMapsFetch = async (): Promise<TMap[]> => {

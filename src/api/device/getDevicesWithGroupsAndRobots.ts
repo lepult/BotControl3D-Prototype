@@ -1,7 +1,7 @@
 // region Imports
 import { PUDU_API_URL } from '../url';
 import { getDefaultHeaders } from '../helpers';
-import { BadResponseCodeError } from '../../utils/error';
+import { BadResponseCodeError } from '../error';
 import { TDevicesData } from '../../types/api/device';
 // endregion
 

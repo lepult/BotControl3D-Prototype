@@ -36,7 +36,6 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
 
     return pathData;
 };
-// endregion
 
 const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: boolean) => {
     const a = array.slice(0);
@@ -53,6 +52,10 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
 
     return a;
 };
+
+// endregion
+
+// region IconData
 
 type TMappedDestination = {
     destination: TDestination,
@@ -83,7 +86,7 @@ export type IIconData = {
 export const getIconDataFromDestinations = (mappedDestinations: TMappedDestination[], selectedDestination?: number, currentRoute?: TRoute, currentDestination?: TDestination, previousDestination?: TDestination, isPlanningRoute?: boolean) => {
     const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
 
-    const iconData = mappedDestinations
+    return mappedDestinations
         .map(({ destination, mapElement }) => {
             const indexInRoute = currentRoute?.routeDestinations.findIndex((routeDestination) => routeDestination.destination.id === destination.id);
             const routeDestination = currentRoute?.routeDestinations[indexInRoute || -1];
@@ -107,5 +110,6 @@ export const getIconDataFromDestinations = (mappedDestinations: TMappedDestinati
                 },
             }
         });
-    return iconData;
 }
+
+// endregion

@@ -20,3 +20,7 @@ export const radiansToDegrees = (radians: number) => {
     const pi = Math.PI;
     return radians * (180/pi);
 }
+
+export const svgToDataURL = (svg: string): string => {
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+};

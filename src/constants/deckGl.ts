@@ -4,9 +4,9 @@ import { PathStyleExtension } from '@deck.gl/extensions/typed';
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { IconLayerProps, PathLayerProps } from '@deck.gl/layers/typed';
 import { IIconData, IPathData, TViewState } from '../types/deckgl-map';
-import { svgToDataURL } from '../utils/marker';
 import { blueMarker, redMarker } from '../assets/markers';
 import { MapElementType } from '../types/pudu-api/robotMap';
+import { svgToDataURL } from '../utils/conversionHelper';
 
 export const INITIAL_VIEW_STATE: TViewState = {
     longitude: 0,
