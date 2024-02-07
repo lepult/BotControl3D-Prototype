@@ -1,17 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ScenegraphLayerProps } from '@deck.gl/mesh-layers/typed';
-import { PathStyleExtension } from '@deck.gl/extensions/typed';
-import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
-import { IconLayerProps, PathLayerProps } from '@deck.gl/layers/typed';
-import { IIconData, IPathData, TViewState } from '../types/deckgl-map';
-import { blueMarker, redMarker } from '../assets/markers';
-import { MapElementType } from '../types/pudu-api/robotMap';
-import { svgToDataURL } from '../utils/conversionHelper';
+import { TViewState } from '../types/deckgl-map';
 
 export const INITIAL_VIEW_STATE: TViewState = {
     longitude: 0,
     latitude: 0,
-    // @ts-ignore
     zoom: 21,
     maxZoom: 25,
     minZoom: 18,
