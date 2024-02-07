@@ -1,4 +1,4 @@
-import { Color, COORDINATE_SYSTEM, PickingInfo } from '@deck.gl/core/typed';
+import { COORDINATE_SYSTEM, PickingInfo } from '@deck.gl/core/typed';
 import { IconLayer } from '@deck.gl/layers/typed';
 import { SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { OBJLoader } from '@loaders.gl/obj';
@@ -7,15 +7,7 @@ import { getIconByMapRobotStatus } from './icons';
 import { getMapRobotStatus } from './robotStatusHelper';
 import { getRobotColor, getRobotOrientation } from './deckGlDataAccessors';
 import { TState } from '../redux-modules/robot-status/slice';
-
-export type TRobotLayerData = {
-    name: string,
-    robotId: string,
-    position: [number, number],
-    icon: string,
-    color: Color,
-    orientation: [number, number, number],
-}; // TODO Add this type to its own file.
+import { TRobotLayerData } from '../types/deckgl-map';
 
 const defaultProps = {
     coordinateSystem: COORDINATE_SYSTEM.METER_OFFSETS,

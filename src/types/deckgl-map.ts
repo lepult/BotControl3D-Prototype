@@ -93,3 +93,23 @@ export enum PreviewType {
     Robot,
     Floor,
 }
+
+export enum DragMode {
+    translate = 'translate',
+    rotate = 'rotate',
+}
+
+export type TUndoStackItem = {
+    id: string,
+    position: [number, number, number],
+    orientation: [number, number, number],
+}
+
+export type TRobotLayerData = {
+    name: string,
+    robotId: string,
+    position: [number, number],
+    icon: string,
+    color: Color,
+    orientation: [number, number, number],
+};

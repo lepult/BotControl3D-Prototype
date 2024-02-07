@@ -1,9 +1,8 @@
 import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
 import { OBJLoader } from '@loaders.gl/obj';
 import { PathStyleExtension } from '@deck.gl/extensions/typed';
-import { IPathData } from '../types/deckgl-map';
+import { IPathData, TRobotLayerData } from '../types/deckgl-map';
 import { MapElementType } from '../types/pudu-api/robotMap';
-import { TRobotLayerData } from '../components/user/user-mode-map/RobotLayer';
 import { IIconData } from '../utils/dataHelper';
 import { ModelType } from './models';
 
