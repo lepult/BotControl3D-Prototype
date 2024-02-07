@@ -1,4 +1,4 @@
-import { COORDINATE_SYSTEM } from '@deck.gl/core/typed';
+import { Color, COORDINATE_SYSTEM, Position } from '@deck.gl/core/typed';
 import { OBJLoader } from '@loaders.gl/obj';
 import { PathStyleExtension } from '@deck.gl/extensions/typed';
 import { IPathData, TRobotLayerData } from '../types/deckgl-map';
@@ -67,3 +67,19 @@ export const DEFAULT_SCENEGRAPH_LAYER_PROPS = {
     getPosition: (data: ModelType) => data.position,
     getOrientation: (data: ModelType) => data.orientation,
 };
+
+type TAxisLayerData = {
+    path: [Position, Position];
+    color: Color,
+}
+
+const AXIS_LAYER_DATA: TAxisLayerData[] = [{
+    path: [[10, 0, 0], [0, 0, 0]],
+    color: [255, 0, 0]
+}, {
+    path: [[0, 10, 0], [0, 0, 0]],
+    color: [0, 255, 0]
+}, {
+    path: [[0, 0, 10], [0, 0, 0]],
+    color: [0, 0, 255]
+}];

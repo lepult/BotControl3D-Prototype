@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 import { pathDataT21OG, pathDataTobitEG, pathDataT22OG, pathDataT12OG, pathDataAtriumDome } from './pathData';
 import { floorModelsAtriumDome, floorModelsEg, floorModelsT21OG, floorModelsT22OG } from './models';
 import { TRobotMap } from '../types/pudu-api/robotMap';

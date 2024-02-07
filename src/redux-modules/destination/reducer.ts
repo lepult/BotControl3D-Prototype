@@ -3,7 +3,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { getAllDestinationsAction } from './actions';
 import { FetchState } from '../../types/fetch';
 import { TDestination } from '../../types/api/destination';
-import { getPathDataByMapId } from '../../constants/puduData';
+import { getPathDataByMapId } from '../../constants/getLayerData';
 import { MapElementType, TMapElement } from '../../types/pudu-api/robotMap';
 
 const initialState: {
@@ -34,8 +34,8 @@ const reducer = createReducer(initialState, (builder) => {
     });
     builder.addCase(getAllDestinationsAction.fulfilled, (draft, {  payload }) => {
         draft.fetchState = FetchState.fulfilled;
+
         const allMapIds = [...new Set(payload.map((destination) => destination.mapId))];
-        console.log('allMapIds', allMapIds);
         const mapElementsByMapId: {
             [key: number]: TMapElement[],
         } = {};
@@ -45,15 +45,6 @@ const reducer = createReducer(initialState, (builder) => {
                     MapElementType.source,
                     MapElementType.chargingPile
                 ].includes(element.type as MapElementType));
-        });
-        console.log('mapElementsByMapId', mapElementsByMapId);
-        const test = [];
-        payload.forEach((destination) => {
-            const mapElement = mapElementsByMapId[destination.mapId]
-                .find((element) => element.name === destination.name || element.id === destination.name);
-            if (!mapElement) {
-                test.push(destination);
-            }
         });
 
         payload.forEach((destination) => {

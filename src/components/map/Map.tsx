@@ -1,13 +1,13 @@
 import React, { FC, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
-import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
+import { IconLayer, PathLayer, PolygonLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../constants/deckGl';
 import { IIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
-import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
+import { getModelsByMapId, getPathDataByMapId } from '../../constants/getLayerData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
@@ -561,7 +561,6 @@ const Map: FC<{
                         updateTriggers={{ getColor: [selectedRobotId] }}
                     />
                 )}
-            {/* TODO Add demoPolygonLayer */}
             </DeckGL>
         </div>
     );
