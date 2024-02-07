@@ -8,6 +8,7 @@ type TChangeAdminModeType = {
 
 type TChangeIsPlanningRoute = {
     isPlanning: boolean,
+    unselectDestination?: boolean,
 }
 
 export const changeAdminModeType = createAction<TChangeAdminModeType>('misc/changeAdminModeType');

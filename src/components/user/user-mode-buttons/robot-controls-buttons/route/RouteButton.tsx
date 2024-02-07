@@ -146,7 +146,10 @@ const RouteButton = () => {
             className={clsx('icon-button pointer-events', {
                 'button--secondary': !selectedRobot?.robotStatus?.currentRoute,
             })}
-            onClick={() => dispatch(changeIsPlanningRoute({ isPlanning: true }))}
+            onClick={() => dispatch(changeIsPlanningRoute({
+                isPlanning: true,
+                unselectDestination: selectedDestination.destination.customType !== CustomDestinationType.target,
+            }))}
         >
             <i className="fa fa-route"/>
         </Button>

@@ -24,16 +24,17 @@ const reducer = createReducer(initialState, (builder) => {
     });
 
     builder.addCase(changeSelectedDestination, (draft, { payload }) => {
-        console.log('payload', payload);
         draft.selectedDestination = payload;
     });
 
     builder.addCase(changeIsPlanningRoute, (draft, { payload }) => {
+        if (payload.unselectDestination) {
+            draft.selectedDestination = undefined;
+        }
         draft.isPlanningRoute = payload.isPlanning;
     });
 
     builder.addCase(resetViewState, (draft) => {
-        console.log('resetViewState');
         draft.resetViewState++;
     });
 });
