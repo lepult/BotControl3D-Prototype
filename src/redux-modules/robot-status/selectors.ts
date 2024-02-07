@@ -1,10 +1,7 @@
-import { createDraftSafeSelector, createSelector } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { robotStatusName, TState } from './slice';
 import { getRobotLayerData } from '../../utils/robotLayers';
-
-export const selectRobotStatus = (state: RootState) => state[robotStatusName];
-export const selectRobotStatusFetchState = (state: RootState) => state[robotStatusName].fetchState;
 
 export const selectRobotIds = (state: RootState) => state[robotStatusName].ids;
 
@@ -19,16 +16,6 @@ export const selectRobotStatusById = (robotId: string) => (state: RootState) => 
 export const selectRobotById = (robotId: string) => (state: RootState) => state[robotStatusName].entities[robotId];
 
 export const selectSelectedRobot = (state: RootState) => state[robotStatusName].entities[state.map.selectedRobot || ''];
-
-export const selectRobotsByMapId = createDraftSafeSelector(
-    [
-        (state: RootState) => state[robotStatusName],
-        (_: RootState, mapId: number) => mapId,
-    ],
-    (robot, mapId) => robot.ids
-        .filter((id) => robot.entities[id]?.robotStatus?.currentMap?.id === mapId)
-        .map((id) => robot.entities[id]) as TState[],
-);
 
 type TSelectRobotLayerData = {
     isPreview?: boolean,
