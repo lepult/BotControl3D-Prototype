@@ -120,7 +120,7 @@ const getPuduMapRobotStatus = (puduApiRobotStatus: TPuduApiRobotStatus): MapRobo
     let mapRobotStatus: MapRobotStatus | undefined;
 
     if (!puduApiRobotStatus) {
-        return mapRobotStatus;
+        return undefined;
     }
 
     if (puduApiRobotStatus?.chargeStage?.toLowerCase() !== RobotStatusLowerCase.Idle) {

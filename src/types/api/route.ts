@@ -1,6 +1,4 @@
-// region Imports
 import { TDestination } from './destination';
-// endregion
 
 export type TRoute = {
     id: number;
