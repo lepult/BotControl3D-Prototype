@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import UserModeMap from '../../user/user-mode-map/UserModeMap';
-import FollowRobotButton from '../../user/user-mode-buttons/robot-controls-buttons/follow-robot/FollowRobotButton';
-import ResetViewButton from '../../user/user-mode-buttons/interaction-buttons/ResetViewButton';
+import Map from '../../map/Map';
+import FollowRobotButton from '../../map/user-mode-buttons/robot-controls-buttons/follow-robot/FollowRobotButton';
+import ResetViewButton from '../../map/user-mode-buttons/interaction-buttons/ResetViewButton';
 import { PreviewType } from '../../../types/deckgl-map';
 
-const FloorPreview: FC<{
+const Preview: FC<{
     robotId?: string,
     mapId: number,
     previewType: PreviewType,
@@ -35,7 +35,7 @@ const FloorPreview: FC<{
             {robotId && <FollowRobotButton/>}
             <ResetViewButton/>
         </div>
-        <UserModeMap
+        <Map
             mapId={mapId}
             robotId={robotId}
             isPreview
@@ -44,4 +44,4 @@ const FloorPreview: FC<{
     </div>
 );
 
-export default FloorPreview;
+export default Preview;

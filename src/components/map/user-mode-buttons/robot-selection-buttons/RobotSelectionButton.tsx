@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
-import { selectSelectedRobot } from '../../../../redux-modules/map/selectors';
+import { selectSelectedRobotId } from '../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../redux-modules/map/actions';
 
 const RobotSelectionButton: FC<{
@@ -16,7 +16,7 @@ const RobotSelectionButton: FC<{
     const dispatch = useDispatch();
 
     const robot = useSelector(selectRobotById(robotId));
-    const selectedRobot = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
 
     if (!robot?.puduRobotStatus?.robotPose) {
         return null;
@@ -25,7 +25,7 @@ const RobotSelectionButton: FC<{
     return (
         <Button
             className={clsx('pointer-events robot-selection-button', {
-                'button--secondary': selectedRobot !== robotId
+                'button--secondary': selectedRobotId !== robotId
             })}
             onClick={() => {
                 dispatch(toggleSelectedRobot({ robotId }));

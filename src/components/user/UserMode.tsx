@@ -5,10 +5,10 @@ import { setRefreshScrollEnabled } from 'chayns-api';
 // @ts-ignore
 import { SmallWaitCursor } from 'chayns-components';
 import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
-import UserModeMap from './user-mode-map/UserModeMap';
-import UserModeButtons from './user-mode-buttons/UserModeButtons';
+import Map from '../map/Map';
 import { selectMapsFetchState, selectSelectedMap } from '../../redux-modules/map/selectors';
 import { FetchState } from '../../types/fetch';
+import UserModeButtons from '../map/user-mode-buttons/UserModeButtons';
 
 const UserMode = () => {
     useEffect(() => {
@@ -37,7 +37,7 @@ const UserMode = () => {
                 </div>
             )}
             {selectedMap
-                ? <UserModeMap mapId={selectedMap}/>
+                ? <Map mapId={selectedMap}/>
                 : <div>Fehler</div>}
 
         </div>

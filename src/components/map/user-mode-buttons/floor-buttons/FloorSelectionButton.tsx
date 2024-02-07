@@ -4,7 +4,7 @@ import clsx from 'clsx';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMapById, selectSelectedMap, selectSelectedRobot } from '../../../../redux-modules/map/selectors';
+import { selectMapById, selectSelectedMap, selectSelectedRobotId } from '../../../../redux-modules/map/selectors';
 import { getPathDataByMapId } from '../../../../constants/puduData';
 import { changeSelectedMap, setFollowRobot } from '../../../../redux-modules/map/actions';
 import { selectRobotStatusById } from '../../../../redux-modules/robot-status/selectors';
@@ -18,7 +18,7 @@ const FloorSelectionButton: FC<{
     const selectedMap = useSelector(selectSelectedMap);
     const map = useSelector(selectMapById(mapId));
     const pathData = getPathDataByMapId(mapId);
-    const selectedRobotId = useSelector(selectSelectedRobot);
+    const selectedRobotId = useSelector(selectSelectedRobotId);
     const selectedRobot = useSelector(selectRobotStatusById(selectedRobotId || ''));
 
     if (map.hidden || !pathData) {

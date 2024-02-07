@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { setRefreshScrollEnabled } from 'chayns-api';
 import FloorsList from './floors-list/FloorsList';
 import { selectAdminModeType, selectEditingMapId } from '../../redux-modules/misc/selectors';
-import EditorMap from './floors-list/editor-map/EditorMap';
 import { AdminModeType } from '../../types/misc';
 import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import RobotsList from './robots-list/RobotsList';
+import Map from '../map/Map';
+import EditorMapButtons from '../map/editor-map-buttons/EditorMapButtons';
+import { ModelType } from '../../constants/models';
+import { TViewState } from '../../types/deckgl-map';
 
 const AdminMode = () => {
     const adminModeType = useSelector(selectAdminModeType);
     const editingMapId = useSelector(selectEditingMapId);
+
+    const [floorModels, setFloorModels] = useState<ModelType[]>([]);
+    const [viewState, setViewState] = useState<TViewState>();
 
     useEffect(() => {
         if (adminModeType === AdminModeType.default) {
@@ -18,6 +24,7 @@ const AdminMode = () => {
             removeFooter(false);
         }
         if (adminModeType === AdminModeType.editMap) {
+            updateChaynsViewmode(ChaynsViewMode.wide);
             void setRefreshScrollEnabled(false);
         } else {
             void setRefreshScrollEnabled(true);
@@ -26,8 +33,24 @@ const AdminMode = () => {
 
     if (adminModeType === AdminModeType.editMap && editingMapId) {
         return (
-            <EditorMap mapId={editingMapId} />
-        );
+            <div>
+                <Map
+                    mapId={editingMapId}
+                    isEditor
+                    setFloorModels={setFloorModels}
+                    setViewState={setViewState}
+                />
+                <EditorMapButtons
+                    floorModels={floorModels}
+                    viewState={viewState}
+                    mapId={editingMapId}
+                />
+            </div>
+
+        )
+        // return (
+        //     <EditorMap mapId={editingMapId} />
+        // );
     }
 
     return (

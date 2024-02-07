@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import './userModeButtons.scss';
+import '../buttons.scss';
 import { useSelector } from 'react-redux';
 import { useUser, useWindowMetrics } from 'chayns-api';
 import { selectMapIds } from '../../../redux-modules/map/selectors';

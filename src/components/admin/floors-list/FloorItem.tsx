@@ -7,7 +7,7 @@ import { changeAdminModeType } from '../../../redux-modules/misc/actions';
 import { AdminModeType } from '../../../types/misc';
 import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
 import DestinationList from './destination-list/DestinationList';
-import FloorPreview from '../shared/FloorPreview';
+import Preview from '../shared/Preview';
 import { PreviewType } from '../../../types/deckgl-map';
 
 const FloorItem: FC<{
@@ -45,15 +45,6 @@ const FloorItem: FC<{
                 />
             )}
         >
-            {showMapPreview && (
-                <div className="accordion__content">
-                    <FloorPreview
-                        mapId={mapId}
-                        previewType={PreviewType.Floor}
-                    />
-                </div>
-            )}
-            <DestinationList mapId={mapId}/>
             <div className="accordion__content">
                 {!showMapPreview && (
                     <div style={{ textAlign: 'center' }}>
@@ -65,6 +56,15 @@ const FloorItem: FC<{
                     </div>
                 )}
             </div>
+            {showMapPreview && (
+                <div className="accordion__content">
+                    <Preview
+                        mapId={mapId}
+                        previewType={PreviewType.Floor}
+                    />
+                </div>
+            )}
+            <DestinationList mapId={mapId}/>
         </Accordion>
     );
 }
