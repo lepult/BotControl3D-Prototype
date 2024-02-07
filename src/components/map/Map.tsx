@@ -5,25 +5,24 @@ import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
-import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../../constants/deckGl';
-import { IIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
-import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
+import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../constants/deckGl';
+import { IIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
+import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
     selectSelectedRobotId
-} from '../../../redux-modules/map/selectors';
-import { selectResetViewState, } from '../../../redux-modules/misc/selectors';
-import { toggleSelectedDestination } from '../../../redux-modules/misc/actions';
-import { DragMode, PreviewType, TUndoStackItem, TViewState } from '../../../types/deckgl-map';
-import { selectRobotLayerData, selectSelectedRobot } from '../../../redux-modules/robot-status/selectors';
-import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../../redux-modules/map/actions';
-import { coordinateToMeter, meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
-import { svgToDataURL } from '../../../utils/marker';
-import { getIconByDestinationType } from '../../../utils/icons';
-import { selectDestinationsLayerData } from '../../../redux-modules/destination/selectors';
-import { TRobotLayerData } from './RobotLayer';
-import { RootState } from '../../../redux-modules';
+} from '../../redux-modules/map/selectors';
+import { selectResetViewState, } from '../../redux-modules/misc/selectors';
+import { toggleSelectedDestination } from '../../redux-modules/misc/actions';
+import { DragMode, PreviewType, TRobotLayerData, TUndoStackItem, TViewState } from '../../types/deckgl-map';
+import { selectRobotLayerData, selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
+import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
+import { coordinateToMeter, meterToCoordinate, robotAngleToViewStateBearing } from '../../utils/deckGlHelpers';
+import { svgToDataURL } from '../../utils/marker';
+import { getIconByDestinationType } from '../../utils/icons';
+import { selectDestinationsLayerData } from '../../redux-modules/destination/selectors';
+import { RootState } from '../../redux-modules';
 import {
     DEFAULT_DESTINATION_LAYER_PROPS,
     DEFAULT_ICON_LAYER_PROPS,
@@ -34,26 +33,30 @@ import {
     DEFAULT_ROBOT_MESH_LAYER_PROPS,
     DEFAULT_SCENEGRAPH_LAYER_PROPS,
     getLayerIcon
-} from '../../../constants/deckGlLayers';
-import { ModelType } from '../../../constants/models';
+} from '../../constants/deckGlLayers';
+import { ModelType } from '../../constants/models';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
     maxDuration: 1000,
 });
 
-const UserModeMap: FC<{
+const Map: FC<{
     mapId: number,
     robotId?: string,
     isPreview?: boolean,
     previewType?: PreviewType,
     isEditor?: boolean,
+    setFloorModels?: (floorModels: ModelType[]) => void,
+    setViewState?: (viewState: TViewState) => void,
 }> = ({
     mapId,
     robotId,
     isPreview = false,
     previewType = PreviewType.Robot,
     isEditor = false,
+    setFloorModels: setFloorModelsProp = () => {},
+    setViewState: setViewStateProp = () => {},
 }) => {
     const dispatch = useDispatch();
 
@@ -96,6 +99,18 @@ const UserModeMap: FC<{
     // endregion
 
     // region Updates
+
+    // region Update Parent State
+
+    useEffect(() => {
+        setFloorModelsProp(floorModels);
+    }, [floorModels, setFloorModelsProp]);
+
+    useEffect(() => {
+        setViewStateProp(viewState);
+    }, [setViewStateProp, viewState]);
+
+    // endregion
 
     useEffect(() => {
         setFloorModels(getModelsByMapId(mapId));
@@ -544,4 +559,4 @@ const UserModeMap: FC<{
     );
 };
 
-export default UserModeMap;
+export default Map;

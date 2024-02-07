@@ -14,7 +14,7 @@ const RobotsList = () => {
             dataGroup="top-level"
         >
             {robotIds.map((robotId) => (
-                <RobotItem robotId={robotId as string}/>
+                <RobotItem key={robotId} robotId={robotId as string}/>
             ))}
         </Accordion>
     )
