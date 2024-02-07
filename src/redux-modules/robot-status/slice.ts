@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { setWaitCursor } from 'chayns-api';
 import { TMapWithDestinations } from '../../types/api/map';
 import { TRobotMap } from '../../types/pudu-api/robotMap';
 import { TDestination } from '../../types/api/destination';
@@ -207,30 +206,6 @@ const slice = createSlice({
             ...draft,
             fetchState: FetchState.rejected
         }));
-
-        //
-        // builder.addCase(fetchMapsForRobot.pending, (draft) => ({
-        //     ...draft,
-        //     fetchState: FetchState.PENDING
-        // }));
-        // builder.addCase(fetchMapsForRobot.fulfilled, (draft, { payload }) => {
-        //     draft.fetchState = FetchState.FETCHED;
-        //
-        //     if (payload) {
-        //         const sortedMaps = sortMapsAndDestinations(payload.maps);
-        //         robotStatusAdapter.updateOne(draft, {
-        //             id: payload.robotId,
-        //             changes: {
-        //                 maps: sortedMaps
-        //             }
-        //         });
-        //     }
-        // });
-        // builder.addCase(fetchMapsForRobot.rejected, (draft) => ({
-        //     ...draft,
-        //     fetchState: FetchState.ERROR
-        // }));
-        // endregion
     }
 });
 

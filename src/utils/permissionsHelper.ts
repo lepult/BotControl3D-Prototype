@@ -1,4 +1,4 @@
-import { ChaynsApiUser, getUser } from 'chayns-api';
+import { ChaynsApiUser } from 'chayns-api';
 import { UserType } from '../types/misc';
 
 export const getUserType = (user: ChaynsApiUser | undefined) => {

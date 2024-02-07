@@ -1,8 +1,5 @@
-// region Imports
 import { TMapWithDestinations } from '../types/api/map';
-import { TSelectMap } from '../types/websocket/syncMapsData';
 import { TDestination } from '../types/api/destination';
-// endregion
 
 export const sortMapsAndDestinations = (maps?: TMapWithDestinations[]) => {
     const sortedMaps = sortMaps(maps);
@@ -21,7 +18,5 @@ export const sortMaps = (maps?: TMapWithDestinations[]) => maps?.sort((a, b) => 
 
     return aName.localeCompare(bName);
 });
-
-export const sortSelectMaps = (maps: TSelectMap[]) => maps.sort((a, b) => a.showName.localeCompare(b.showName));
 
 export const sortDestinations = (destinations?: TDestination[]) => destinations?.sort((a, b) => a.name.localeCompare(b.name));

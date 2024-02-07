@@ -4,7 +4,7 @@ import { setRefreshScrollEnabled } from 'chayns-api';
 import FloorsList from './floors-list/FloorsList';
 import { selectAdminModeType, selectEditingMapId } from '../../redux-modules/misc/selectors';
 import { AdminModeType } from '../../types/misc';
-import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
+import { ChaynsViewMode, removeChaynsFooter, updateChaynsViewmode } from '../../utils/chaynsHelper';
 import RobotsList from './robots-list/RobotsList';
 import Map from '../map/Map';
 import EditorMapButtons from '../map/editor-map-buttons/EditorMapButtons';
@@ -21,7 +21,7 @@ const AdminMode = () => {
     useEffect(() => {
         if (adminModeType === AdminModeType.default) {
             updateChaynsViewmode(ChaynsViewMode.exclusive);
-            removeFooter(false);
+            removeChaynsFooter(false);
         }
         if (adminModeType === AdminModeType.editMap) {
             updateChaynsViewmode(ChaynsViewMode.wide);

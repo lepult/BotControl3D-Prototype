@@ -1,7 +1,5 @@
-// region Imports
 import { TChaynsUser } from './chaynsUser';
 import { TAutomationDevice } from './automationDevice';
-// endregion
 
 export type TDestination = {
     id: number;

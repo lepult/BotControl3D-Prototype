@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createReducer, current } from '@reduxjs/toolkit';
+import { createReducer } from '@reduxjs/toolkit';
 import {
     changeInitialViewState,
     changeSelectedMap,
@@ -11,7 +11,7 @@ import { FetchState } from '../../types/fetch';
 import { TMap } from '../../types/api/map';
 import { TViewState } from '../../types/deckgl-map';
 import { INITIAL_VIEW_STATE } from '../../constants/deckGl';
-import { getPathDataByMapId } from '../../constants/puduData';
+import { getPathDataByMapId } from '../../constants/getLayerData';
 
 const initialState: {
     fetchState: FetchState,

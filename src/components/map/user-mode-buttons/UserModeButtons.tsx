@@ -12,7 +12,7 @@ import CancelButton from './robot-controls-buttons/cancel/CancelButton';
 import FollowRobotButton from './robot-controls-buttons/follow-robot/FollowRobotButton';
 import ResetViewButton from './interaction-buttons/ResetViewButton';
 import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
-import { getUserType } from '../../../utils/getUserType';
+import { getUserType } from '../../../utils/permissionsHelper';
 import { UserType } from '../../../types/misc';
 import InformationButton from './robot-controls-buttons/information/InformationButton';
 

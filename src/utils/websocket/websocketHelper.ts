@@ -1,6 +1,3 @@
-// region Imports
-// endregion
-
 // region Types
 import WebSocketClient from './websocket';
 

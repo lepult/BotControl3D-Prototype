@@ -16,7 +16,6 @@ import {
     faLocationDot,
     faLocationPin,
     faPowerOff,
-    faSpinner,
     faSquareParking,
     faTrafficLight,
     faTriangleExclamation,
@@ -29,27 +28,7 @@ import { CustomDestinationType, DestinationType } from '../types/api/destination
 import { IIconData } from './dataHelper';
 import { MapElementType } from '../types/pudu-api/robotMap';
 
-const STROKE_WIDTH = 30;
-const MIN_X_Y = -STROKE_WIDTH / 2;
-
-type TFaIcon = {
-    icon: [number, number, any, any, string],
-}
-
-const getSvg = (faIcon: TFaIcon, red: number, green: number, blue: number, alpha: number) => `
-<svg
-    viewBox="${MIN_X_Y} ${MIN_X_Y} ${faIcon.icon[0] + STROKE_WIDTH} ${faIcon.icon[1] + STROKE_WIDTH}"
-    xmlns="http://www.w3.org/2000/svg"
-    height="400"
-    width="400"
->
-    <path
-        d="${faIcon.icon[4]}"
-        fill="rgba(${red}, ${green}, ${blue}, ${alpha})"
-        stroke="rgba(255, 255, 255, ${alpha})"
-        stroke-width="30"
-    />
-</svg>`;
+// region Configure Icons
 
 [
     faHourglass,
@@ -60,7 +39,6 @@ const getSvg = (faIcon: TFaIcon, red: number, green: number, blue: number, alpha
     faCircleCheck,
     faDoorOpen,
     faElevator,
-    faSpinner,
     faTruckFast,
     faCircleStop,
     faCirclePause,
@@ -84,7 +62,6 @@ const exclamation = icon({ prefix: 'fas', iconName: 'triangle-exclamation' });
 const check = icon({ prefix: 'fas', iconName: 'circle-check' });
 const doorOpen = icon({ prefix: 'fas', iconName: 'door-open' });
 const elevator = icon({ prefix: 'fas', iconName: 'elevator' });
-const spinner = icon({ prefix: 'fas', iconName: 'spinner' });
 const truck = icon({ prefix: 'fas', iconName: 'truck-fast' });
 const stop = icon({ prefix: 'fas', iconName: 'circle-stop' });
 const pause = icon({ prefix: 'fas', iconName: 'circle-pause' });
@@ -98,6 +75,36 @@ const upDown = icon({ prefix: 'fas', iconName: 'up-down' });
 const bolt = icon({ prefix: 'fas', iconName: 'bolt' });
 const parking = icon({ prefix: 'fas', iconName: 'square-parking' });
 const flagCheckered = icon({ prefix: 'fas', iconName: 'flag-checkered' });
+
+// endregion
+
+// region getSvg
+
+const STROKE_WIDTH = 30;
+const MIN_X_Y = -STROKE_WIDTH / 2;
+
+type TFaIcon = {
+    icon: [number, number, unknown, unknown, string],
+}
+
+const getSvg = (faIcon: TFaIcon, red: number, green: number, blue: number, alpha: number) => `
+<svg
+    viewBox="${MIN_X_Y} ${MIN_X_Y} ${faIcon.icon[0] + STROKE_WIDTH} ${faIcon.icon[1] + STROKE_WIDTH}"
+    xmlns="http://www.w3.org/2000/svg"
+    height="400"
+    width="400"
+>
+    <path
+        d="${faIcon.icon[4]}"
+        fill="rgba(${red}, ${green}, ${blue}, ${alpha})"
+        stroke="rgba(255, 255, 255, ${alpha})"
+        stroke-width="30"
+    />
+</svg>`;
+
+// endregion
+
+// region Icon By RobotStatus
 
 export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: number, green: number, blue: number): string => {
     let i = null;
@@ -150,8 +157,11 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
             break;
     }
     return getSvg(i as TFaIcon, red, green, blue, 1);
-
 }
+
+// endregion
+
+// region Icon By DestinationType
 
 export const getIconByDestinationType = (iconData: IIconData): string => {
     let i = null;
@@ -209,6 +219,8 @@ export const getIconByDestinationType = (iconData: IIconData): string => {
 
     return getSvg(i as TFaIcon, colors[0], colors[1], colors[2], colors[3] || 1);
 };
+
+// endregion
 
 const getIconColor = (iconData: IIconData): Color => {
     if (iconData.routeData.isFinalDestination) {

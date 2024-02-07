@@ -1,6 +1,4 @@
-// region Imports
 import { TMovementStatus } from '../api/robotStatus';
-// endregion
 
 export type TNotifyRobotMoveStateData = {
     state: TMovementStatus;

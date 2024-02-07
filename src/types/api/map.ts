@@ -1,7 +1,5 @@
-// region Imports
 import { TDestination } from './destination';
 import { Hidden } from './hidden';
-// endregion
 
 export type TMapWithDestinations = {
     id: number;

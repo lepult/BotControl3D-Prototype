@@ -1,9 +1,7 @@
-// region Imports
 import { PUDU_API_URL } from '../url';
 import { getDefaultHeaders } from '../helpers';
-import { BadResponseCodeError } from '../../utils/error';
+import { BadResponseCodeError } from '../error';
 import { TRobotData } from '../../types/api/robotData';
-// endregion
 
 export const getRobotDataFetch = async (robotId: string): Promise<TRobotData> => {
     const response = await fetch(`${PUDU_API_URL}/Robot/${robotId}/pudu-data`, {

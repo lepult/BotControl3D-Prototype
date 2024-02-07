@@ -34,7 +34,6 @@ const reducer = createReducer(initialState, (builder) => {
     });
 
     builder.addCase(toggleSelectedDestination, (draft, { payload }) => {
-        console.log('payload', payload, draft.selectedDestination);
         if (payload === draft.selectedDestination) {
             draft.selectedDestination = undefined;
         } else {

@@ -1,4 +1,3 @@
-// region Imports
 import { TMap } from './map';
 import { TDestination } from './destination';
 import { TRoute } from './route';
@@ -6,7 +5,6 @@ import { RobotWorkingMode } from '../../constants/enums/robotWorkingMode';
 import { RobotType } from '../../constants/enums/robotType';
 import { DriveMode } from '../../constants/enums/driveMode';
 import { RobotActivity } from '../../constants/enums/robotActivity';
-// endregion
 
 export type TRobotStatus = {
     robotId: string;

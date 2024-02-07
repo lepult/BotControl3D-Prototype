@@ -1,13 +1,13 @@
 import React, { FC, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
-import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
+import { IconLayer, PathLayer, PolygonLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../constants/deckGl';
 import { IIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
-import { getModelsByMapId, getPathDataByMapId } from '../../constants/puduData';
+import { getModelsByMapId, getPathDataByMapId } from '../../constants/getLayerData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
@@ -16,12 +16,15 @@ import {
 import { selectResetViewState, } from '../../redux-modules/misc/selectors';
 import { toggleSelectedDestination } from '../../redux-modules/misc/actions';
 import { DragMode, PreviewType, TRobotLayerData, TUndoStackItem, TViewState } from '../../types/deckgl-map';
-import { selectRobotLayerData, selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
+import { selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
 import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
-import { coordinateToMeter, meterToCoordinate, robotAngleToViewStateBearing } from '../../utils/deckGlHelpers';
-import { svgToDataURL } from '../../utils/marker';
-import { getIconByDestinationType } from '../../utils/icons';
-import { selectDestinationsLayerData } from '../../redux-modules/destination/selectors';
+import {
+    coordinateToMeter,
+    meterToCoordinate,
+    robotAngleToViewStateBearing,
+    svgToDataURL
+} from '../../utils/conversionHelper';
+import { getIconByDestinationType } from '../../utils/iconHelper';
 import { RootState } from '../../redux-modules';
 import {
     DEFAULT_DESTINATION_LAYER_PROPS,
@@ -35,6 +38,7 @@ import {
     getLayerIcon
 } from '../../constants/deckGlLayers';
 import { ModelType } from '../../constants/models';
+import { selectDestinationsLayerData, selectRobotLayerData } from '../../redux-modules/layerDataSelectors';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -69,6 +73,8 @@ const Map: FC<{
 
     // region Selectors
 
+    // region other Selectors
+
     const initialViewState = useSelector(selectInitialViewStateByMapId(mapId));
     const resetViewState = useSelector(selectResetViewState);
     const [viewState, setViewState] = useState<TViewState>({
@@ -80,6 +86,8 @@ const Map: FC<{
     const selectedRobot = useSelector(selectSelectedRobot);
 
     const followRobot = useSelector(selectFollowRobot);
+
+    // endregion
 
     // region LayerData
 
@@ -457,7 +465,7 @@ const Map: FC<{
                 getTooltip={getTooltip}
                 onDragStart={() => setIsDraggingMap(true)}
                 onDragEnd={() => setIsDraggingMap(false)}
-                onHover={(a, b) => {
+                onHover={(a) => {
                     if (a.layer) {
                         setHoveringOver(a.layer.id);
                     } else {
@@ -553,7 +561,6 @@ const Map: FC<{
                         updateTriggers={{ getColor: [selectedRobotId] }}
                     />
                 )}
-            {/* TODO Add demoPolygonLayer */}
             </DeckGL>
         </div>
     );
