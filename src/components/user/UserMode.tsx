@@ -6,9 +6,9 @@ import { setRefreshScrollEnabled } from 'chayns-api';
 import { SmallWaitCursor } from 'chayns-components';
 import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import Map from '../map/Map';
-import UserModeButtons from './user-mode-buttons/UserModeButtons';
 import { selectMapsFetchState, selectSelectedMap } from '../../redux-modules/map/selectors';
 import { FetchState } from '../../types/fetch';
+import UserModeButtons from '../map/user-mode-buttons/UserModeButtons';
 
 const UserMode = () => {
     useEffect(() => {

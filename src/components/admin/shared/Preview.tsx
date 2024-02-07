@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Map from '../../map/Map';
-import FollowRobotButton from '../../user/user-mode-buttons/robot-controls-buttons/follow-robot/FollowRobotButton';
-import ResetViewButton from '../../user/user-mode-buttons/interaction-buttons/ResetViewButton';
+import FollowRobotButton from '../../map/user-mode-buttons/robot-controls-buttons/follow-robot/FollowRobotButton';
+import ResetViewButton from '../../map/user-mode-buttons/interaction-buttons/ResetViewButton';
 import { PreviewType } from '../../../types/deckgl-map';
 
 const Preview: FC<{

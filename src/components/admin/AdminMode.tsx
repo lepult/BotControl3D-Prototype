@@ -7,7 +7,7 @@ import { AdminModeType } from '../../types/misc';
 import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import RobotsList from './robots-list/RobotsList';
 import Map from '../map/Map';
-import EditorMapButtons from './editor-map-buttons/EditorMapButtons';
+import EditorMapButtons from '../map/editor-map-buttons/EditorMapButtons';
 import { ModelType } from '../../constants/models';
 import { TViewState } from '../../types/deckgl-map';
 
