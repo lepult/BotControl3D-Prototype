@@ -7,6 +7,7 @@ import EditorMap from './floors-list/editor-map/EditorMap';
 import { AdminModeType } from '../../types/misc';
 import { ChaynsViewMode, removeFooter, updateChaynsViewmode } from '../../utils/pageSizeHelper';
 import RobotsList from './robots-list/RobotsList';
+import UserModeMap from '../user/user-mode-map/UserModeMap';
 
 const AdminMode = () => {
     const adminModeType = useSelector(selectAdminModeType);
@@ -18,6 +19,7 @@ const AdminMode = () => {
             removeFooter(false);
         }
         if (adminModeType === AdminModeType.editMap) {
+            updateChaynsViewmode(ChaynsViewMode.wide);
             void setRefreshScrollEnabled(false);
         } else {
             void setRefreshScrollEnabled(true);
@@ -26,8 +28,14 @@ const AdminMode = () => {
 
     if (adminModeType === AdminModeType.editMap && editingMapId) {
         return (
-            <EditorMap mapId={editingMapId} />
-        );
+            <UserModeMap
+                mapId={editingMapId}
+                isEditor
+            />
+        )
+        // return (
+        //     <EditorMap mapId={editingMapId} />
+        // );
     }
 
     return (

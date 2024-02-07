@@ -35,6 +35,7 @@ import {
     DEFAULT_SCENEGRAPH_LAYER_PROPS,
     getLayerIcon
 } from '../../../constants/deckGlLayers';
+import { ModelType } from '../../../constants/models';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -46,13 +47,21 @@ const UserModeMap: FC<{
     robotId?: string,
     isPreview?: boolean,
     previewType?: PreviewType,
+    isEditor?: boolean,
 }> = ({
     mapId,
     robotId,
     isPreview = false,
     previewType = PreviewType.Robot,
+    isEditor = false,
 }) => {
     const dispatch = useDispatch();
+
+    const [ctrlPressed, setCtrlPressed] = useState(false);
+    const [shiftPressed, setShiftPressed] = useState(false);
+
+    const [isDraggingMap, setIsDraggingMap] = useState(false);
+    const [hoveringOver, setHoveringOver] = useState<string>();
 
     // region Selectors
 
@@ -79,13 +88,17 @@ const UserModeMap: FC<{
         previewMapRobotId: robotId,
         mapId,
     }));
-    const scenegraphLayersData = useMemo(() => getModelsByMapId(mapId), [mapId]);
+    const [floorModels, setFloorModels] = useState<ModelType[]>([]);
 
     // endregion
 
     // endregion
 
     // region Updates
+
+    useEffect(() => {
+        setFloorModels(getModelsByMapId(mapId));
+    }, [mapId]);
 
     // Resets the ViewState E.g. if the corresponding Button is clicked.
     useEffect(() => {
@@ -157,13 +170,29 @@ const UserModeMap: FC<{
     }, [dispatch, followRobot]);
 
     const handleRobotLayerClick = useCallback((pickingInfo: PickingInfo) => {
-        if (isPreview) return;
+        if (isPreview || isEditor) return;
         dispatch(toggleSelectedRobot({
             robotId: (pickingInfo.object as TRobotLayerData).robotId
         }));
-    }, [dispatch, isPreview]);
+    }, [dispatch, isPreview, isEditor]);
 
     // endregion
+
+    // region Data Accessors
+
+    const getCursor = useCallback(() => {
+        // TODO Display correct cursors for userMap (e.g. pointer on hover over icon)
+        if (isDraggingMap) {
+            return 'grabbing';
+        }
+        if (isEditor) {
+            if (hoveringOver && hoveringOver.startsWith('scenegraphLayer') && (shiftPressed || ctrlPressed)) {
+                return 'pointer';
+            }
+            return 'grab';
+        }
+        return hoveringOver ? 'pointer' : 'grab';
+    }, [isEditor, isDraggingMap, shiftPressed, ctrlPressed, hoveringOver]);
 
     const getTooltip = (pickingInfo: PickingInfo) => {
         if (pickingInfo?.layer?.id?.startsWith('destinations') && pickingInfo?.object) {
@@ -182,15 +211,35 @@ const UserModeMap: FC<{
         return null;
     };
 
+    // endregion
+
     return (
         <div
             onContextMenu={(event) => event.preventDefault()}
+            onKeyDown={(event) => {
+                setCtrlPressed(event.ctrlKey);
+                setShiftPressed(event.shiftKey);
+            }}
+            onKeyUp={(event) => {
+                setCtrlPressed(event.ctrlKey);
+                setShiftPressed(event.shiftKey);
+            }}
         >
             <DeckGL
                 viewState={viewState}
                 controller={CONTROLLER_DEFAULTS}
                 onViewStateChange={handleNewViewState}
                 getTooltip={getTooltip}
+                onDragStart={() => setIsDraggingMap(true)}
+                onDragEnd={() => setIsDraggingMap(false)}
+                onHover={(a, b) => {
+                    if (a.layer) {
+                        setHoveringOver(a.layer.id);
+                    } else {
+                        setHoveringOver(undefined);
+                    }
+                }}
+                getCursor={getCursor}
             >
                 {(!isPreview || (isPreview && previewType === PreviewType.Floor)) && (
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -205,7 +254,7 @@ const UserModeMap: FC<{
                         onClick={(pickingInfo: PickingInfo) => {
                             const iconData = pickingInfo.object as IIconData;
                             // Disables Selection for non targets when planning the route.
-                            if (iconData.invalid) {
+                            if (iconData.invalid || isEditor) {
                                 return;
                             }
                             // Unselects selected icon or selects unselected icon.
@@ -221,9 +270,10 @@ const UserModeMap: FC<{
                         {...DEFAULT_PATH_LAYER_PROPS}
                         data={pathLayerData}
                         id={`path-layer__${mapId}`}
+                        pickable={!isEditor}
                     />
                 )}
-                {scenegraphLayersData.map((layerData) => (
+                {floorModels.map((layerData) => (
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     <ScenegraphLayer
@@ -231,6 +281,14 @@ const UserModeMap: FC<{
                         {...DEFAULT_SCENEGRAPH_LAYER_PROPS}
                         data={[layerData]}
                         id={`scenegraphLayer-${mapId}-${layerData.id}`}
+                        opacity={(
+                            (
+                                ((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed))
+                                && hoveringOver === `scenegraphLayer-${mapId}-${layerData.id}`
+                            )
+                            /*|| (draggingId && draggingId === gltfModel.id)*/
+                        ) ? 0.75 : 1}
+                        pickable={isEditor}
                         scenegraph={layerData.url}
                     />
                 ))}

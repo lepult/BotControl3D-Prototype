@@ -155,9 +155,13 @@ const EditorMap: FC<{
             position: gltfModel.position,
             orientation: gltfModel.orientation,
         }],
-        opacity: (((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed)) && hoveringOver === gltfModel.id) || (draggingId && draggingId === gltfModel.id)
-            ? 0.75
-            : 1,
+        // opacity: (
+        //     (
+        //         ((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed))
+        //         && hoveringOver === gltfModel.id
+        //     )
+        //     || (draggingId && draggingId === gltfModel.id)
+        // ) ? 0.75 : 1,
         scenegraph: gltfModel.url,
         getPosition: (m: TGltfModel) => m.position,
         getOrientation: (m: TGltfModel) => m.orientation,
@@ -389,11 +393,11 @@ const EditorMap: FC<{
                 ]}
                 controller={!draggingId}
                 onViewStateChange={({ viewState: newViewState }) => setViewState(newViewState as ViewState<any, any, any>)}
-                getCursor={() => dragMode || isDraggingMap
-                    ? 'grabbing'
-                    : hoveringOver && (shiftPressed || ctrlPressed)
-                        ? 'pointer'
-                        : 'grab'}
+                // getCursor={() => dragMode || isDraggingMap
+                //     ? 'grabbing'
+                //     : hoveringOver && (shiftPressed || ctrlPressed)
+                //         ? 'pointer'
+                //         : 'grab'}
                 onDragStart={() => setIsDraggingMap(true)}
                 onDragEnd={() => setIsDraggingMap(false)}
                 onHover={(a, b) => {
