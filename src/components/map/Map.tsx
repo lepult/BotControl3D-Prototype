@@ -188,7 +188,6 @@ const Map: FC<{
     const [dragOffset, setDragOffset] = useState<[number, number]>([0, 0]);
     const [previousRotation, setPreviousRotation] = useState(0);
     const [dragMode, setDragMode] = useState<DragMode | null>(null);
-    const [hasChanged, setHasChanged] = useState(false);
 
     const rotateModel = useCallback((info: PickingInfo, floorModel: ModelType) => {
         const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
@@ -214,9 +213,7 @@ const Map: FC<{
             }
             return newFloorModels;
         });
-
-        setHasChanged((prev) => !prev);
-    }, [dragOffset, previousRotation]);
+        }, [dragOffset, previousRotation]);
 
     const translateModel = useCallback((info: PickingInfo, floorModel: ModelType) => {
         const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
@@ -234,8 +231,6 @@ const Map: FC<{
             }
             return newFloorModels;
         });
-
-        setHasChanged((prev) => !prev);
     }, [dragOffset]);
 
     const onDragStart = useCallback((pickingInfo: PickingInfo) => {
@@ -526,10 +521,6 @@ const Map: FC<{
                         ) ? 0.75 : 1}
                         pickable={isEditor}
                         scenegraph={layerData.url}
-                        updateTriggers={{ // TODO Find out if this is needed
-                            getPosition: [hasChanged],
-                            getOrientation: [hasChanged],
-                        }}
                     />
                 ))}
                 {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
@@ -544,7 +535,6 @@ const Map: FC<{
                         id={`robots-${mapId}-icon`}
                         getIcon={({ icon }: TRobotLayerData) => getLayerIcon(icon)}
                         onClick={handleRobotLayerClick}
-                        updateTriggers={{ getIcon: [selectedRobotId] }}
                     />
                 )}
                 {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
@@ -558,7 +548,6 @@ const Map: FC<{
                         id={`robots-${mapId}-mesh`}
                         getPosition={(d: TRobotLayerData) => [...d.position, 0]}
                         onClick={handleRobotLayerClick}
-                        updateTriggers={{ getColor: [selectedRobotId] }}
                     />
                 )}
             </DeckGL>
