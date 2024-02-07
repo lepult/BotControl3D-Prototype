@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
@@ -15,10 +15,10 @@ import {
 } from '../../../redux-modules/map/selectors';
 import { selectResetViewState, } from '../../../redux-modules/misc/selectors';
 import { toggleSelectedDestination } from '../../../redux-modules/misc/actions';
-import { PreviewType, TViewState } from '../../../types/deckgl-map';
+import { DragMode, PreviewType, TUndoStackItem, TViewState } from '../../../types/deckgl-map';
 import { selectRobotLayerData, selectSelectedRobot } from '../../../redux-modules/robot-status/selectors';
 import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../../redux-modules/map/actions';
-import { meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
+import { coordinateToMeter, meterToCoordinate, robotAngleToViewStateBearing } from '../../../utils/deckGlHelpers';
 import { svgToDataURL } from '../../../utils/marker';
 import { getIconByDestinationType } from '../../../utils/icons';
 import { selectDestinationsLayerData } from '../../../redux-modules/destination/selectors';
@@ -62,6 +62,7 @@ const UserModeMap: FC<{
 
     const [isDraggingMap, setIsDraggingMap] = useState(false);
     const [hoveringOver, setHoveringOver] = useState<string>();
+
 
     // region Selectors
 
@@ -155,6 +156,217 @@ const UserModeMap: FC<{
 
     // region Event Handlers
 
+    const [undoStack, setUndoStack] = useState<TUndoStackItem[]>([]);
+    const [redoStack, setRedoStack] = useState<TUndoStackItem[]>([]);
+
+    // region Editor Drag Events
+
+    const [draggingId, setDraggingId] = useState<string>('');
+    const [dragOffset, setDragOffset] = useState<[number, number]>([0, 0]);
+    const [previousRotation, setPreviousRotation] = useState(0);
+    const [dragMode, setDragMode] = useState<DragMode | null>(null);
+    const [hasChanged, setHasChanged] = useState(false);
+
+    const rotateModel = useCallback((info: PickingInfo, floorModel: ModelType) => {
+        const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
+
+        const targetPosition = floorModel.position;
+        const dragPosition = [
+            meterCoordinate[0] - targetPosition[0],
+            meterCoordinate[1] - targetPosition[1],
+        ];
+
+        const targetToDragOriginAngleDegree = Math.atan2(-dragOffset[1], -dragOffset[0]) * 180 / Math.PI + 180;
+        const targetToDragPositionAngleDegree = Math.atan2(-dragPosition[1], -dragPosition[0]) * 180 / Math.PI + 180;
+
+        setFloorModels((prev) => {
+            const newFloorModels = [...prev];
+            const targetModel = newFloorModels.find((m) => m.id === floorModel.id);
+            if (targetModel){
+                targetModel.orientation = [
+                    targetModel.orientation[0],
+                    previousRotation + (targetToDragPositionAngleDegree - targetToDragOriginAngleDegree),
+                    targetModel.orientation[2]
+                ];
+            }
+            return newFloorModels;
+        });
+
+        setHasChanged((prev) => !prev);
+    }, [dragOffset, previousRotation]);
+
+    const translateModel = useCallback((info: PickingInfo, floorModel: ModelType) => {
+        const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
+
+        setFloorModels((prev) => {
+            const newFloorModels = [...prev];
+            const targetModel = newFloorModels
+                .find((m) => m.id === floorModel.id);
+            if (targetModel){
+                targetModel.position = [
+                    meterCoordinate[0] - dragOffset[0],
+                    meterCoordinate[1] - dragOffset[1],
+                    targetModel.position[2]
+                ];
+            }
+            return newFloorModels;
+        });
+
+        setHasChanged((prev) => !prev);
+    }, [dragOffset]);
+
+    const onDragStart = useCallback((pickingInfo: PickingInfo) => {
+        if (!isEditor) {
+            return;
+        }
+
+        // Only start dragging if shift XOR ctrl were pressed.
+        if ((ctrlPressed && !shiftPressed) || (!ctrlPressed && shiftPressed)) {
+            const floorModel = pickingInfo.object as ModelType;
+
+            // Saves the id of the element that is being dragged.
+            setDraggingId(floorModel?.id || '');
+
+            // Saves the position at which the cursor started dragging the element.
+            const meterCoordinate = coordinateToMeter(pickingInfo.coordinate as [number, number]);
+            setDragOffset([
+                meterCoordinate[0] - floorModel.position[0],
+                meterCoordinate[1] - floorModel.position[1]]
+            );
+
+            // Saves the rotation of the element before dragging.
+            setPreviousRotation(floorModel.orientation[1]);
+
+            // Sets the drag mode to translate or rotate depending on whether ctrl or shift was pressed.
+            if (ctrlPressed) {
+                setDragMode(DragMode.translate);
+            } else if (shiftPressed) {
+                setDragMode(DragMode.rotate);
+            }
+
+            // Adds the position and rotation of the element to the undo stack.
+            setUndoStack((prev) => [
+                ...prev, {
+                    id: floorModel.id,
+                    position: floorModel.position,
+                    orientation: floorModel.orientation,
+                }
+            ]);
+            setRedoStack([]);
+        }
+    }, [ctrlPressed, isEditor, shiftPressed]);
+
+    const onDrag = useCallback((pickingInfo: PickingInfo) => {
+        if (!isEditor) {
+            return;
+        }
+
+        const floorModel = pickingInfo.object as ModelType;
+        if (draggingId === floorModel.id) {
+            switch (dragMode) {
+                case DragMode.translate:
+                    translateModel(pickingInfo, floorModel);
+                    break;
+                case DragMode.rotate:
+                    rotateModel(pickingInfo, floorModel);
+                    break;
+                default:
+            }
+        }
+    }, [dragMode, draggingId, isEditor, rotateModel, translateModel]);
+
+    const onDragEnd = useCallback(() => {
+        if (!isEditor) {
+            return;
+        }
+
+        // Resets various states, that were needed while the element was dragged.
+        setDraggingId('');
+        setDragOffset([0, 0]);
+        setDragMode(null);
+        setPreviousRotation(0);
+    }, [isEditor]);
+
+    // endregion
+
+    // region Key Down/Up Events
+
+    const undo = () => {
+        const undoAction = undoStack[undoStack.length - 1];
+        if (undoAction) {
+            const redoStackItem = {
+                id: undoAction.id,
+                orientation: [0, 0, 0] as [number, number, number],
+                position: [0, 0, 0] as [number, number, number],
+            };
+
+            setFloorModels((prev) => {
+                const newFloorModels = [...prev];
+                const targetModel = newFloorModels.find((m) => m.id === undoAction.id);
+                if (targetModel){
+                    redoStackItem.orientation = targetModel.orientation;
+                    redoStackItem.position = targetModel.position;
+                    targetModel.orientation = undoAction.orientation;
+                    targetModel.position = undoAction.position;
+                }
+                return newFloorModels;
+            });
+
+            setUndoStack((prev) => prev.slice(0, -1))
+            setRedoStack((prev) => [...prev, redoStackItem]);
+        }
+    }
+
+    const redo = () => {
+        const redoAction = redoStack[redoStack.length - 1];
+        if (redoAction) {
+            const undoStackItem = {
+                id: redoAction.id,
+                orientation: [0, 0, 0] as [number, number, number],
+                position: [0, 0, 0] as [number, number, number],
+            };
+
+            setFloorModels((prev) => {
+                const newFloorModels = [...prev];
+                const targetModel = newFloorModels.find((m) => m.id === redoAction.id);
+                if (targetModel){
+                    undoStackItem.orientation = targetModel.orientation;
+                    undoStackItem.position = targetModel.position;
+                    targetModel.orientation = redoAction.orientation;
+                    targetModel.position = redoAction.position;
+                }
+                return newFloorModels;
+            });
+
+            setRedoStack((prev) => prev.slice(0, -1))
+            setUndoStack((prev) => [...prev, undoStackItem]);
+        }
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+        setCtrlPressed(event.ctrlKey);
+        setShiftPressed(event.shiftKey);
+
+        // Undo on CTRL+Z
+        if (event.keyCode === 90 && event.ctrlKey) {
+            undo();
+        }
+
+        // Redo on CTRL+Y
+        if (event.keyCode === 89 && event.ctrlKey) {
+            redo();
+        }
+    }
+
+    const onKeyUp = (event: KeyboardEvent) => {
+        setCtrlPressed(event.ctrlKey);
+        setShiftPressed(event.shiftKey);
+    }
+
+    // endregion
+
+    // region Other Event Handlers
+    
     const handleNewViewState = useCallback((viewStateChagneParameters: ViewStateChangeParameters) => {
         // Stop following the Robot automatically, if User moved the View by interacting with the Map.
         const interaction = viewStateChagneParameters.interactionState;
@@ -175,6 +387,8 @@ const UserModeMap: FC<{
             robotId: (pickingInfo.object as TRobotLayerData).robotId
         }));
     }, [dispatch, isPreview, isEditor]);
+
+    // endregion
 
     // endregion
 
@@ -216,18 +430,14 @@ const UserModeMap: FC<{
     return (
         <div
             onContextMenu={(event) => event.preventDefault()}
-            onKeyDown={(event) => {
-                setCtrlPressed(event.ctrlKey);
-                setShiftPressed(event.shiftKey);
-            }}
-            onKeyUp={(event) => {
-                setCtrlPressed(event.ctrlKey);
-                setShiftPressed(event.shiftKey);
-            }}
+            onKeyDown={onKeyDown}
+            onKeyUp={onKeyUp}
         >
             <DeckGL
                 viewState={viewState}
-                controller={CONTROLLER_DEFAULTS}
+                controller={isEditor && draggingId
+                    ? false
+                    : CONTROLLER_DEFAULTS}
                 onViewStateChange={handleNewViewState}
                 getTooltip={getTooltip}
                 onDragStart={() => setIsDraggingMap(true)}
@@ -281,15 +491,22 @@ const UserModeMap: FC<{
                         {...DEFAULT_SCENEGRAPH_LAYER_PROPS}
                         data={[layerData]}
                         id={`scenegraphLayer-${mapId}-${layerData.id}`}
+                        onDrag={onDrag}
+                        onDragEnd={onDragEnd}
+                        onDragStart={onDragStart}
                         opacity={(
                             (
                                 ((!shiftPressed && ctrlPressed) || (shiftPressed && !ctrlPressed))
                                 && hoveringOver === `scenegraphLayer-${mapId}-${layerData.id}`
                             )
-                            /*|| (draggingId && draggingId === gltfModel.id)*/
+                            || (draggingId && draggingId === layerData.id)
                         ) ? 0.75 : 1}
                         pickable={isEditor}
                         scenegraph={layerData.url}
+                        updateTriggers={{ // TODO Find out if this is needed
+                            getPosition: [hasChanged],
+                            getOrientation: [hasChanged],
+                        }}
                     />
                 ))}
                 {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
@@ -321,6 +538,7 @@ const UserModeMap: FC<{
                         updateTriggers={{ getColor: [selectedRobotId] }}
                     />
                 )}
+            {/* TODO Add demoPolygonLayer */}
             </DeckGL>
         </div>
     );
