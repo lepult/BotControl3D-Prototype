@@ -3,18 +3,10 @@ import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
 import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
-import { COORDINATE_SYSTEM, FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
+import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
-import { PathStyleExtension } from '@deck.gl/extensions/typed';
-import { OBJLoader } from '@loaders.gl/obj';
-import {
-    CONTROLLER_DEFAULTS,
-    INITIAL_VIEW_STATE,
-} from '../../../constants/deckGl';
-import {
-    getIconDataFromDestinations, IIconData,
-    mapRobotElementsToPathData
-} from '../../../utils/dataHelper';
+import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../../constants/deckGl';
+import { getIconDataFromDestinations, IIconData, mapRobotElementsToPathData } from '../../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../../constants/puduData';
 import {
     selectFollowRobot,
@@ -27,7 +19,7 @@ import {
     selectSelectedDestinationId,
 } from '../../../redux-modules/misc/selectors';
 import { changeSelectedDestination } from '../../../redux-modules/misc/actions';
-import { IPathData, PreviewType, TViewState } from '../../../types/deckgl-map';
+import { PreviewType, TViewState } from '../../../types/deckgl-map';
 import {
     selectRobotEntities,
     selectRobotIds,
@@ -39,12 +31,21 @@ import { svgToDataURL } from '../../../utils/marker';
 import { getIconByDestinationType } from '../../../utils/icons';
 import { selectDestinationsByMapId } from '../../../redux-modules/destination/selectors';
 import { TRobotLayerData } from './RobotLayer';
-import { getRobotLayerData, getRobotLayers } from '../../../utils/robotLayers';
+import { getRobotLayerData } from '../../../utils/robotLayers';
 import { TState } from '../../../redux-modules/robot-status/slice';
-import { getScenegraphLayer } from '../../../utils/scenegraphLayer';
 import { CustomDestinationType } from '../../../types/api/destination';
 import { RootState } from '../../../redux-modules';
-import { MapElementType } from '../../../types/pudu-api/robotMap';
+import {
+    DEFAULT_DESTINATION_LAYER_PROPS,
+    DEFAULT_ICON_LAYER_PROPS,
+    DEFAULT_LAYER_PROPS,
+    DEFAULT_PATH_LAYER_PROPS,
+    DEFAULT_ROBOT_ICON_LAYER_PROPS,
+    DEFAULT_ROBOT_LAYER_PROPS,
+    DEFAULT_ROBOT_MESH_LAYER_PROPS,
+    DEFAULT_SCENEGRAPH_LAYER_PROPS,
+    getLayerIcon
+} from '../../../constants/deckGlLayers';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -102,22 +103,7 @@ const UserModeMap: FC<{
             .map((robot) => getRobotLayerData(robot as TState, selectedRobotId)),
         [robots, selectedRobotId]);
 
-    const robotLayers = useMemo(() => (isPreview && previewType === PreviewType.Floor)
-        ? []
-        : getRobotLayers(
-            `robot-${mapId}`,
-            robotLayerData,
-            isPreview
-                ? () => {}
-                : (pickingInfo: PickingInfo) => dispatch(toggleSelectedRobot({
-                    robotId: (pickingInfo.object as TRobotLayerData).robotId
-                })),
-            selectedRobotId || '',
-    ), [dispatch, mapId, robotLayerData, selectedRobotId, isPreview, previewType]);
-
     const scenegraphLayersData = useMemo(() => getModelsByMapId(mapId), [mapId]);
-    const scenegraphLayers = useMemo<ScenegraphLayer[]>(() => getModelsByMapId(mapId)
-        .map((floorModel) => getScenegraphLayer(floorModel, mapId)), [mapId]);
 
 
     const pathData = useMemo(() => getPathDataByMapId(mapId), [mapId]);
@@ -220,7 +206,14 @@ const UserModeMap: FC<{
         }
 
         return null;
-    }
+    };
+
+    const handleRobotLayerClick = useCallback((pickingInfo: PickingInfo) => {
+        if (isPreview) return;
+        dispatch(toggleSelectedRobot({
+            robotId: (pickingInfo.object as TRobotLayerData).robotId
+        }));
+    }, [dispatch, isPreview]);
 
     return (
         <div
@@ -238,15 +231,15 @@ const UserModeMap: FC<{
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     <IconLayer
-                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
-                        pickable
-                        sizeScale={3}
-                        getSize={0.3}
-                        alphaCutoff={0.5}
-                        sizeUnits="meters"
-                        id={`destinations__${mapId}`}
+                        {...DEFAULT_LAYER_PROPS}
+                        {...DEFAULT_ICON_LAYER_PROPS}
+                        {...DEFAULT_DESTINATION_LAYER_PROPS}
                         data={iconLayerData}
-                        getPosition={(d: IIconData): [number, number, number] => [d.position[0], d.position[1], 0.5]}
+                        id={`destinations__${mapId}`}
+                        getIcon={(iconData: IIconData) => getLayerIcon(svgToDataURL(getIconByDestinationType(
+                            iconData,
+                            isPlanningRoute && iconData.customType !== CustomDestinationType.target,
+                        )))}
                         onClick={(pickingInfo: PickingInfo) => {
                             const iconData = pickingInfo.object as IIconData;
                             // Disables Selection for non targets when planning the route.
@@ -260,14 +253,6 @@ const UserModeMap: FC<{
                                 dispatch(changeSelectedDestination(iconData.id));
                             }
                         }}
-                        getIcon={(iconData: IIconData) => ({
-                            url: svgToDataURL(getIconByDestinationType(
-                                iconData,
-                                isPlanningRoute && iconData.customType !== CustomDestinationType.target,
-                            )),
-                            height: 128,
-                            width: 128,
-                        })}
                         updateTriggers={{
                             getPosition: [selectedDestinationId],
                             getIcon: [isPlanningRoute],
@@ -278,65 +263,35 @@ const UserModeMap: FC<{
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     <PathLayer
-                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
-                        pickable
-                        jointRounded
-                        capRounded
-                        billboard
-                        widthScale={1}
-                        getWidth={0.025}
-                        widthMinPixels={0}
-                        getColor={(d: { color: [number, number, number] }) => d.color || [0, 0, 0]}
-                        extensions={[new PathStyleExtension({ dash: true })]}
-                        getDashArray={(data: IPathData) => data.type === MapElementType.track
-                            ? [0, 0]
-                            : [20, 10]}
-                        id={`path-layer__${mapId}`}
+                        {...DEFAULT_LAYER_PROPS}
+                        {...DEFAULT_PATH_LAYER_PROPS}
                         data={pathLayerData}
+                        id={`path-layer__${mapId}`}
                     />
                 )}
                 {scenegraphLayersData.map((layerData) => (
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     <ScenegraphLayer
-                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
-                        pickable
-                        sizeScale={1}
-                        parameters={{ cull: true }}
-                        _lighting="pbr"
-                        id={`scenegraphLayer-${mapId}-${layerData.id}`}
+                        {...DEFAULT_LAYER_PROPS}
+                        {...DEFAULT_SCENEGRAPH_LAYER_PROPS}
                         data={[layerData]}
+                        id={`scenegraphLayer-${mapId}-${layerData.id}`}
                         scenegraph={layerData.url}
-                        getPosition={layerData.position}
-                        getOrientation={layerData.orientation}
                     />
                 ))}
                 {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     <IconLayer
-                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
-                        sizeScale={1}
-                        pickable
-                        transitions={{ getPosition: 2000 }}
+                        {...DEFAULT_LAYER_PROPS}
+                        {...DEFAULT_ICON_LAYER_PROPS}
+                        {...DEFAULT_ROBOT_LAYER_PROPS}
+                        {...DEFAULT_ROBOT_ICON_LAYER_PROPS}
                         data={robotLayerData}
-                        onClick={(pickingInfo: PickingInfo) => {
-                            if (isPreview) return;
-                            dispatch(toggleSelectedRobot({
-                                robotId: (pickingInfo.object as TRobotLayerData).robotId
-                            }));
-                        }}
                         id={`robots-${mapId}-icon`}
-                        billboard
-                        sizeUnits="meters"
-                        alphaCutoff={0.5}
-                        getPosition={(d: TRobotLayerData) => [...d.position, 2]}
-                        getIcon={({ icon }: TRobotLayerData) => ({
-                            url: icon,
-                            height: 128,
-                            width: 128,
-                        })}
-                        getSize={1.5}
+                        getIcon={({ icon }: TRobotLayerData) => getLayerIcon(icon)}
+                        onClick={handleRobotLayerClick}
                         updateTriggers={{ getIcon: [selectedRobotId] }}
                     />
                 )}
@@ -344,27 +299,13 @@ const UserModeMap: FC<{
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     <SimpleMeshLayer
-                        sizeScale={1}
-                        coordinateSystem={COORDINATE_SYSTEM.METER_OFFSETS}
-                        pickable
-                        transitions={{
-                            getPosition: 2000,
-                            getOrientation: 2000,
-                        }}
+                        {...DEFAULT_LAYER_PROPS}
+                        {...DEFAULT_ROBOT_MESH_LAYER_PROPS}
+                        {...DEFAULT_ROBOT_LAYER_PROPS}
                         data={robotLayerData}
-                        onClick={(pickingInfo: PickingInfo) => {
-                            if (isPreview) return;
-                            dispatch(toggleSelectedRobot({
-                                robotId: (pickingInfo.object as TRobotLayerData).robotId
-                            }));
-                        }}
                         id={`robots-${mapId}-mesh`}
-                        mesh="https://chayns.space/77896-05853/3D-Modelle/Kittybot_Compressed2.obj"
-                        loaders={[OBJLoader]}
                         getPosition={(d: TRobotLayerData) => [...d.position, 0]}
-                        getColor={({ color }: TRobotLayerData) => color}
-                        getOrientation={({ orientation }: TRobotLayerData) => orientation}
-                        getScale={[1, 1, 1]}
+                        onClick={handleRobotLayerClick}
                         updateTriggers={{ getColor: [selectedRobotId] }}
                     />
                 )}
