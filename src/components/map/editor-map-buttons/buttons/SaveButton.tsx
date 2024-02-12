@@ -7,7 +7,7 @@ import { Button } from 'chayns-components';
 import clsx from 'clsx';
 import { changeAdminModeType } from '../../../../redux-modules/misc/actions';
 import { AdminModeType } from '../../../../types/misc';
-import { ModelType } from '../../../../constants/models';
+import { ModelType } from '../../../../constants/hardcoded-data/models';
 
 const SaveButton: FC<{
     floorModels: ModelType[],

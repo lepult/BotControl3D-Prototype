@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMapById, selectSelectedMap, selectSelectedRobotId } from '../../../../redux-modules/map/selectors';
-import { getPathDataByMapId } from '../../../../constants/getLayerData';
+import { getPathDataByMapId } from '../../../../constants/getMapData';
 import { changeSelectedMap, setFollowRobot } from '../../../../redux-modules/map/actions';
 import { selectRobotStatusById } from '../../../../redux-modules/robot-status/selectors';
 

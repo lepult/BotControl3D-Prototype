@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ModelType } from '../../../constants/models';
+import { ModelType } from '../../../constants/hardcoded-data/models';
 import { TViewState } from '../../../types/deckgl-map';
 import '../buttons.scss';
 import ImportButton from './buttons/ImportButton';

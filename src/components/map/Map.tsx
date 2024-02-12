@@ -7,7 +7,7 @@ import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../constants/deckGl';
 import { IIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
-import { getModelsByMapId, getPathDataByMapId } from '../../constants/getLayerData';
+import { getModelsByMapId, getPathDataByMapId } from '../../constants/getMapData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
@@ -37,7 +37,7 @@ import {
     DEFAULT_SCENEGRAPH_LAYER_PROPS,
     getLayerIcon
 } from '../../constants/deckGlLayers';
-import { ModelType } from '../../constants/models';
+import { ModelType } from '../../constants/hardcoded-data/models';
 import { selectDestinationsLayerData, selectRobotLayerData } from '../../redux-modules/layerDataSelectors';
 
 const flyToInterpolator =  new FlyToInterpolator({
