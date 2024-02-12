@@ -30,7 +30,7 @@ const ImportButton = () => {
                 setIsDialogOpen(true);
             }}
         >
-            <i className="fa fa-file-arrow-up"/>
+            <i className="fa fa-file-import"/>
         </Button>
     );
 }
