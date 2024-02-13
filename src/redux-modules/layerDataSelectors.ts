@@ -66,7 +66,7 @@ export const selectRobotLayerData = createSelector(
     }
 );
 
-const getRobotLayerData = (robot: TState, selectedRobot?: string) => {
+export const getRobotLayerData = (robot: TState, selectedRobot?: string) => {
     const robotId = robot?.robotStatus?.robotId as string;
 
     return {

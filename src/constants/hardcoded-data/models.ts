@@ -8,8 +8,8 @@ export type ModelType = {
 export const floorModelsEg: ModelType[] = [{
     id: "EG/Dome",
     url: "https://chayns.space/77896-05853/3D-Modelle/EG/Dome.glb",
-    position: [0.30353255969106474, -116.77306274331785, 0],
-    orientation: [0, -50.97685956018226, 90]
+    position: [0, 0, 0],
+    orientation: [0, 0, 90]
 }, {
     id: "EG/Atrium_Norden",
     url: "https://chayns.space/77896-05853/3D-Modelle/EG/Atrium_Norden.glb",

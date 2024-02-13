@@ -16,7 +16,7 @@ import {
 import { selectResetViewState } from '../../redux-modules/misc/selectors';
 import { toggleSelectedDestination } from '../../redux-modules/misc/actions';
 import { DragMode, PreviewType, TRobotLayerData, TUndoStackItem, TViewState } from '../../types/deckgl-map';
-import { selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
+import { selectRobotEntities, selectRobotIds, selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
 import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
 import {
     coordinateToMeter,
@@ -38,8 +38,13 @@ import {
     getLayerIcon
 } from '../../constants/deckGlLayers';
 import { ModelType } from '../../constants/hardcoded-data/models';
-import { selectDestinationsLayerData, selectRobotLayerData } from '../../redux-modules/layerDataSelectors';
+import {
+    getRobotLayerData,
+    selectDestinationsLayerData,
+    selectRobotLayerData
+} from '../../redux-modules/layerDataSelectors';
 import { createDialog, DialogButtonType, DialogHandler, DialogType, ToastType } from 'chayns-api';
+import { robotStatusName, TState } from '../../redux-modules/robot-status/slice';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -98,11 +103,34 @@ const Map: FC<{
     const pathLayerData = useMemo(() => mapRobotElementsToPathData(
         getPathDataByMapId(mapId)?.elements || []
     ), [mapId]);
-    const robotLayerData = useSelector((state: RootState) => selectRobotLayerData(state, {
-        isPreview,
-        previewMapRobotId: robotId,
-        mapId,
-    }));
+
+
+
+    // if (isPreview) {
+    //     const previewMapRobot = state[robotStatusName].entities[previewMapRobotId || ''];
+    //     return previewMapRobot && previewMapRobot.robotStatus?.currentMap?.id === mapId
+    //         ? [getRobotLayerData(previewMapRobot)]
+    //         : [];
+    // }
+
+    const robotIds = useSelector(selectRobotIds) as number[];
+    const robotEntities = useSelector(selectRobotEntities);
+    // const selectedRobotId = useSelector(selectSelectedRobotId);
+
+    const robotsByMapId = useMemo(() => robotIds
+        .filter((id) => robotEntities[id]?.robotStatus?.currentMap?.id === mapId)
+        .map((id) => robotEntities[id]) as TState[], [mapId, robotEntities, robotIds]);
+
+    const robotLayerData = useMemo(() => robotsByMapId
+        .filter((data) => data?.puduRobotStatus)
+        .map((data) => getRobotLayerData(data, selectedRobotId)), [robotsByMapId, selectedRobotId]);
+
+    // const robotLayerData = useSelector((state: RootState) => selectRobotLayerData(state, {
+    //     isPreview,
+    //     previewMapRobotId: robotId,
+    //     mapId,
+    // }));
+
     const [floorModels, setFloorModels] = useState<ModelType[]>([]);
 
     // endregion
@@ -572,6 +600,10 @@ const Map: FC<{
                         id={`robots-${mapId}-mesh`}
                         getPosition={(d: TRobotLayerData) => [...d.position, 0]}
                         onClick={handleRobotLayerClick}
+                        updateTriggers={{
+                            getPosition: robotLayerData,
+                            getOrientation: robotLayerData,
+                        }}
                     />
                 )}
             </DeckGL>
