@@ -425,7 +425,7 @@ const Map: FC<{
                 type: DialogType.TOAST,
                 permanent: true,
                 toastType: ToastType.NEUTRAL,
-                text: 'Nutze STRG oder SHIFT um die Modelle zu verschieben und rotieren.',
+                text: 'Drücke STRG um die Modelle mit der Maus zu verschieben und SHIFT umd die Modelle mit der Maus zu rotieren.',
                 showCloseIcon: true,
             })
             void dialog.open();
