@@ -5,6 +5,11 @@ import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
+import { createDialog, DialogHandler, DialogType, ToastType } from 'chayns-api';
+import clsx from 'clsx';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { Button, Tooltip } from 'chayns-components';
 import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../constants/deckGl';
 import { IIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
 import { getModelsByMapId, getPathDataByMapId } from '../../constants/getMapData';
@@ -41,10 +46,8 @@ import { ModelType } from '../../constants/hardcoded-data/models';
 import {
     getRobotLayerData,
     selectDestinationsLayerData,
-    selectRobotLayerData
 } from '../../redux-modules/layerDataSelectors';
-import { createDialog, DialogButtonType, DialogHandler, DialogType, ToastType } from 'chayns-api';
-import { robotStatusName, TState } from '../../redux-modules/robot-status/slice';
+import { TState } from '../../redux-modules/robot-status/slice';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -435,7 +438,7 @@ const Map: FC<{
                 type: DialogType.TOAST,
                 permanent: true,
                 toastType: ToastType.NEUTRAL,
-                text: 'Drücke STRG um die Modelle mit der Maus zu verschieben und SHIFT umd die Modelle mit der Maus zu rotieren.',
+                text: 'Drücke STRG um die Modelle mit der Maus zu verschieben und SHIFT um die Modelle mit der Maus zu rotieren.',
                 showCloseIcon: true,
             })
             void dialog.open();
@@ -617,6 +620,39 @@ const Map: FC<{
                     />
                 )}
             </DeckGL>
+            {isEditor && (
+                <div style={{ zIndex: 100, position: 'absolute', top: '10px', left: '10px', display: 'flex' }}>
+                    <Tooltip
+                        bindListeners
+                        content={{ text: 'Rückgängig (STRG + Z)' }}
+                    >
+                        <Button
+                            disabled={undoStack.length === 0}
+                            className={clsx('icon-button pointer-events', {
+                                'button--secondary': !followRobot,
+                            })}
+                            onClick={() => undo()}
+                        >
+                            <i className="far fa-undo"/>
+                        </Button>
+                    </Tooltip>
+                    <div style={{ width: '10px' }}/>
+                    <Tooltip
+                        bindListeners
+                        content={{ text: 'Wiederholen (STRG + Y)' }}
+                    >
+                        <Button
+                            disabled={redoStack.length === 0}
+                            className={clsx('icon-button pointer-events', {
+                                'button--secondary': !followRobot,
+                            })}
+                            onClick={() => redo()}
+                        >
+                            <i className="far fa-redo"/>
+                        </Button>
+                    </Tooltip>
+                </div>
+            )}
         </div>
     );
 };
