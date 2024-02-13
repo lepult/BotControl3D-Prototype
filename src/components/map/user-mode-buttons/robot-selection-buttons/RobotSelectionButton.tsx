@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
 import { selectSelectedRobotId } from '../../../../redux-modules/map/selectors';
@@ -23,16 +23,21 @@ const RobotSelectionButton: FC<{
     }
 
     return (
-        <Button
-            className={clsx('pointer-events robot-selection-button', {
-                'button--secondary': selectedRobotId !== robotId
-            })}
-            onClick={() => {
-                dispatch(toggleSelectedRobot({ robotId }));
-            }}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Roboter auswählen' }}
         >
-            {robot?.robotStatus?.robotName}
-        </Button>
+            <Button
+                className={clsx('pointer-events robot-selection-button', {
+                    'button--secondary': selectedRobotId !== robotId
+                })}
+                onClick={() => {
+                    dispatch(toggleSelectedRobot({ robotId }));
+                }}
+            >
+                {robot?.robotStatus?.robotName}
+            </Button>
+        </Tooltip>
     )
 };
 

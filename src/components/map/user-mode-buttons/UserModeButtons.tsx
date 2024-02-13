@@ -62,10 +62,8 @@ const UserModeButtons: FC = () => {
                     }}
                 >
                     {!isGuest && <RouteButton/>}
-                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
                     {!isPlanningRoute && !isGuest && <CancelButton/>}
-                    {!isPlanningRoute && <FollowRobotButton/>}
-                    {!isPlanningRoute && <InformationButton/>}
+                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
@@ -76,6 +74,8 @@ const UserModeButtons: FC = () => {
                     ))}
                 </div>
                 <div className="map-buttons position-right position-bottom">
+                    {!isPlanningRoute && <FollowRobotButton/>}
+                    {!isPlanningRoute && <InformationButton/>}
                     <ResetViewButton/>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button, SmallWaitCursor } from 'chayns-components';
+import { Button, SmallWaitCursor, Tooltip } from 'chayns-components';
 import { createDialog, DialogType } from 'chayns-api';
 import './routeButton.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -140,17 +140,22 @@ const RouteButton = () => {
     }
 
     return (
-        <Button
-            className={clsx('icon-button pointer-events', {
-                'button--secondary': !selectedRobot?.robotStatus?.currentRoute,
-            })}
-            onClick={() => dispatch(changeIsPlanningRoute({
-                isPlanning: true,
-                unselectDestination: selectedDestination?.destination.customType !== CustomDestinationType.target,
-            }))}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Lieferauftrag' }}
         >
-            <i className="fa fa-route"/>
-        </Button>
+            <Button
+                className={clsx('icon-button pointer-events', {
+                    'button--secondary': !selectedRobot?.robotStatus?.currentRoute,
+                })}
+                onClick={() => dispatch(changeIsPlanningRoute({
+                    isPlanning: true,
+                    unselectDestination: selectedDestination?.destination.customType !== CustomDestinationType.target,
+                }))}
+            >
+                <i className="fa fa-route"/>
+            </Button>
+        </Tooltip>
     );
 };
 

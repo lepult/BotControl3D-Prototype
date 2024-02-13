@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMapById, selectSelectedMap, selectSelectedRobotId } from '../../../../redux-modules/map/selectors';
 import { getPathDataByMapId } from '../../../../constants/getMapData';
@@ -26,18 +26,23 @@ const FloorSelectionButton: FC<{
     }
 
     return (
-        <Button
-            className={clsx('list-button pointer-events', {
-                'button--secondary': selectedMap !== mapId,
-                'button--bordered': selectedRobot?.currentMap?.id === mapId && selectedMap !== mapId,
-            })}
-            onClick={() => {
-                dispatch(changeSelectedMap({ mapId }));
-                dispatch(setFollowRobot({ followRobot: false }));
-            }}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Stockwerk auswählen' }}
         >
-            {map.showName}
-        </Button>
+            <Button
+                className={clsx('list-button pointer-events', {
+                    'button--secondary': selectedMap !== mapId,
+                    'button--bordered': selectedRobot?.currentMap?.id === mapId && selectedMap !== mapId,
+                })}
+                onClick={() => {
+                    dispatch(changeSelectedMap({ mapId }));
+                    dispatch(setFollowRobot({ followRobot: false }));
+                }}
+            >
+                {map.showName}
+            </Button>
+        </Tooltip>
     );
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { resetViewState } from '../../../../redux-modules/misc/actions';
@@ -10,12 +10,18 @@ const ResetViewButton = () => {
     const dispatch = useDispatch();
 
     return (
-        <Button
-            className={clsx('icon-button pointer-events button--secondary')}
-            onClick={() => dispatch(resetViewState())}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Kameraposition zurücksetzen' }}
         >
-            <i className="fa fa-location-crosshairs"/>
-        </Button>
+            <Button
+                className={clsx('icon-button pointer-events button--secondary')}
+                onClick={() => dispatch(resetViewState())}
+            >
+                <i className="far fa-location-crosshairs"/>
+            </Button>
+        </Tooltip>
+
     )
 };
 

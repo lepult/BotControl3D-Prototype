@@ -36,8 +36,8 @@ const EditorMapButtons: FC<{
                 }}
             >
                 <ImportButton/>
-                <ResetViewButton/>
                 <ChangeInitialViewButton viewState={viewState} mapId={mapId}/>
+                <ResetViewButton/>
             </div>
             <div
                 className="map-buttons"

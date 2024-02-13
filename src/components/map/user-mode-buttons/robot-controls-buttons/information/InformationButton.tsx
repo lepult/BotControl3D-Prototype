@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
@@ -42,19 +42,24 @@ const InformationButton = () => {
     });
 
     return (
-        <Button
-            disabled={!selectedRobotId}
-            className={clsx('icon-button pointer-events', {
-                'button--secondary': !isDialogOpen,
-            })}
-            onClick={() => {
-                setIsDialogOpen(true);
-                dialog.open()
-                    .finally(() => setIsDialogOpen(false));
-            }}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Roboter Statusinformationen' }}
         >
-            <i className="far fa-info"/>
-        </Button>
+            <Button
+                disabled={!selectedRobotId}
+                className={clsx('icon-button pointer-events', {
+                    'button--secondary': !isDialogOpen,
+                })}
+                onClick={() => {
+                    setIsDialogOpen(true);
+                    dialog.open()
+                        .finally(() => setIsDialogOpen(false));
+                }}
+            >
+                <i className="far fa-info"/>
+            </Button>
+        </Tooltip>
     )
 };
 
