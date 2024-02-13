@@ -1,7 +1,7 @@
 import React, { FC, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
-import { IconLayer, PathLayer, PolygonLayer } from '@deck.gl/layers/typed';
+import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
@@ -13,7 +13,7 @@ import {
     selectInitialViewStateByMapId,
     selectSelectedRobotId
 } from '../../redux-modules/map/selectors';
-import { selectResetViewState, } from '../../redux-modules/misc/selectors';
+import { selectResetViewState } from '../../redux-modules/misc/selectors';
 import { toggleSelectedDestination } from '../../redux-modules/misc/actions';
 import { DragMode, PreviewType, TRobotLayerData, TUndoStackItem, TViewState } from '../../types/deckgl-map';
 import { selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
@@ -39,6 +39,7 @@ import {
 } from '../../constants/deckGlLayers';
 import { ModelType } from '../../constants/hardcoded-data/models';
 import { selectDestinationsLayerData, selectRobotLayerData } from '../../redux-modules/layerDataSelectors';
+import { createDialog, DialogButtonType, DialogHandler, DialogType, ToastType } from 'chayns-api';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -69,6 +70,8 @@ const Map: FC<{
 
     const [isDraggingMap, setIsDraggingMap] = useState(false);
     const [hoveringOver, setHoveringOver] = useState<string>();
+
+    const [toastDialog, setToastDialog] = useState<DialogHandler>();
 
 
     // region Selectors
@@ -103,77 +106,6 @@ const Map: FC<{
     const [floorModels, setFloorModels] = useState<ModelType[]>([]);
 
     // endregion
-
-    // endregion
-
-    // region Updates
-
-    // region Update Parent State
-
-    useEffect(() => {
-        setFloorModelsProp(floorModels);
-    }, [floorModels, setFloorModelsProp]);
-
-    useEffect(() => {
-        setViewStateProp(viewState);
-    }, [setViewStateProp, viewState]);
-
-    // endregion
-
-    useEffect(() => {
-        setFloorModels(getModelsByMapId(mapId));
-    }, [mapId]);
-
-    // Resets the ViewState E.g. if the corresponding Button is clicked.
-    useEffect(() => {
-        setViewState((prev) => ({
-            ...prev,
-            ...initialViewState,
-            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
-        }));
-    }, [initialViewState, resetViewState, isPreview]);
-
-    // Sets the transitionDuration and -Interpolator, when followRobot changes.
-    useEffect(() => {
-        setViewState((prev) => ({
-            ...prev,
-            transitionDuration: followRobot ? 2000 : 0,
-            transitionInterpolator: followRobot ? flyToInterpolator : undefined,
-        }))
-    }, [followRobot]);
-
-    // I forgot what this does. TODO Find out!
-    useEffect(() => {
-        if (!selectedRobotId && robotId && isPreview) {
-            dispatch(toggleSelectedRobot({ robotId }));
-        }
-    }, [dispatch, robotId, isPreview, selectedRobotId]);
-
-    // Makes the ViewState follow the selected Robot automatically, when followRobot is true.
-    useEffect(() => {
-        if (followRobot && selectedRobotId) {
-            if (selectedRobot) {
-                const [longitude, latitude] = meterToCoordinate([
-                    selectedRobot?.puduRobotStatus?.robotPose?.x || 0,
-                    selectedRobot?.puduRobotStatus?.robotPose?.y || 0,
-                ]);
-                const bearing = robotAngleToViewStateBearing(selectedRobot.puduRobotStatus?.robotPose?.angle || 0);
-
-                setViewState((prev) => ({
-                    ...prev,
-                    latitude,
-                    longitude,
-                    pitch: 55,
-                    zoom: isPreview ? 21 : 23,
-                    bearing,
-                }));
-
-                if (selectedRobot.robotStatus?.currentMap) {
-                    dispatch(changeSelectedMap({ mapId: selectedRobot.robotStatus.currentMap?.id }))
-                }
-            }
-        }
-    }, [dispatch, followRobot, selectedRobotId, selectedRobot, isPreview]);
 
     // endregion
 
@@ -442,6 +374,97 @@ const Map: FC<{
 
         return null;
     };
+
+    // endregion
+
+    // region Updates
+
+    // region Update Parent State
+
+    useEffect(() => {
+        setFloorModelsProp(floorModels);
+    }, [floorModels, setFloorModelsProp]);
+
+    useEffect(() => {
+        setViewStateProp(viewState);
+    }, [setViewStateProp, viewState]);
+
+    // endregion
+
+    useEffect(() => {
+        const dialog = createDialog({
+            type: DialogType.TOAST,
+            permanent: true,
+            toastType: ToastType.NEUTRAL,
+            text: 'Nutze STRG oder SHIFT um die Modelle zu verschieben und rotieren.',
+            showCloseIcon: true,
+        })
+        setToastDialog(dialog);
+        void dialog.open();
+        console.log('dialog', dialog);
+    }, []);
+
+    // Closes the toast dialog, when user moves model for first time.
+    useEffect(() => {
+        if (dragMode) {
+            toastDialog?.close(null, null);
+        }
+    }, [dragMode, toastDialog]);
+
+    useEffect(() => {
+        setFloorModels(getModelsByMapId(mapId));
+    }, [mapId]);
+
+    // Resets the ViewState E.g. if the corresponding Button is clicked.
+    useEffect(() => {
+        setViewState((prev) => ({
+            ...prev,
+            ...initialViewState,
+            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
+        }));
+    }, [initialViewState, resetViewState, isPreview]);
+
+    // Sets the transitionDuration and -Interpolator, when followRobot changes.
+    useEffect(() => {
+        setViewState((prev) => ({
+            ...prev,
+            transitionDuration: followRobot ? 2000 : 0,
+            transitionInterpolator: followRobot ? flyToInterpolator : undefined,
+        }))
+    }, [followRobot]);
+
+    // I forgot what this does. TODO Find out!
+    useEffect(() => {
+        if (!selectedRobotId && robotId && isPreview) {
+            dispatch(toggleSelectedRobot({ robotId }));
+        }
+    }, [dispatch, robotId, isPreview, selectedRobotId]);
+
+    // Makes the ViewState follow the selected Robot automatically, when followRobot is true.
+    useEffect(() => {
+        if (followRobot && selectedRobotId) {
+            if (selectedRobot) {
+                const [longitude, latitude] = meterToCoordinate([
+                    selectedRobot?.puduRobotStatus?.robotPose?.x || 0,
+                    selectedRobot?.puduRobotStatus?.robotPose?.y || 0,
+                ]);
+                const bearing = robotAngleToViewStateBearing(selectedRobot.puduRobotStatus?.robotPose?.angle || 0);
+
+                setViewState((prev) => ({
+                    ...prev,
+                    latitude,
+                    longitude,
+                    pitch: 55,
+                    zoom: isPreview ? 21 : 23,
+                    bearing,
+                }));
+
+                if (selectedRobot.robotStatus?.currentMap) {
+                    dispatch(changeSelectedMap({ mapId: selectedRobot.robotStatus.currentMap?.id }))
+                }
+            }
+        }
+    }, [dispatch, followRobot, selectedRobotId, selectedRobot, isPreview]);
 
     // endregion
 
