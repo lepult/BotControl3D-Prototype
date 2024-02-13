@@ -22,16 +22,20 @@ import {
     selectIsPlanningRoute,
     selectSelectedDestination,
 } from '../../../../../redux-modules/misc/selectors';
-import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
+import { selectMapEntities, selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
 import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
+import { TMap } from '../../../../../types/api/map';
 
-const getDestinationName = (destination: TDestination) => {
+type TMapEntities = { [key: number]: TMap }
+
+const getDestinationName = (destination: TDestination, mapEntities: TMapEntities) => {
     if (destination.chaynsUser) {
         return destination.chaynsUser.name
     }
 
-    return destination.name;
+    const mapName = mapEntities[destination.mapId].showName
+    return `${destination.name} ${mapName ? `(${mapName})` : ''}`;
 };
 const RouteButton = () => {
     const errorDialog = createDialog({
@@ -52,15 +56,18 @@ const RouteButton = () => {
             id: robotEntities[robotId]?.robotId as string,
         })), [robotEntities, robotIds]);
 
+    const mapEntities = useSelector(selectMapEntities);
+
     const destinationEntities = useSelector(selectDestinationEntities);
     const destinationIds = useSelector(selectDestinationIds);
     const destinationItems = useMemo(() => destinationIds
         .filter((destinationId) => destinationEntities[destinationId].destination.customType === CustomDestinationType.target)
         .map((destinationId) => ({
-            showName: getDestinationName(destinationEntities[destinationId].destination),
+            showName: getDestinationName(destinationEntities[destinationId].destination, mapEntities),
             id: destinationEntities[destinationId].destination.id,
         }))
-    , [destinationEntities, destinationIds]);
+    , [destinationEntities, destinationIds, mapEntities]);
+
 
     const selectedDestination = useSelector(selectSelectedDestination);
 
@@ -111,7 +118,7 @@ const RouteButton = () => {
                     setSelected={(destinationId ) => dispatch(changeSelectedDestination(destinationId as number))}
                     selected={selectedDestination ? {
                         id: selectedDestination.destination.id,
-                        showName: getDestinationName(selectedDestination.destination),
+                        showName: getDestinationName(selectedDestination.destination, mapEntities),
                     } : null}
                 />
                 <RouteInput
