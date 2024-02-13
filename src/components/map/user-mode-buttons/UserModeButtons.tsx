@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import '../buttons.scss';
 import { useSelector } from 'react-redux';
-import { useUser, useWindowMetrics } from 'chayns-api';
+import { getUser, useUser, useWindowMetrics } from 'chayns-api';
 import { selectMapIds } from '../../../redux-modules/map/selectors';
 import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
 import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
@@ -15,6 +15,7 @@ import { selectIsPlanningRoute } from '../../../redux-modules/misc/selectors';
 import { getUserType } from '../../../utils/permissionsHelper';
 import { UserType } from '../../../types/misc';
 import InformationButton from './robot-controls-buttons/information/InformationButton';
+import EditMapButton from './interaction-buttons/EditMapButton';
 
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
@@ -62,10 +63,8 @@ const UserModeButtons: FC = () => {
                     }}
                 >
                     {!isGuest && <RouteButton/>}
-                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
                     {!isPlanningRoute && !isGuest && <CancelButton/>}
-                    {!isPlanningRoute && <FollowRobotButton/>}
-                    {!isPlanningRoute && <InformationButton/>}
+                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
@@ -76,6 +75,9 @@ const UserModeButtons: FC = () => {
                     ))}
                 </div>
                 <div className="map-buttons position-right position-bottom">
+                    <FollowRobotButton/>
+                    <InformationButton/>
+                    {user.uacGroups?.find((group) => group.id === 1) && <EditMapButton/>}
                     <ResetViewButton/>
                 </div>
             </div>

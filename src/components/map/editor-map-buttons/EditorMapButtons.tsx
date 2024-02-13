@@ -7,6 +7,7 @@ import ChangeInitialViewButton from './buttons/ChangeInitialViewButton';
 import SaveButton from './buttons/SaveButton';
 import ResetViewButton from './buttons/ResetViewButton';
 import CancelButton from './buttons/CancelButton';
+import ShortcutsButton from './buttons/ShortcutsButton';
 
 const EditorMapButtons: FC<{
     floorModels: ModelType[],
@@ -36,8 +37,9 @@ const EditorMapButtons: FC<{
                 }}
             >
                 <ImportButton/>
-                <ResetViewButton/>
                 <ChangeInitialViewButton viewState={viewState} mapId={mapId}/>
+                <ResetViewButton/>
+                <ShortcutsButton/>
             </div>
             <div
                 className="map-buttons"

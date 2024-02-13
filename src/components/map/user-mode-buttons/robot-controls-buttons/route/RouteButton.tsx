@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button, SmallWaitCursor } from 'chayns-components';
+import { Button, SmallWaitCursor, Tooltip } from 'chayns-components';
 import { createDialog, DialogType } from 'chayns-api';
 import './routeButton.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,23 +22,22 @@ import {
     selectIsPlanningRoute,
     selectSelectedDestination,
 } from '../../../../../redux-modules/misc/selectors';
-import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
+import { selectMapEntities, selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { toggleSelectedRobot } from '../../../../../redux-modules/map/actions';
 import { changeIsPlanningRoute, changeSelectedDestination } from '../../../../../redux-modules/misc/actions';
+import { TMap } from '../../../../../types/api/map';
 
-const getDestinationName = (destination: TDestination) => {
+type TMapEntities = { [key: number]: TMap }
+
+const getDestinationName = (destination: TDestination, mapEntities: TMapEntities) => {
     if (destination.chaynsUser) {
         return destination.chaynsUser.name
     }
 
-    return destination.name;
+    const mapName = mapEntities[destination.mapId].showName
+    return `${destination.name} ${mapName ? `(${mapName})` : ''}`;
 };
 const RouteButton = () => {
-    const errorDialog = createDialog({
-        type: DialogType.ALERT,
-        text: 'Es ist ein Fehler aufgetreten',
-    });
-
     const dispatch = useDispatch();
 
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
@@ -52,15 +51,18 @@ const RouteButton = () => {
             id: robotEntities[robotId]?.robotId as string,
         })), [robotEntities, robotIds]);
 
+    const mapEntities = useSelector(selectMapEntities);
+
     const destinationEntities = useSelector(selectDestinationEntities);
     const destinationIds = useSelector(selectDestinationIds);
     const destinationItems = useMemo(() => destinationIds
         .filter((destinationId) => destinationEntities[destinationId].destination.customType === CustomDestinationType.target)
         .map((destinationId) => ({
-            showName: getDestinationName(destinationEntities[destinationId].destination),
+            showName: getDestinationName(destinationEntities[destinationId].destination, mapEntities),
             id: destinationEntities[destinationId].destination.id,
         }))
-    , [destinationEntities, destinationIds]);
+    , [destinationEntities, destinationIds, mapEntities]);
+
 
     const selectedDestination = useSelector(selectSelectedDestination);
 
@@ -70,7 +72,10 @@ const RouteButton = () => {
     const [isFetching, setIsFetching] = useState(false);
     const handleSendRobot = () => {
         if (!selectedRobotId || !selectedDestination) {
-            void errorDialog.open()
+            void createDialog({
+                type: DialogType.ALERT,
+                text: 'Fehler: Es muss ein Roboter und ein Standort ausgewählt werden',
+            }).open();
             return;
         }
 
@@ -84,13 +89,10 @@ const RouteButton = () => {
                     dispatch(changeIsPlanningRoute({ isPlanning: false }))
                     dispatch(changeSelectedDestination(undefined));
                     // dispatch(toggleSelectedRobot({ robotId: undefined }));
-                } else {
-                    void errorDialog.open()
                 }
             })
             .catch((e) => {
                 setIsFetching(false);
-                void errorDialog.open()
             });
     }
 
@@ -111,7 +113,7 @@ const RouteButton = () => {
                     setSelected={(destinationId ) => dispatch(changeSelectedDestination(destinationId as number))}
                     selected={selectedDestination ? {
                         id: selectedDestination.destination.id,
-                        showName: getDestinationName(selectedDestination.destination),
+                        showName: getDestinationName(selectedDestination.destination, mapEntities),
                     } : null}
                 />
                 <RouteInput
@@ -140,17 +142,22 @@ const RouteButton = () => {
     }
 
     return (
-        <Button
-            className={clsx('icon-button pointer-events', {
-                'button--secondary': !selectedRobot?.robotStatus?.currentRoute,
-            })}
-            onClick={() => dispatch(changeIsPlanningRoute({
-                isPlanning: true,
-                unselectDestination: selectedDestination?.destination.customType !== CustomDestinationType.target,
-            }))}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Lieferauftrag' }}
         >
-            <i className="fa fa-route"/>
-        </Button>
+            <Button
+                className={clsx('icon-button pointer-events', {
+                    'button--secondary': !selectedRobot?.robotStatus?.currentRoute,
+                })}
+                onClick={() => dispatch(changeIsPlanningRoute({
+                    isPlanning: true,
+                    unselectDestination: selectedDestination?.destination.customType !== CustomDestinationType.target,
+                }))}
+            >
+                <i className="fa fa-route"/>
+            </Button>
+        </Tooltip>
     );
 };
 

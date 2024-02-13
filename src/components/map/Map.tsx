@@ -390,6 +390,10 @@ const Map: FC<{
         if (pickingInfo?.layer?.id?.startsWith('destinations') && pickingInfo?.object) {
             const iconData = pickingInfo.object as IIconData;
             return {
+                style: {
+                    backgroundColor: 'rgb(var(--chayns-bg-rgb))',
+                    color: 'var(--chayns-color--text)',
+                },
                 html: `<h3 style='margin-top: 0'>${iconData.name}</h3>
                     ${iconData.customType ? `<p>${iconData.customType}</p>` : ''}`
             };
@@ -397,7 +401,13 @@ const Map: FC<{
 
         if (pickingInfo?.layer?.id?.startsWith('robots') && pickingInfo?.object) {
             const robotData = pickingInfo.object as TRobotLayerData;
-            return { html: `<h3 style='margin-top: 0'>${robotData.name}</h3>` };
+            return {
+                style: {
+                    backgroundColor: 'rgb(var(--chayns-bg-rgb))',
+                    color: 'var(--chayns-color--text)',
+                },
+                html: `<h3 style='margin-top: 0'>${robotData.name}</h3>`
+            };
         }
 
         return null;
@@ -425,7 +435,7 @@ const Map: FC<{
                 type: DialogType.TOAST,
                 permanent: true,
                 toastType: ToastType.NEUTRAL,
-                text: 'Nutze STRG oder SHIFT um die Modelle zu verschieben und rotieren.',
+                text: 'Drücke STRG um die Modelle mit der Maus zu verschieben und SHIFT umd die Modelle mit der Maus zu rotieren.',
                 showCloseIcon: true,
             })
             void dialog.open();

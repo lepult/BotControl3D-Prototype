@@ -2,6 +2,8 @@ import React, { FC, useMemo, useRef, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { PersonFinder, SimpleWrapperContext, Input } from 'chayns-components';
+import { useSelector } from 'react-redux';
+import { selectDestinationEntities } from '../../../../../redux-modules/destination/selectors';
 
 type TPersonFinderItem = {
     showName: string,
@@ -21,6 +23,17 @@ const compare = (a2: TCompare, b2: TCompare) => a2 > b2
     ? 1
     : -1;
 
+const compareString = (a: string, b: string) => a.localeCompare(
+    b,
+    undefined,
+    {
+        numeric: true,
+        sensitivity: 'base',
+    },
+);
+
+
+
 const RouteInput: FC<{
     items: TPersonFinderItem[],
     icon: string,
@@ -38,15 +51,33 @@ const RouteInput: FC<{
 
     const personFinderRef = useRef<TPersonFinderRef>();
 
+    const destinationEntities = useSelector(selectDestinationEntities);
+
     const sortedItems = useMemo(() => items
-        .sort((a, b) => a.showName.localeCompare(
-            b.showName,
-            undefined,
-            {
-                numeric: true,
-                sensitivity: 'base',
-            },
-        )),[items]);
+        .sort((a, b) => {
+            if (icon === 'robot') {
+                return compareString(a.showName, b.showName);
+            }
+
+            const aDestination = destinationEntities[a.id as number];
+            const bDestination = destinationEntities[b.id as number];
+
+            if (aDestination.destination.chaynsUser && bDestination.destination.chaynsUser) {
+                return compareString(
+                    aDestination.destination.chaynsUser.name,
+                    bDestination.destination.chaynsUser.name
+                );
+            }
+            if (!aDestination.destination.chaynsUser && !bDestination.destination.chaynsUser) {
+                if (aDestination.destination.mapId !== bDestination.destination.mapId) {
+                    return aDestination.destination.mapId > bDestination.destination.mapId ? 1 : -1;
+                }
+
+                return compareString(aDestination.destination.name, bDestination.destination.name);
+            }
+
+            return aDestination.destination.chaynsUser ? -1 : 1;
+        }),[destinationEntities, items]);
 
     const clearPersonFinder = () => {
         if (personFinderRef.current) {

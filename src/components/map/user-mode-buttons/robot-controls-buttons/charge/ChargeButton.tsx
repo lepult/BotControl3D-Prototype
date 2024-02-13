@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useMemo } from 'react';
 import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
+import clsx from 'clsx';
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
 import { useSelector } from 'react-redux';
 import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { postChargeRobotFetch } from '../../../../../api/robot/postChargeRobot';
 import { selectRobotById } from '../../../../../redux-modules/robot-status/selectors';
 import { getMapRobotStatus } from '../../../../../utils/robotStatusHelper';
-import clsx from 'clsx';
 import { MapRobotStatus } from '../../../../../types/deckgl-map';
 import { CustomDestinationType } from '../../../../../types/api/destination';
 
@@ -37,35 +37,40 @@ const ChargeButton = () => {
 
     const errorDialog = createDialog({
         type: DialogType.ALERT,
-        text: 'Es ist ein Fehler aufgetreten',
+        text: 'Es ist ein unbekannter Fehler aufgetreten.',
     });
 
     return (
-        <Button
-            className={clsx('icon-button pointer-events', {
-                'button--secondary': ![
-                    MapRobotStatus.Charging,
-                    MapRobotStatus.SendToChargingPile,
-                    MapRobotStatus.Charged
-                ].includes(mapRobotStatus) && !lastDestinationIsChargingStation
-            })}
-            onClick={() => {
-                if (selectedRobotId) {
-                    void confirmDialog.open()
-                        .then((result) => {
-                            // @ts-ignore
-                            if (result.buttonType === DialogButtonType.OK) {
-                                postChargeRobotFetch(selectedRobotId)
-                                    .catch(() => errorDialog.open());
-                            }
-                        });
-                   
-                }
-            }}
-            disabled={!selectedRobotId}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Zur Ladestation' }}
         >
-            <i className="far fa-battery-bolt"/>
-        </Button>
+            <Button
+                className={clsx('icon-button pointer-events', {
+                    'button--secondary': ![
+                        MapRobotStatus.Charging,
+                        MapRobotStatus.SendToChargingPile,
+                        MapRobotStatus.Charged
+                    ].includes(mapRobotStatus) && !lastDestinationIsChargingStation
+                })}
+                onClick={() => {
+                    if (selectedRobotId) {
+                        void confirmDialog.open()
+                            .then((result) => {
+                                // @ts-ignore
+                                if (result.buttonType === DialogButtonType.OK) {
+                                    postChargeRobotFetch(selectedRobotId)
+                                        .catch(() => errorDialog.open());
+                                }
+                            });
+
+                    }
+                }}
+                disabled={!selectedRobotId}
+            >
+                <i className="far fa-battery-bolt"/>
+            </Button>
+        </Tooltip>
     )
 };
 

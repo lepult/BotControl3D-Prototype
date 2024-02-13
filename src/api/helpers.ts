@@ -1,4 +1,4 @@
-import { getAccessToken } from 'chayns-api';
+import { createDialog, DialogType, getAccessToken } from 'chayns-api';
 
 export const getDefaultHeaders = async () => {
     const { accessToken } = await getAccessToken();
@@ -12,4 +12,25 @@ export const getDefaultHeaders = async () => {
     }
 
     return headers;
+}
+
+type TError = {
+    displayMessage: string,
+}
+
+export const openErrorDialog = async (response?: Response) => {
+    let message = 'Es ist ein unbekannter Fehler aufgetreten.';
+
+    try {
+        const data = await response?.json() as TError;
+        message = `Fehler: ${data.displayMessage}`;
+    } catch (e) {
+        console.log('error', e);
+    }
+
+    const errorDialog = createDialog({
+        type: DialogType.ALERT,
+        text: message || 'Es ist ein unbekannter Fehler aufgetreten',
+    });
+    void errorDialog.open();
 }

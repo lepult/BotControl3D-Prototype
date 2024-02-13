@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useMemo } from 'react';
 // @ts-ignore
-import { Button } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
+import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { createDialog, DialogButtonType, DialogType } from 'chayns-api';
 import { selectSelectedRobotId } from '../../../../../redux-modules/map/selectors';
 import { postCancelRobotFetch } from '../../../../../api/robot/postCancelRobot';
 import { selectRobotById } from '../../../../../redux-modules/robot-status/selectors';
 import { getMapRobotStatus } from '../../../../../utils/robotStatusHelper';
-import clsx from 'clsx';
 import { MapRobotStatus } from '../../../../../types/deckgl-map';
 
 const CancelButton = () => {
@@ -31,33 +31,38 @@ const CancelButton = () => {
 
     const errorDialog = createDialog({
         type: DialogType.ALERT,
-        text: 'Es ist ein Fehler aufgetreten',
+        text: 'Es ist ein unbekannter Fehler aufgetreten.',
     });
 
     return (
-        <Button
-            className={clsx('icon-button pointer-events', {
-                'button--secondary': ![
-                    MapRobotStatus.Cancel,
-                ].includes(mapRobotStatus)
-            })}
-            onClick={() => {
-                if (selectedRobotId) {
-                    void confirmDialog.open()
-                        .then((result) => {
-                            // @ts-ignore
-                            if (result.buttonType === DialogButtonType.OK) {
-                                postCancelRobotFetch(selectedRobotId)
-                                    .catch(() => errorDialog.open());
-                            }
-                        });
-
-                }
-            }}
-            disabled={!selectedRobotId}
+        <Tooltip
+            bindListeners
+            content={{ text: 'Lieferauftrag abbrechen' }}
         >
-            <i className="far fa-ban"/>
-        </Button>
+            <Button
+                className={clsx('icon-button pointer-events', {
+                    'button--secondary': ![
+                        MapRobotStatus.Cancel,
+                    ].includes(mapRobotStatus)
+                })}
+                onClick={() => {
+                    if (selectedRobotId) {
+                        void confirmDialog.open()
+                            .then((result) => {
+                                // @ts-ignore
+                                if (result.buttonType === DialogButtonType.OK) {
+                                    postCancelRobotFetch(selectedRobotId)
+                                        .catch(() => errorDialog.open());
+                                }
+                            });
+
+                    }
+                }}
+                disabled={!selectedRobotId}
+            >
+                <i className="far fa-ban"/>
+            </Button>
+        </Tooltip>
     )
 };
 
