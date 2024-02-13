@@ -21,13 +21,10 @@ const InformationButton = () => {
         name: 'Batterieleistung',
         value: robot?.puduRobotStatus?.robotPower
             ? `${robot?.puduRobotStatus?.robotPower}%`
-            : 'Unbekannt',
+            : '-',
     }, {
         name: 'Position',
-        value: robot?.robotStatus?.currentMap?.showName || 'Unbekannt',
-    }, {
-        name: 'Modus',
-        value: robot?.robotStatus?.driveMode || 'Unbekannt',
+        value: robot?.robotStatus?.currentMap?.showName || '-',
     }], [robot]);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
