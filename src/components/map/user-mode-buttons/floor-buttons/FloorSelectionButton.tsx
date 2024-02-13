@@ -33,7 +33,7 @@ const FloorSelectionButton: FC<{
             <Button
                 className={clsx('list-button pointer-events', {
                     'button--secondary': selectedMap !== mapId,
-                    'button--bordered': selectedRobot?.currentMap?.id === mapId && selectedMap !== mapId,
+                    'button--bordered': selectedRobot?.currentMap?.id === mapId,
                 })}
                 onClick={() => {
                     dispatch(changeSelectedMap({ mapId }));
