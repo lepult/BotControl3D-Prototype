@@ -4,7 +4,7 @@ import { PathStyleExtension } from '@deck.gl/extensions/typed';
 import { IPathData, TRobotLayerData } from '../types/deckgl-map';
 import { MapElementType } from '../types/pudu-api/robotMap';
 import { IIconData } from '../utils/dataHelper';
-import { ModelType } from './models';
+import { ModelType } from './hardcoded-data/models';
 
 export const getLayerIcon = (url: string) => ({
     url,

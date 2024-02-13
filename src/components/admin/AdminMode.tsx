@@ -8,7 +8,7 @@ import { ChaynsViewMode, removeChaynsFooter, updateChaynsViewmode } from '../../
 import RobotsList from './robots-list/RobotsList';
 import Map from '../map/Map';
 import EditorMapButtons from '../map/editor-map-buttons/EditorMapButtons';
-import { ModelType } from '../../constants/models';
+import { ModelType } from '../../constants/hardcoded-data/models';
 import { TViewState } from '../../types/deckgl-map';
 
 const AdminMode = () => {

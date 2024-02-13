@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
-import { ModelType } from '../../../constants/models';
+import { ModelType } from '../../../constants/hardcoded-data/models';
 import { TViewState } from '../../../types/deckgl-map';
 import '../buttons.scss';
 import ImportButton from './buttons/ImportButton';
 import ChangeInitialViewButton from './buttons/ChangeInitialViewButton';
 import SaveButton from './buttons/SaveButton';
 import ResetViewButton from './buttons/ResetViewButton';
+import CancelButton from './buttons/CancelButton';
 
 const EditorMapButtons: FC<{
     floorModels: ModelType[],
@@ -44,9 +45,14 @@ const EditorMapButtons: FC<{
                     bottom: '10px',
                     left: '50%',
                     transform: 'translateX(-50%)',
+                    display: 'flex',
+                    flexDirection: 'row',
                 }}
             >
                 <SaveButton floorModels={floorModels}/>
+                <div style={{ marginLeft: '10px' }}>
+                    <CancelButton/>
+                </div>
             </div>
         </div>
     </div>

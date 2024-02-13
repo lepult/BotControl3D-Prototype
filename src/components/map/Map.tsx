@@ -1,19 +1,19 @@
 import React, { FC, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import DeckGL from '@deck.gl/react/typed';
 import { ScenegraphLayer, SimpleMeshLayer } from '@deck.gl/mesh-layers/typed';
-import { IconLayer, PathLayer, PolygonLayer } from '@deck.gl/layers/typed';
+import { IconLayer, PathLayer } from '@deck.gl/layers/typed';
 import { useDispatch, useSelector } from 'react-redux';
 import { FlyToInterpolator, PickingInfo } from '@deck.gl/core/typed';
 import { ViewStateChangeParameters } from '@deck.gl/core/typed/controllers/controller';
 import { CONTROLLER_DEFAULTS, INITIAL_VIEW_STATE } from '../../constants/deckGl';
 import { IIconData, mapRobotElementsToPathData } from '../../utils/dataHelper';
-import { getModelsByMapId, getPathDataByMapId } from '../../constants/getLayerData';
+import { getModelsByMapId, getPathDataByMapId } from '../../constants/getMapData';
 import {
     selectFollowRobot,
     selectInitialViewStateByMapId,
     selectSelectedRobotId
 } from '../../redux-modules/map/selectors';
-import { selectResetViewState, } from '../../redux-modules/misc/selectors';
+import { selectResetViewState } from '../../redux-modules/misc/selectors';
 import { toggleSelectedDestination } from '../../redux-modules/misc/actions';
 import { DragMode, PreviewType, TRobotLayerData, TUndoStackItem, TViewState } from '../../types/deckgl-map';
 import { selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
@@ -37,8 +37,9 @@ import {
     DEFAULT_SCENEGRAPH_LAYER_PROPS,
     getLayerIcon
 } from '../../constants/deckGlLayers';
-import { ModelType } from '../../constants/models';
+import { ModelType } from '../../constants/hardcoded-data/models';
 import { selectDestinationsLayerData, selectRobotLayerData } from '../../redux-modules/layerDataSelectors';
+import { createDialog, DialogButtonType, DialogHandler, DialogType, ToastType } from 'chayns-api';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -69,6 +70,8 @@ const Map: FC<{
 
     const [isDraggingMap, setIsDraggingMap] = useState(false);
     const [hoveringOver, setHoveringOver] = useState<string>();
+
+    const [toastDialog, setToastDialog] = useState<DialogHandler>();
 
 
     // region Selectors
@@ -106,77 +109,6 @@ const Map: FC<{
 
     // endregion
 
-    // region Updates
-
-    // region Update Parent State
-
-    useEffect(() => {
-        setFloorModelsProp(floorModels);
-    }, [floorModels, setFloorModelsProp]);
-
-    useEffect(() => {
-        setViewStateProp(viewState);
-    }, [setViewStateProp, viewState]);
-
-    // endregion
-
-    useEffect(() => {
-        setFloorModels(getModelsByMapId(mapId));
-    }, [mapId]);
-
-    // Resets the ViewState E.g. if the corresponding Button is clicked.
-    useEffect(() => {
-        setViewState((prev) => ({
-            ...prev,
-            ...initialViewState,
-            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
-        }));
-    }, [initialViewState, resetViewState, isPreview]);
-
-    // Sets the transitionDuration and -Interpolator, when followRobot changes.
-    useEffect(() => {
-        setViewState((prev) => ({
-            ...prev,
-            transitionDuration: followRobot ? 2000 : 0,
-            transitionInterpolator: followRobot ? flyToInterpolator : undefined,
-        }))
-    }, [followRobot]);
-
-    // I forgot what this does. TODO Find out!
-    useEffect(() => {
-        if (!selectedRobotId && robotId && isPreview) {
-            dispatch(toggleSelectedRobot({ robotId }));
-        }
-    }, [dispatch, robotId, isPreview, selectedRobotId]);
-
-    // Makes the ViewState follow the selected Robot automatically, when followRobot is true.
-    useEffect(() => {
-        if (followRobot && selectedRobotId) {
-            if (selectedRobot) {
-                const [longitude, latitude] = meterToCoordinate([
-                    selectedRobot?.puduRobotStatus?.robotPose?.x || 0,
-                    selectedRobot?.puduRobotStatus?.robotPose?.y || 0,
-                ]);
-                const bearing = robotAngleToViewStateBearing(selectedRobot.puduRobotStatus?.robotPose?.angle || 0);
-
-                setViewState((prev) => ({
-                    ...prev,
-                    latitude,
-                    longitude,
-                    pitch: 55,
-                    zoom: isPreview ? 21 : 23,
-                    bearing,
-                }));
-
-                if (selectedRobot.robotStatus?.currentMap) {
-                    dispatch(changeSelectedMap({ mapId: selectedRobot.robotStatus.currentMap?.id }))
-                }
-            }
-        }
-    }, [dispatch, followRobot, selectedRobotId, selectedRobot, isPreview]);
-
-    // endregion
-
     // region Event Handlers
 
     const [undoStack, setUndoStack] = useState<TUndoStackItem[]>([]);
@@ -188,7 +120,6 @@ const Map: FC<{
     const [dragOffset, setDragOffset] = useState<[number, number]>([0, 0]);
     const [previousRotation, setPreviousRotation] = useState(0);
     const [dragMode, setDragMode] = useState<DragMode | null>(null);
-    const [hasChanged, setHasChanged] = useState(false);
 
     const rotateModel = useCallback((info: PickingInfo, floorModel: ModelType) => {
         const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
@@ -214,9 +145,7 @@ const Map: FC<{
             }
             return newFloorModels;
         });
-
-        setHasChanged((prev) => !prev);
-    }, [dragOffset, previousRotation]);
+        }, [dragOffset, previousRotation]);
 
     const translateModel = useCallback((info: PickingInfo, floorModel: ModelType) => {
         const meterCoordinate = coordinateToMeter(info.coordinate as [number, number]);
@@ -234,8 +163,6 @@ const Map: FC<{
             }
             return newFloorModels;
         });
-
-        setHasChanged((prev) => !prev);
     }, [dragOffset]);
 
     const onDragStart = useCallback((pickingInfo: PickingInfo) => {
@@ -450,6 +377,98 @@ const Map: FC<{
 
     // endregion
 
+    // region Updates
+
+    // region Update Parent State
+
+    useEffect(() => {
+        setFloorModelsProp(floorModels);
+    }, [floorModels, setFloorModelsProp]);
+
+    useEffect(() => {
+        setViewStateProp(viewState);
+    }, [setViewStateProp, viewState]);
+
+    // endregion
+
+    useEffect(() => {
+        if (isEditor && !toastDialog) {
+            const dialog = createDialog({
+                type: DialogType.TOAST,
+                permanent: true,
+                toastType: ToastType.NEUTRAL,
+                text: 'Nutze STRG oder SHIFT um die Modelle zu verschieben und rotieren.',
+                showCloseIcon: true,
+            })
+            void dialog.open();
+            setToastDialog(dialog);
+        }
+    }, [isEditor, toastDialog]);
+
+    // Closes the toast dialog, when user moves model for first time.
+    useEffect(() => {
+        if (dragMode && isEditor && toastDialog) {
+            toastDialog.close(null, null);
+        }
+    }, [dragMode, isEditor, toastDialog]);
+
+    useEffect(() => {
+        setFloorModels(getModelsByMapId(mapId));
+    }, [mapId]);
+
+    // Resets the ViewState E.g. if the corresponding Button is clicked.
+    useEffect(() => {
+        setViewState((prev) => ({
+            ...prev,
+            ...initialViewState,
+            zoom: isPreview ? initialViewState.zoom - 2 : initialViewState.zoom,
+        }));
+    }, [initialViewState, resetViewState, isPreview]);
+
+    // Sets the transitionDuration and -Interpolator, when followRobot changes.
+    useEffect(() => {
+        setViewState((prev) => ({
+            ...prev,
+            transitionDuration: followRobot ? 2000 : 0,
+            transitionInterpolator: followRobot ? flyToInterpolator : undefined,
+        }))
+    }, [followRobot]);
+
+    // I forgot what this does. TODO Find out!
+    useEffect(() => {
+        if (!selectedRobotId && robotId && isPreview) {
+            dispatch(toggleSelectedRobot({ robotId }));
+        }
+    }, [dispatch, robotId, isPreview, selectedRobotId]);
+
+    // Makes the ViewState follow the selected Robot automatically, when followRobot is true.
+    useEffect(() => {
+        if (followRobot && selectedRobotId) {
+            if (selectedRobot) {
+                const [longitude, latitude] = meterToCoordinate([
+                    selectedRobot?.puduRobotStatus?.robotPose?.x || 0,
+                    selectedRobot?.puduRobotStatus?.robotPose?.y || 0,
+                ]);
+                const bearing = robotAngleToViewStateBearing(selectedRobot.puduRobotStatus?.robotPose?.angle || 0);
+
+                setViewState((prev) => ({
+                    ...prev,
+                    latitude,
+                    longitude,
+                    pitch: 55,
+                    zoom: isPreview ? 21 : 23,
+                    bearing,
+                }));
+
+                if (selectedRobot.robotStatus?.currentMap) {
+                    dispatch(changeSelectedMap({ mapId: selectedRobot.robotStatus.currentMap?.id }))
+                }
+            }
+        }
+    }, [dispatch, followRobot, selectedRobotId, selectedRobot, isPreview]);
+
+    // endregion
+
     return (
         <div
             onContextMenu={(event) => event.preventDefault()}
@@ -526,10 +545,6 @@ const Map: FC<{
                         ) ? 0.75 : 1}
                         pickable={isEditor}
                         scenegraph={layerData.url}
-                        updateTriggers={{ // TODO Find out if this is needed
-                            getPosition: [hasChanged],
-                            getOrientation: [hasChanged],
-                        }}
                     />
                 ))}
                 {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
@@ -544,7 +559,6 @@ const Map: FC<{
                         id={`robots-${mapId}-icon`}
                         getIcon={({ icon }: TRobotLayerData) => getLayerIcon(icon)}
                         onClick={handleRobotLayerClick}
-                        updateTriggers={{ getIcon: [selectedRobotId] }}
                     />
                 )}
                 {(!isPreview || (isPreview && previewType === PreviewType.Robot)) && (
@@ -558,7 +572,6 @@ const Map: FC<{
                         id={`robots-${mapId}-mesh`}
                         getPosition={(d: TRobotLayerData) => [...d.position, 0]}
                         onClick={handleRobotLayerClick}
-                        updateTriggers={{ getColor: [selectedRobotId] }}
                     />
                 )}
             </DeckGL>

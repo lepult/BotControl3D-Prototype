@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useMemo, useRef, useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { PersonFinder, SimpleWrapperContext, Input } from 'chayns-components';
@@ -68,6 +68,9 @@ const RouteInput: FC<{
                     showName: 'showName',
                     identifier: 'id',
                     search: ['showName'],
+                    filter: (inputValue: string) => (e: TPersonFinderItem) => inputValue
+                        ? e.showName.toLowerCase().includes(inputValue.toLowerCase())
+                        : true,
                 })}
                 onAdd={(item: TPersonFinderItem) => {
                     console.log('onAdd', item);

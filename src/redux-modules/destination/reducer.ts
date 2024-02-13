@@ -3,7 +3,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { getAllDestinationsAction } from './actions';
 import { FetchState } from '../../types/fetch';
 import { TDestination } from '../../types/api/destination';
-import { getPathDataByMapId } from '../../constants/getLayerData';
+import { getPathDataByMapId } from '../../constants/getMapData';
 import { MapElementType, TMapElement } from '../../types/pudu-api/robotMap';
 
 const initialState: {
