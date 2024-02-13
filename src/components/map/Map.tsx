@@ -392,24 +392,25 @@ const Map: FC<{
     // endregion
 
     useEffect(() => {
-        const dialog = createDialog({
-            type: DialogType.TOAST,
-            permanent: true,
-            toastType: ToastType.NEUTRAL,
-            text: 'Nutze STRG oder SHIFT um die Modelle zu verschieben und rotieren.',
-            showCloseIcon: true,
-        })
-        setToastDialog(dialog);
-        void dialog.open();
-        console.log('dialog', dialog);
-    }, []);
+        if (isEditor && !toastDialog) {
+            const dialog = createDialog({
+                type: DialogType.TOAST,
+                permanent: true,
+                toastType: ToastType.NEUTRAL,
+                text: 'Nutze STRG oder SHIFT um die Modelle zu verschieben und rotieren.',
+                showCloseIcon: true,
+            })
+            void dialog.open();
+            setToastDialog(dialog);
+        }
+    }, [isEditor, toastDialog]);
 
     // Closes the toast dialog, when user moves model for first time.
     useEffect(() => {
-        if (dragMode) {
-            toastDialog?.close(null, null);
+        if (dragMode && isEditor && toastDialog) {
+            toastDialog.close(null, null);
         }
-    }, [dragMode, toastDialog]);
+    }, [dragMode, isEditor, toastDialog]);
 
     useEffect(() => {
         setFloorModels(getModelsByMapId(mapId));
