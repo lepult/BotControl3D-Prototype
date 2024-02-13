@@ -153,11 +153,11 @@ const RobotItem: FC<{
     }];
 
     const status = useMemo(() => [{
-        name: 'Roboter-Id',
-        value: robotId
-    }, {
         name: 'Status',
         value: getMapRobotStatus(robot?.robotStatus, robot?.puduRobotStatus) || 'Offline'
+    }, {
+        name: 'Roboter-Id',
+        value: robotId
     }, {
         name: 'Roboter-Typ',
         value: getRobotTypeName(robot?.robotStatus?.robotType),
@@ -191,12 +191,15 @@ const RobotItem: FC<{
 
     return (
         <Accordion
-            head={robot?.robotStatus?.robotName || <SmallWaitCursor show/>}
+            head={robot?.robotStatus
+                ? robot?.robotStatus?.robotName
+                : <div style={{ display: 'flex' }}><SmallWaitCursor show/></div>
+            }
             dataGroup="robots"
             isWrapped
-            right={(
+            right={robot?.robotStatus && (
                 <div style={{ display: 'flex' }}>
-                    {status[1].value === 'Offline' && robot?.robotStatus && (
+                    {status[0].value === 'Offline' && robot?.robotStatus && (
                         <Tooltip
                             bindListeners
                             content={{ text: 'Offline' }}
@@ -248,7 +251,16 @@ const RobotItem: FC<{
                     </div>
                 </div>
             ) : (
-                <SmallWaitCursor show/>
+                <div
+                    style={{
+                        height: '200px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <SmallWaitCursor show/>
+                </div>
             )}
         </Accordion>
     )

@@ -15,5 +15,5 @@ export const selectDestinationsByCustomType = createSelector(
     (
         destination,
         customType
-    ) => destination.idsByCustomType[customType].map((id) => destination.entities[id]),
+    ) => (destination.idsByCustomType[customType] || []).map((id) => destination.entities[id]),
 );
