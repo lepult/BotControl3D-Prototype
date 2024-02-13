@@ -1,5 +1,5 @@
 import { PUDU_API_URL } from '../url';
-import { getDefaultHeaders } from '../helpers';
+import { getDefaultHeaders, openErrorDialog } from '../helpers';
 import { TDestination } from '../../types/api/destination';
 
 export const postSendRobotFetch = async (robotId: string, destinations: TDestination[]): Promise<boolean> => {
@@ -16,6 +16,7 @@ export const postSendRobotFetch = async (robotId: string, destinations: TDestina
         return true;
     }
 
-    console.log('bad response status', response.status)
+    await openErrorDialog(response);
+
     return false;
 }

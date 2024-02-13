@@ -1,5 +1,5 @@
 import { PUDU_API_URL } from '../url';
-import { getDefaultHeaders } from '../helpers';
+import { getDefaultHeaders, openErrorDialog } from '../helpers';
 import { BadResponseCodeError } from '../error';
 import { TRobotData } from '../../types/api/robotData';
 
@@ -16,6 +16,7 @@ export const getRobotDataFetch = async (robotId: string): Promise<TRobotData> =>
         return (await response.json()) as TRobotData;
     }
 
-    console.log('bad response status', response.status)
+    await openErrorDialog(response);
+
     throw new BadResponseCodeError(response.status);
 }

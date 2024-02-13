@@ -37,7 +37,7 @@ const ChargeButton = () => {
 
     const errorDialog = createDialog({
         type: DialogType.ALERT,
-        text: 'Es ist ein Fehler aufgetreten',
+        text: 'Es ist ein unbekannter Fehler aufgetreten.',
     });
 
     return (

@@ -38,11 +38,6 @@ const getDestinationName = (destination: TDestination, mapEntities: TMapEntities
     return `${destination.name} ${mapName ? `(${mapName})` : ''}`;
 };
 const RouteButton = () => {
-    const errorDialog = createDialog({
-        type: DialogType.ALERT,
-        text: 'Es ist ein Fehler aufgetreten',
-    });
-
     const dispatch = useDispatch();
 
     const isPlanningRoute = useSelector(selectIsPlanningRoute);
@@ -77,7 +72,10 @@ const RouteButton = () => {
     const [isFetching, setIsFetching] = useState(false);
     const handleSendRobot = () => {
         if (!selectedRobotId || !selectedDestination) {
-            void errorDialog.open()
+            void createDialog({
+                type: DialogType.ALERT,
+                text: 'Fehler: Es muss ein Roboter und ein Standort ausgewählt werden',
+            }).open();
             return;
         }
 
@@ -91,13 +89,10 @@ const RouteButton = () => {
                     dispatch(changeIsPlanningRoute({ isPlanning: false }))
                     dispatch(changeSelectedDestination(undefined));
                     // dispatch(toggleSelectedRobot({ robotId: undefined }));
-                } else {
-                    void errorDialog.open()
                 }
             })
             .catch((e) => {
                 setIsFetching(false);
-                void errorDialog.open()
             });
     }
 

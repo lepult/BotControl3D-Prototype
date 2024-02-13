@@ -1,5 +1,5 @@
 import { PUDU_API_URL } from '../url';
-import { getDefaultHeaders } from '../helpers';
+import { getDefaultHeaders, openErrorDialog } from '../helpers';
 import { BadResponseCodeError } from '../error';
 import { TDevicesData } from '../../types/api/device';
 
@@ -16,6 +16,7 @@ export const getDevicesWithGroupsAndRobotsFetch = async (): Promise<TDevicesData
         return (await response.json()) as TDevicesData;
     }
 
-    console.log('bad response status', response.status)
+    await openErrorDialog(response);
+
     throw new BadResponseCodeError(response.status);
 };

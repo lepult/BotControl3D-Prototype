@@ -1,5 +1,5 @@
 import { PUDU_API_URL } from '../url';
-import { getDefaultHeaders } from '../helpers';
+import { getDefaultHeaders, openErrorDialog } from '../helpers';
 
 export const postChargeRobotFetch = async (robotId: string): Promise<boolean> => {
     const response = await fetch(`${PUDU_API_URL}/Robot/${robotId}/charge`, {
@@ -14,6 +14,7 @@ export const postChargeRobotFetch = async (robotId: string): Promise<boolean> =>
         return true;
     }
 
-    console.log('bad response status', response.status)
+    await openErrorDialog(response);
+
     return false;
 }
