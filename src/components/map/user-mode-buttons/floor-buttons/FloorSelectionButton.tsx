@@ -22,7 +22,7 @@ const FloorSelectionButton: FC<{
     const selectedRobot = useSelector(selectRobotStatusById(selectedRobotId || ''));
 
     const isSelected = useMemo(() => selectedMap === mapId,
-        [selectedRobot, mapId])
+        [selectedMap, mapId])
 
     if (map.hidden || !pathData) {
         return null;
