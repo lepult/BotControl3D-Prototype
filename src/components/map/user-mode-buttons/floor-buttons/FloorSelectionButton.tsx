@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -21,6 +21,9 @@ const FloorSelectionButton: FC<{
     const selectedRobotId = useSelector(selectSelectedRobotId);
     const selectedRobot = useSelector(selectRobotStatusById(selectedRobotId || ''));
 
+    const isSelected = useMemo(() => selectedMap === mapId,
+        [selectedRobot, mapId])
+
     if (map.hidden || !pathData) {
         return null;
     }
@@ -28,11 +31,11 @@ const FloorSelectionButton: FC<{
     return (
         <Tooltip
             bindListeners
-            content={{ text: 'Stockwerk auswählen' }}
+            content={{ text: isSelected ? 'Auswahl entfernen' : 'Stockwerk auswählen' }}
         >
             <Button
                 className={clsx('list-button pointer-events', {
-                    'button--secondary': selectedMap !== mapId,
+                    'button--secondary': !isSelected,
                     'button--bordered': selectedRobot?.currentMap?.id === mapId,
                 })}
                 onClick={() => {
