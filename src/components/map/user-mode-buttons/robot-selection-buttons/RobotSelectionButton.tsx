@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -18,6 +18,9 @@ const RobotSelectionButton: FC<{
     const robot = useSelector(selectRobotById(robotId));
     const selectedRobotId = useSelector(selectSelectedRobotId);
 
+    const isSelected = useMemo(() => selectedRobotId === robotId,
+        [selectedRobotId, robotId])
+
     if (!robot?.puduRobotStatus?.robotPose) {
         return null;
     }
@@ -25,11 +28,11 @@ const RobotSelectionButton: FC<{
     return (
         <Tooltip
             bindListeners
-            content={{ text: 'Roboter auswählen' }}
+            content={{ text: isSelected ? 'Auswahl entfernen' : 'Roboter auswählen' }}
         >
             <Button
                 className={clsx('pointer-events robot-selection-button', {
-                    'button--secondary': selectedRobotId !== robotId
+                    'button--secondary': !isSelected,
                 })}
                 onClick={() => {
                     dispatch(toggleSelectedRobot({ robotId }));

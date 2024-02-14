@@ -29,17 +29,14 @@ const UserMode = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: '100%',
+                        height: '100vh',
                         width: '100%'
                     }}
                 >
                     <SmallWaitCursor show/>
                 </div>
             )}
-            {selectedMap
-                ? <Map mapId={selectedMap}/>
-                : <div>Fehler</div>}
-
+            {selectedMap && <Map mapId={selectedMap}/>}
         </div>
     );
 };
