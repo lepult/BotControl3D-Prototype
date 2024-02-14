@@ -68,10 +68,22 @@ const UserModeButtons: FC = () => {
                         <RouteButton/>
                         <CancelButton/>
                         <ChargeButton/>
-                        <FollowRobotButton/>
-                        <InformationButton/>
                     </div>
                 )}
+                <div
+                    className="map-buttons"
+                    style={{
+                        alignItems: 'end',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        left: 0,
+                        right: 0,
+                        padding: '10px',
+                    }}
+                >
+                    <FollowRobotButton/>
+                    <InformationButton/>
+                </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
                         <FloorSelectionButton
