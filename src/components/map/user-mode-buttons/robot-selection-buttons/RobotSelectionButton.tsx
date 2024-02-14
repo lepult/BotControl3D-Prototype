@@ -6,7 +6,7 @@ import { Button, Tooltip } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRobotById } from '../../../../redux-modules/robot-status/selectors';
 import { selectSelectedRobotId } from '../../../../redux-modules/map/selectors';
-import { toggleSelectedRobot } from '../../../../redux-modules/map/actions';
+import { changeSelectedMap, toggleSelectedRobot } from '../../../../redux-modules/map/actions';
 
 const RobotSelectionButton: FC<{
     robotId: string,
@@ -36,6 +36,9 @@ const RobotSelectionButton: FC<{
                 })}
                 onClick={() => {
                     dispatch(toggleSelectedRobot({ robotId }));
+                    if (robot?.robotStatus?.currentMap?.id) {
+                        dispatch(changeSelectedMap({ mapId: robot?.robotStatus?.currentMap?.id }));
+                    }
                 }}
             >
                 {robot?.robotStatus?.robotName}
