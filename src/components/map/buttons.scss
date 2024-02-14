@@ -1,3 +1,7 @@
+.pointer-events {
+  pointer-events: auto;
+}
+
 .user-mode-buttons__wrapper {
   position: absolute;
   width: 100%;
@@ -10,10 +14,6 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-
-    .pointer-events {
-      pointer-events: auto;
-    }
   }
 
   .robot-selection-button {
@@ -43,7 +43,7 @@
 }
 
 .bot-selection-buttons {
-  width: calc(100% - 520px);
+  width: calc(100% - 590px);
 }
 
 @media only screen and (max-width: 900px) {
