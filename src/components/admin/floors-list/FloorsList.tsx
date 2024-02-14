@@ -5,17 +5,15 @@ import { useSelector } from 'react-redux';
 import { Accordion } from 'chayns-components';
 import FloorItem from './FloorItem';
 import { selectMapIds } from '../../../redux-modules/map/selectors';
-import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
 
 const FloorsList = () => {
     const mapIds = useSelector(selectMapIds);
-    const editingMapId = useSelector(selectEditingMapId);
 
     return (
         <Accordion
             head="Stockwerke"
             data
-            defaultOpened={!!editingMapId}
+            defaultOpened
             dataGroup="top-level"
         >
             {mapIds.map((mapId) => (

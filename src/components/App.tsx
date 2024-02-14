@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useIsAdminMode } from 'chayns-api';
+import { setRefreshScrollEnabled, useIsAdminMode } from 'chayns-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import AdminMode from './admin/AdminMode';
@@ -23,10 +23,19 @@ import { TSyncActivitiesData } from '../types/websocket/syncActivitiesData';
 import { TNotifyRobotPowerData } from '../types/websocket/notifyRobotPowerData';
 import { TNotifyRobotMoveStateData } from '../types/websocket/notifyRobotMoveStateData';
 import './app.scss';
+import Map from './map/Map';
+import EditorMapButtons from './map/editor-map-buttons/EditorMapButtons';
+import { selectIsEditingMap } from '../redux-modules/misc/selectors';
+import { selectSelectedMap } from '../redux-modules/map/selectors';
+import { ModelType } from '../constants/hardcoded-data/models';
+import { TViewState } from '../types/deckgl-map';
+import { ChaynsViewMode, removeChaynsFooter, updateChaynsViewmode } from '../utils/chaynsHelper';
 
 const App = () => {
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const isAdminMode = useIsAdminMode();
+    const isEditingMap = useSelector(selectIsEditingMap);
+    const mapId = useSelector(selectSelectedMap);
 
     const robotIds = useSelector(selectRobotIds);
 
@@ -101,6 +110,39 @@ const App = () => {
             });
         }
     }, [dispatch, robotIds]);
+
+    useEffect(() => {
+        if (isAdminMode && !isEditingMap) {
+            updateChaynsViewmode(ChaynsViewMode.exclusive);
+            removeChaynsFooter(false);
+            void setRefreshScrollEnabled(true);
+        } else {
+            updateChaynsViewmode(ChaynsViewMode.wide);
+            removeChaynsFooter(true);
+            void setRefreshScrollEnabled(false);
+        }
+    }, [isAdminMode, isEditingMap]);
+
+    const [floorModels, setFloorModels] = useState<ModelType[]>([]);
+    const [viewState, setViewState] = useState<TViewState>();
+
+    if (isEditingMap && mapId) {
+        return (
+            <div>
+                <Map
+                    mapId={mapId}
+                    isEditor
+                    setFloorModels={setFloorModels}
+                    setViewState={setViewState}
+                />
+                <EditorMapButtons
+                    floorModels={floorModels}
+                    viewState={viewState}
+                    mapId={mapId}
+                />
+            </div>
+        )
+    }
 
     return isAdminMode
         ? <AdminMode/>

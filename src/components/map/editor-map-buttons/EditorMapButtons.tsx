@@ -36,10 +36,20 @@ const EditorMapButtons: FC<{
                     padding: '10px',
                 }}
             >
-                <ImportButton/>
                 <ChangeInitialViewButton viewState={viewState} mapId={mapId}/>
-                <ResetViewButton/>
+            </div>
+            <div
+                className="map-buttons"
+                style={{
+                    alignItems: 'end',
+                    bottom: 0,
+                    right: 0,
+                    padding: '10px',
+                }}
+            >
+                <ImportButton/>
                 <ShortcutsButton/>
+                <ResetViewButton/>
             </div>
             <div
                 className="map-buttons"

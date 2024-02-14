@@ -2,13 +2,12 @@ import React, { FC, useState } from 'react';
 // @ts-ignore
 import { Accordion, ContextMenu, Button } from 'chayns-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMapById } from '../../../redux-modules/map/selectors';
-import { changeAdminModeType } from '../../../redux-modules/misc/actions';
-import { AdminModeType } from '../../../types/misc';
-import { selectEditingMapId } from '../../../redux-modules/misc/selectors';
+import { selectMapById, selectSelectedMap } from '../../../redux-modules/map/selectors';
+import { setIsEditingMap } from '../../../redux-modules/misc/actions';
 import DestinationList from './destination-list/DestinationList';
 import Preview from '../shared/Preview';
 import { PreviewType } from '../../../types/deckgl-map';
+import { changeSelectedMap } from '../../../redux-modules/map/actions';
 
 const FloorItem: FC<{
     mapId: number
@@ -16,11 +15,11 @@ const FloorItem: FC<{
     mapId
 }) => {
     const dispatch = useDispatch();
+    const selectedMapId = useSelector(selectSelectedMap);
 
     const [showMapPreview, setShowMapPreview] = useState(false);
 
     const map = useSelector(selectMapById(mapId));
-    const editingMapId = useSelector(selectEditingMapId);
 
     if (map.hidden === 1) {
         return null;
@@ -29,18 +28,18 @@ const FloorItem: FC<{
     return (
         <Accordion
             head={map.showName}
+            defaultOpened={mapId === selectedMapId}
             isWrapped
             dataGroup="floors"
-            defaultOpened={editingMapId === mapId}
             right={(
                 <ContextMenu
                     items={[{
                         text: 'Karte bearbeiten',
                         icon: 'fa fa-pencil',
-                        onClick: () => dispatch(changeAdminModeType({
-                            adminModeType: AdminModeType.editMap,
-                            editingMapId: mapId,
-                        })),
+                        onClick: () => {
+                            dispatch(changeSelectedMap({ mapId }));
+                            dispatch(setIsEditingMap(true))
+                        },
                     }]}
                 />
             )}

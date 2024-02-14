@@ -19,7 +19,7 @@ import {
     selectSelectedRobotId
 } from '../../redux-modules/map/selectors';
 import { selectResetViewState } from '../../redux-modules/misc/selectors';
-import { toggleSelectedDestination } from '../../redux-modules/misc/actions';
+import { changeIsPlanningRoute, toggleSelectedDestination } from '../../redux-modules/misc/actions';
 import { DragMode, PreviewType, TRobotLayerData, TUndoStackItem, TViewState } from '../../types/deckgl-map';
 import { selectRobotEntities, selectRobotIds, selectSelectedRobot } from '../../redux-modules/robot-status/selectors';
 import { changeSelectedMap, toggleFollowRobot, toggleSelectedRobot } from '../../redux-modules/map/actions';
@@ -43,11 +43,10 @@ import {
     getLayerIcon
 } from '../../constants/deckGlLayers';
 import { ModelType } from '../../constants/hardcoded-data/models';
-import {
-    getRobotLayerData,
-    selectDestinationsLayerData,
-} from '../../redux-modules/layerDataSelectors';
+import { getRobotLayerData, selectDestinationsLayerData } from '../../redux-modules/layerDataSelectors';
 import { TState } from '../../redux-modules/robot-status/slice';
+import { getMapRobotStatus } from '../../utils/robotStatusHelper';
+import { CustomDestinationType } from '../../types/api/destination';
 
 const flyToInterpolator =  new FlyToInterpolator({
     speed: 10,
@@ -404,12 +403,15 @@ const Map: FC<{
 
         if (pickingInfo?.layer?.id?.startsWith('robots') && pickingInfo?.object) {
             const robotData = pickingInfo.object as TRobotLayerData;
+            const robot = robotEntities[robotData.robotId];
             return {
                 style: {
                     backgroundColor: 'rgb(var(--chayns-bg-rgb))',
                     color: 'var(--chayns-color--text)',
                 },
-                html: `<h3 style='margin-top: 0'>${robotData.name}</h3>`
+                html: `<h3 style='margin-top: 0'>${robotData.name}</h3>
+                    <p>Status: ${getMapRobotStatus(robot?.robotStatus, robot?.puduRobotStatus)}</p>
+                    ${robot?.puduRobotStatus?.robotPower ? `<p>Batterieleistung: ${robot?.puduRobotStatus?.robotPower}%</p>` : ''}`
             };
         }
 
@@ -443,6 +445,12 @@ const Map: FC<{
             })
             void dialog.open();
             setToastDialog(dialog);
+        }
+
+        return () => {
+            if (toastDialog) {
+                toastDialog.close(null, null);
+            }
         }
     }, [isEditor, toastDialog]);
 
@@ -545,6 +553,11 @@ const Map: FC<{
                             }
                             // Unselects selected icon or selects unselected icon.
                             dispatch(toggleSelectedDestination(iconData.id));
+                            if (iconData.customType === CustomDestinationType.target && !iconData.selected) {
+                                dispatch(changeIsPlanningRoute({
+                                    isPlanning: true,
+                                }));
+                            }
                         }}
                     />
                 )}

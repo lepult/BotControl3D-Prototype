@@ -1,34 +1,25 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { AdminModeType } from '../../types/misc';
 import {
-    changeAdminModeType,
     changeIsPlanningRoute,
     changeSelectedDestination,
-    resetViewState,
+    resetViewState, setIsEditingMap,
     toggleSelectedDestination
 } from './actions';
 
 const initialState: {
-    adminModeType: AdminModeType,
-    editingMapId: number | undefined,
     selectedDestination: number | undefined,
     isPlanningRoute: boolean,
     resetViewState: number,
+    isEditingMap: boolean
 } = {
-    adminModeType: AdminModeType.default,
-    editingMapId: undefined,
     selectedDestination: undefined,
     isPlanningRoute: false,
     resetViewState: 0,
+    isEditingMap: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
-    builder.addCase(changeAdminModeType, (draft, { payload }) => {
-        draft.adminModeType = payload.adminModeType;
-        draft.editingMapId = payload.editingMapId || draft.editingMapId;
-    });
-
     builder.addCase(changeSelectedDestination, (draft, { payload }) => {
         draft.selectedDestination = payload;
     });
@@ -51,6 +42,10 @@ const reducer = createReducer(initialState, (builder) => {
     builder.addCase(resetViewState, (draft) => {
         draft.resetViewState++;
     });
+
+    builder.addCase(setIsEditingMap, (draft, { payload }) => {
+        draft.isEditingMap = payload;
+    })
 });
 
 export default reducer;

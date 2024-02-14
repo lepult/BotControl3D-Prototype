@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import '../buttons.scss';
 import { useSelector } from 'react-redux';
-import { getUser, useUser, useWindowMetrics } from 'chayns-api';
+import { getUser, useDevice, useUser, useWindowMetrics } from 'chayns-api';
 import { selectMapIds } from '../../../redux-modules/map/selectors';
 import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
 import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
@@ -16,6 +16,7 @@ import { getUserType } from '../../../utils/permissionsHelper';
 import { UserType } from '../../../types/misc';
 import InformationButton from './robot-controls-buttons/information/InformationButton';
 import EditMapButton from './interaction-buttons/EditMapButton';
+import RoutePlanner from './robot-controls-buttons/route/RoutePlanner';
 
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
@@ -52,21 +53,36 @@ const UserModeButtons: FC = () => {
                     </div>
                 )}
 
+                {isPlanningRoute && <RoutePlanner/>}
+                {(!isPlanningRoute || metrics.pageWidth > 900) && !isGuest && (
+                    <div
+                        className="map-buttons"
+                        style={{
+                            alignItems: 'end',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            padding: '10px',
+                        }}
+                    >
+                        <RouteButton/>
+                        <CancelButton/>
+                        <ChargeButton/>
+                    </div>
+                )}
                 <div
                     className="map-buttons"
                     style={{
                         alignItems: 'end',
-                        top: 0,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
                         left: 0,
                         right: 0,
                         padding: '10px',
                     }}
                 >
-                    {!isGuest && <RouteButton/>}
-                    {!isPlanningRoute && !isGuest && <CancelButton/>}
-                    {!isPlanningRoute && !isGuest && <ChargeButton/>}
-                    {!isPlanningRoute && !isGuest && <FollowRobotButton/>}
-                    {!isPlanningRoute && !isGuest && <InformationButton/>}
+                    <FollowRobotButton/>
+                    <InformationButton/>
                 </div>
                 <div className="map-buttons position-left position-bottom">
                     {allMapIds.map((id) => (
