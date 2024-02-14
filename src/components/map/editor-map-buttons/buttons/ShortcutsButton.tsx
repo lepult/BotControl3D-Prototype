@@ -26,7 +26,7 @@ const ShortcutsButton: FC = () => (
                 }).open();
             }}
         >
-            <i className="far fa-info"/>
+            <i className="far fa-question"/>
         </Button>
     </Tooltip>
 );
