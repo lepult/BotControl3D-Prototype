@@ -448,6 +448,12 @@ const Map: FC<{
             void dialog.open();
             setToastDialog(dialog);
         }
+
+        return () => {
+            if (toastDialog) {
+                toastDialog.close(null, null);
+            }
+        }
     }, [isEditor, toastDialog]);
 
     useEffect(() => {

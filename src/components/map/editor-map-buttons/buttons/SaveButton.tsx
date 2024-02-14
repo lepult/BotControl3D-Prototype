@@ -5,8 +5,7 @@ import { useDispatch } from 'react-redux';
 // @ts-ignore
 import { Button } from 'chayns-components';
 import clsx from 'clsx';
-import { changeAdminModeType } from '../../../../redux-modules/misc/actions';
-import { AdminModeType } from '../../../../types/misc';
+import { setIsEditingMap } from '../../../../redux-modules/misc/actions';
 import { ModelType } from '../../../../constants/hardcoded-data/models';
 
 const SaveButton: FC<{
@@ -25,7 +24,7 @@ const SaveButton: FC<{
                     type: DialogType.ALERT,
                     text: "Geänderte Einstellungen werden nicht im Backend gespeichert. Mit dem Neuladen der Seite werden die Positionen deshalb zurückgesetzt.",
                     buttons: [{ type: DialogButtonType.CANCEL, text: 'Schließen' }],
-                }).open().finally(() => dispatch(changeAdminModeType({ adminModeType: AdminModeType.default })));
+                }).open().finally(() => dispatch(setIsEditingMap(false)));
             }}
         >
             Speichern

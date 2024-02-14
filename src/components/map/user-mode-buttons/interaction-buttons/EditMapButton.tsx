@@ -1,17 +1,13 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { setAdminMode } from 'chayns-api';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { Button ,Tooltip } from 'chayns-components';
-import { changeAdminModeType } from '../../../../redux-modules/misc/actions';
-import { selectSelectedMap } from '../../../../redux-modules/map/selectors';
-import { AdminModeType } from '../../../../types/misc';
+import { setIsEditingMap } from '../../../../redux-modules/misc/actions';
 
 const EditMapButton = () => {
     const dispatch = useDispatch();
-    const mapId = useSelector(selectSelectedMap);
 
     return (
         <Tooltip
@@ -21,11 +17,7 @@ const EditMapButton = () => {
             <Button
                 className={clsx('icon-button pointer-events button--secondary')}
                 onClick={() => {
-                    dispatch(changeAdminModeType({
-                        adminModeType: AdminModeType.editMap,
-                        editingMapId: mapId,
-                    }));
-                    void setAdminMode(true);
+                    dispatch(setIsEditingMap(true));
                 }}
             >
                 <i className="far fa-pencil"/>
