@@ -446,13 +446,6 @@ const Map: FC<{
         }
     }, [isEditor, toastDialog]);
 
-    // Closes the toast dialog, when user moves model for first time.
-    useEffect(() => {
-        if (dragMode && isEditor && toastDialog) {
-            toastDialog.close(null, null);
-        }
-    }, [dragMode, isEditor, toastDialog]);
-
     useEffect(() => {
         setFloorModels(getModelsByMapId(mapId));
     }, [mapId]);
