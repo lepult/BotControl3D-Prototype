@@ -28,6 +28,7 @@
     "extends": "@chayns-toolkit"
   },
   "dependencies": {
+    "@chayns/colors": "^2.0.0",
     "@deck.gl/core": "^8.9.33",
     "@deck.gl/extensions": "^8.9.34",
     "@deck.gl/layers": "^8.9.33",

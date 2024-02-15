@@ -5,9 +5,9 @@ import '../buttons.scss';
 import ImportButton from './buttons/ImportButton';
 import ChangeInitialViewButton from './buttons/ChangeInitialViewButton';
 import SaveButton from './buttons/SaveButton';
-import ResetViewButton from './buttons/ResetViewButton';
 import CancelButton from './buttons/CancelButton';
 import ShortcutsButton from './buttons/ShortcutsButton';
+import ResetViewButton from '../user-mode-buttons/interaction-buttons/ResetViewButton';
 
 const EditorMapButtons: FC<{
     floorModels: ModelType[],

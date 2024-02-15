@@ -415,6 +415,19 @@ const Map: FC<{
             };
         }
 
+        if (isEditor && pickingInfo?.layer?.id?.startsWith('scenegraphLayer') && pickingInfo?.object) {
+            if (dragMode) {
+                return null;
+            }
+            return {
+                style: {
+                    backgroundColor: 'rgb(var(--chayns-bg-rgb))',
+                    color: 'var(--chayns-color--text)',
+                },
+                html: `<p>STRG zum Verschieben<br>SHIFT zum Rotieren</p>`,
+            };
+        }
+
         return null;
     };
 
