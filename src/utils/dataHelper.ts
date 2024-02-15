@@ -1,4 +1,6 @@
 import { Position } from '@deck.gl/core/typed';
+import { getSite } from 'chayns-api';
+import { getColorFromPalette, hexToRgb255 } from '@chayns/colors';
 import { MapElementType, TMapElement } from '../types/pudu-api/robotMap';
 import { IPathData } from '../types/deckgl-map';
 import { CustomDestinationType, DestinationType, TDestination } from '../types/api/destination';
@@ -11,6 +13,11 @@ import { TRoute } from '../types/api/route';
  */
 export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<IPathData> => {
     const pathData: Array<IPathData> = [];
+    const { colorMode } = getSite();
+    const color = hexToRgb255(
+        getColorFromPalette(202, { colorMode }) || '#ffffff'
+    ) || { r: 255, g: 255, b: 255 };
+
     elements.forEach((element) => {
         if (element.type !== MapElementType.track && element.type !== MapElementType.virtualWall)
             return;
@@ -26,7 +33,9 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
                 id: element.id,
                 type: element.type,
                 name: typeof element.name === 'string' ? element.name : element.id,
-                color: element.type === MapElementType.track ? [255, 255, 255] : [157, 0, 0],
+                color: element.type === MapElementType.track
+                    ? [color.r, color.g, color.b]
+                    : [157, 0, 0],
                 path: [...newVector]
             });
         } else {
