@@ -36,7 +36,7 @@ const RobotSelectionButton: FC<{
                 })}
                 onClick={() => {
                     dispatch(toggleSelectedRobot({ robotId }));
-                    if (robot?.robotStatus?.currentMap?.id) {
+                    if (!isSelected && robot?.robotStatus?.currentMap?.id) {
                         dispatch(changeSelectedMap({ mapId: robot?.robotStatus?.currentMap?.id }));
                     }
                 }}

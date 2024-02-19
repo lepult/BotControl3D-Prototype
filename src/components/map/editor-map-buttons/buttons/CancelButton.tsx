@@ -15,7 +15,7 @@ const CancelButton: FC = () => (
         onClick={() => {
             void createDialog({
                 type: DialogType.ALERT,
-                text: "Willst du das Bearbeiten wirklich abbrechen. Geänderte Einstellungen gehen verloren.",
+                text: "Willst du das Bearbeiten wirklich abbrechen? Geänderte Einstellungen gehen verloren.",
                 buttons: [{
                     type: DialogButtonType.OK,
                     text: 'Bestätigen'

@@ -14,7 +14,7 @@ import { MapRobotStatus } from '../../../../../types/deckgl-map';
 const CancelButton = () => {
     const confirmDialog = createDialog({
         type: DialogType.CONFIRM,
-        text: 'Mit dieser Aktion, beendet der Roboter alle aktuellen Lieferaufträge.',
+        text: 'Mit dieser Aktion beendet der Roboter alle aktuellen Lieferaufträge.',
         buttons: [{
             type: DialogButtonType.OK,
             text: 'Bestätigen',

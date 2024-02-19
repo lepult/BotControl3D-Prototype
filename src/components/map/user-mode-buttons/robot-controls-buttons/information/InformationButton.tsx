@@ -18,7 +18,7 @@ const InformationButton = () => {
         name: 'Status',
         value: getMapRobotStatus(robot?.robotStatus, robot?.puduRobotStatus),
     }, {
-        name: 'Batterieleistung',
+        name: 'Batterie',
         value: robot?.puduRobotStatus?.robotPower
             ? `${robot?.puduRobotStatus?.robotPower}%`
             : '-',

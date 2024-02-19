@@ -20,7 +20,7 @@ const EditMapButton = () => {
                     dispatch(setIsEditingMap(true));
                 }}
             >
-                <i className="far fa-pencil"/>
+                <i className="fa-duotone fa-layer-group"/>
             </Button>
         </Tooltip>
 
