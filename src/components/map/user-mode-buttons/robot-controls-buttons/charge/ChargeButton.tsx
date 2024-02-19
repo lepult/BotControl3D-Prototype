@@ -25,7 +25,7 @@ const ChargeButton = () => {
 
     const confirmDialog = createDialog({
         type: DialogType.CONFIRM,
-        text: 'Mit dieser Aktion, beendet der Roboter alle aktuellen Lieferaufträge und fährt zur Ladestation.',
+        text: 'Mit dieser Aktion beendet der Roboter alle aktuellen Lieferaufträge und fährt zur Ladestation.',
         buttons: [{
             type: DialogButtonType.OK,
             text: 'Bestätigen',

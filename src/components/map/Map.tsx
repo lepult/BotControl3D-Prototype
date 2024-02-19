@@ -411,7 +411,7 @@ const Map: FC<{
                 },
                 html: `<h3 style='margin-top: 0'>${robotData.name}</h3>
                     <p>Status: ${getMapRobotStatus(robot?.robotStatus, robot?.puduRobotStatus)}</p>
-                    ${robot?.puduRobotStatus?.robotPower ? `<p>Batterieleistung: ${robot?.puduRobotStatus?.robotPower}%</p>` : ''}`
+                    ${robot?.puduRobotStatus?.robotPower ? `<p>Batterie: ${robot?.puduRobotStatus?.robotPower}%</p>` : ''}`
             };
         }
 
