@@ -92,7 +92,7 @@ export type IIconData = {
     },
 }
 
-export const getIconDataFromDestinations = (mappedDestinations: TMappedDestination[], selectedDestination?: number, currentRoute?: TRoute, currentDestination?: TDestination, previousDestination?: TDestination, isPlanningRoute?: boolean) => {
+export const getIconDataFromDestinations = (mappedDestinations: TMappedDestination[], selectedDestination?: number, currentRoute?: TRoute, currentDestination?: TDestination, previousDestination?: TDestination) => {
     const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
 
     return mappedDestinations
@@ -109,7 +109,7 @@ export const getIconDataFromDestinations = (mappedDestinations: TMappedDestinati
                 name: destination.chaynsUser?.name || destination.name,
                 position: mapElement.vector as Position,
                 selected: destination.id === selectedDestination,
-                invalid: isPlanningRoute && destination.customType !== CustomDestinationType.target,
+                invalid: destination.customType !== CustomDestinationType.target,
                 routeData: {
                     isRouteDestination: !!routeDestination,
                     isNextDestination: !!currentDestination && routeDestination?.destination.id === currentDestination.id,

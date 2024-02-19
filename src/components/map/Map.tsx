@@ -560,7 +560,7 @@ const Map: FC<{
                         getIcon={(iconData: IIconData) => getLayerIcon(svgToDataURL(getIconByDestinationType(iconData)))}
                         onClick={(pickingInfo: PickingInfo) => {
                             const iconData = pickingInfo.object as IIconData;
-                            // Disables Selection for non targets when planning the route.
+                            // Disables Selection for non targets.
                             if (iconData.invalid || isEditor) {
                                 return;
                             }

@@ -17,7 +17,6 @@ export const selectDestinationsLayerData = createSelector(
         const destinations = destination.idsByMapId[mapId]?.map((id) => destination.entities[id]) || [];
         const selectedDestinationId = misc.selectedDestination;
         const selectedRobot = state[robotStatusName].entities[state.map.selectedRobot || ''];
-        const { isPlanningRoute } = misc;
 
         return getIconDataFromDestinations(
             destinations,
@@ -25,7 +24,6 @@ export const selectDestinationsLayerData = createSelector(
             selectedRobot?.robotStatus?.currentRoute,
             selectedRobot?.robotStatus?.destination,
             selectedRobot?.robotStatus?.currentDestination,
-            isPlanningRoute,
         );
     }
 );
