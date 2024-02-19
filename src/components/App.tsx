@@ -39,6 +39,20 @@ const App = () => {
 
     const robotIds = useSelector(selectRobotIds);
 
+    const [initialMapId, setInitialMapId] = useState<number>();
+    const [measurePerformanceMetrics, setMeasurePerformanceMetrics] = useState(true);
+
+    useEffect(() => {
+        setInitialMapId((prev) => prev || mapId);
+    }, [mapId]);
+
+    useEffect(() => {
+        const isNotInitialMap = initialMapId && initialMapId !== mapId
+        if (isNotInitialMap || isEditingMap || isAdminMode) {
+            setMeasurePerformanceMetrics(false);
+        }
+    }, [initialMapId, isAdminMode, isEditingMap, mapId]);
+
     useEffect(() => {
         void dispatch(getAllMapsAction());
         void dispatch(getAllDestinationsAction());
@@ -146,7 +160,7 @@ const App = () => {
 
     return isAdminMode
         ? <AdminMode/>
-        : <UserMode/>;
+        : <UserMode measurePerformanceMetrics={measurePerformanceMetrics}/>;
 };
 
 export default App;
