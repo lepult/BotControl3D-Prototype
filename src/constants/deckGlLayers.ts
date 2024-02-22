@@ -63,7 +63,6 @@ export const DEFAULT_PATH_LAYER_PROPS = {
 
 export const DEFAULT_SCENEGRAPH_LAYER_PROPS = {
     parameters: { cull: true },
-    _lighting: 'pbr',
     getPosition: (data: ModelType) => data.position,
     getOrientation: (data: ModelType) => data.orientation,
 };
