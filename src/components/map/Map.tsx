@@ -53,6 +53,8 @@ const flyToInterpolator =  new FlyToInterpolator({
     maxDuration: 1000,
 });
 
+// TODO Write tests for map with different props
+
 const Map: FC<{
     mapId: number,
     robotId?: string,
@@ -375,7 +377,6 @@ const Map: FC<{
     // region Data Accessors
 
     const getCursor = useCallback(() => {
-        // TODO Display correct cursors for userMap (e.g. pointer on hover over icon)
         if (isDraggingMap) {
             return 'grabbing';
         }

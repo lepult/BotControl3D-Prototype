@@ -7,6 +7,8 @@ import { TRobotLayerData } from '../types/deckgl-map';
 import { getIconDataFromDestinations } from '../utils/dataHelper';
 import { radiansToDegrees, svgToDataURL } from '../utils/conversionHelper';
 
+// TODO Test this selector
+
 export const selectDestinationsLayerData = createSelector(
     [
         (state: RootState) => state,
@@ -63,6 +65,8 @@ export const selectRobotLayerData = createSelector(
             .map((data) => getRobotLayerData(data, selectedRobotId));
     }
 );
+
+// TODO Test this selector
 
 export const getRobotLayerData = (robot: TState, selectedRobot?: string) => {
     const robotId = robot?.robotStatus?.robotId as string;

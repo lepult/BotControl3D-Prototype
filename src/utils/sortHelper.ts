@@ -1,6 +1,8 @@
 import { TMapWithDestinations } from '../types/api/map';
 import { TDestination } from '../types/api/destination';
 
+// TODO Write tests for this function
+
 export const sortMapsAndDestinations = (maps?: TMapWithDestinations[]) => {
     const sortedMaps = sortMaps(maps);
     const retVal: TMapWithDestinations[] = [];
