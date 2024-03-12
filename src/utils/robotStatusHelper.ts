@@ -9,8 +9,6 @@ import {
 import { RobotActivity } from '../constants/enums/robotActivity';
 import { MapRobotStatus } from '../types/deckgl-map';
 
-// TODO Write tests for this function
-
 export const getMapRobotStatus = (robotStatus: TRobotStatus | undefined, puduApiRobotStatus: TPuduApiRobotStatus | undefined): MapRobotStatus => {
     let mapRobotStatus: MapRobotStatus | undefined;
     if (!puduApiRobotStatus) {

@@ -1,8 +1,6 @@
 import { TMapWithDestinations } from '../types/api/map';
 import { TDestination } from '../types/api/destination';
 
-// TODO Write tests for this function
-
 export const sortMapsAndDestinations = (maps?: TMapWithDestinations[]) => {
     console.log('maps', maps);
     const sortedMaps = sortMaps(maps);
