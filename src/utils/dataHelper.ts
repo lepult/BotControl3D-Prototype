@@ -6,8 +6,6 @@ import { IPathData } from '../types/deckgl-map';
 import { CustomDestinationType, DestinationType, TDestination } from '../types/api/destination';
 import { TRoute } from '../types/api/route';
 
-// TODO Write tests for data helpers
-
 // region PathData
 /**
  * Maps mapElements of type track and virtual_wall to data that can be used for PathLayer

@@ -13,7 +13,7 @@ export type TDestination = {
     automationDevice?: TAutomationDevice;
     roomId?: number;
     intermediateDestinations?: Array<TIntermediateDestination>;
-    creationTime: Date;
+    creationTime?: Date;
     deletionTime?: Date;
 };
 

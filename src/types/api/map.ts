@@ -6,7 +6,7 @@ export type TMapWithDestinations = {
     name: string;
     showName?: string;
     hidden?: Hidden;
-    creationTime: Date;
+    creationTime?: Date;
     deletionTime?: Date;
     destinations?: Array<TDestination>;
 };

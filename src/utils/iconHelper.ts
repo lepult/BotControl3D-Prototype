@@ -104,8 +104,6 @@ const getSvg = (faIcon: TFaIcon, red: number, green: number, blue: number, alpha
 
 // endregion
 
-// TODO Write tests for both getIcon functions
-
 // region Icon By RobotStatus
 
 export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: number, green: number, blue: number): string => {
