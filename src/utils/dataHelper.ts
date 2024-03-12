@@ -68,7 +68,7 @@ const insertTokenEveryN = (array: number[], token: number, n: number, fromEnd: b
 
 // region IconData
 
-type TMappedDestination = {
+export type TMappedDestination = {
     destination: TDestination,
     mapElement: TMapElement,
 }
@@ -95,12 +95,15 @@ export type IIconData = {
 }
 
 export const getIconDataFromDestinations = (mappedDestinations: TMappedDestination[], selectedDestination?: number, currentRoute?: TRoute, currentDestination?: TDestination, previousDestination?: TDestination) => {
-    const indexOfNextDestinationInRoute = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id) || -1;
+    // if (log) console.log('props', mappedDestinations, selectedDestination, currentRoute, currentDestination, previousDestination)
 
-    return mappedDestinations
+    const i = currentRoute?.routeDestinations.findIndex(({ destination }) => currentDestination?.id !== undefined && currentDestination?.id === destination?.id);
+    const indexOfNextDestinationInRoute = i == null ? -1 : i;
+    const result = mappedDestinations
         .map(({ destination, mapElement }) => {
-            const indexInRoute = currentRoute?.routeDestinations.findIndex((routeDestination) => routeDestination.destination.id === destination.id);
-            const routeDestination = currentRoute?.routeDestinations[indexInRoute || -1];
+            const j = currentRoute?.routeDestinations.findIndex((routeDestination) => routeDestination.destination.id === destination.id);
+            const indexInRoute = j == null ? -1 : j;
+            const routeDestination = currentRoute?.routeDestinations[indexInRoute];
 
             return {
                 id: destination.id,
@@ -116,11 +119,13 @@ export const getIconDataFromDestinations = (mappedDestinations: TMappedDestinati
                     isRouteDestination: !!routeDestination,
                     isNextDestination: !!currentDestination && routeDestination?.destination.id === currentDestination.id,
                     isPreviousDestination: !!previousDestination && routeDestination?.destination.id === previousDestination?.id,
-                    isEarlierDestination: indexOfNextDestinationInRoute > -1 && indexInRoute !== undefined && indexOfNextDestinationInRoute > indexInRoute,
+                    isEarlierDestination: indexOfNextDestinationInRoute > -1 && indexInRoute !== -1 && indexOfNextDestinationInRoute > indexInRoute,
                     isFinalDestination: (currentRoute?.routeDestinations || []).length > 0 && indexInRoute === (currentRoute?.routeDestinations || []).length - 1,
                 },
             }
         });
+
+    return result;
 }
 
 // endregion

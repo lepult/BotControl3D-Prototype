@@ -17,7 +17,8 @@
     "dev": "chayns-toolkit dev",
     "start": "chayns-toolkit dev",
     "format": "prettier . --write",
-    "lint": "chayns-toolkit lint"
+    "lint": "chayns-toolkit lint",
+    "test": "jest"
   },
   "prettier": {
     "proseWrap": "always",
@@ -48,12 +49,15 @@
     "react-redux": "^8.0.5"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "@types/react-redux": "^7.1.33",
     "chayns-toolkit": "^2.0.8",
+    "jest": "^29.7.0",
     "prettier": "^2.8.8",
     "prettier-plugin-packagejson": "^2.4.3",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.0.4"
   }
 }

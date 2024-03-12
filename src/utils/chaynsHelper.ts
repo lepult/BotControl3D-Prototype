@@ -1,5 +1,7 @@
 import { invokeCall } from 'chayns-api';
 
+// These functions aren't testable, since it requires non-mockable parts of the chayns environment.
+
 export enum ChaynsViewMode {
     normal = 0,
     exclusive = 2,

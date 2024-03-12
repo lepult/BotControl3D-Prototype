@@ -11,7 +11,7 @@ export type TDestination = {
     preposition?: string;
     chaynsCodesUrl?: string;
     automationDevice?: TAutomationDevice;
-    roomId: number;
+    roomId?: number;
     intermediateDestinations?: Array<TIntermediateDestination>;
     creationTime: Date;
     deletionTime?: Date;
