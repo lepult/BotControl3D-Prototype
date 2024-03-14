@@ -50,12 +50,20 @@ This starts the project with a local server for development. Typically this will
 be on [`http://localhost:1234/`](http://localhost:1234/), but this
 [can be adjusted](https://github.com/TobitSoftware/chayns-toolkit#development-options).
 
+### `npm run build:test`
+
+This tests and builds your project for production.
+
 ### `npm run build`
 
-This builds your project for production.
+This builds your project without testing.
 
 > If you want to analyze your bundle size you can do so by passing the `-a` flag
 > to this command.
+
+### `npm run test`
+
+This tests your project.
 
 ### `npm run lint`
 
