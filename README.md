@@ -19,7 +19,7 @@ This application can be used to monitor, control and configure service robots. T
 
 This application also offers a 3D view of a buildings floors. This 3D View can be edited via drag and drop. The 3D (glTF) Models were created, using the [Scaniverse App](https://scaniverse.com/).
 
-<img src="https://lptest.chayns.site/space/Animation.gif" alt="Video that shows dragging of models" width="75%"/>
+![Video that shows dragging of models](https://lptest.chayns.site/space/Animation.gif)
 
 ---
 
