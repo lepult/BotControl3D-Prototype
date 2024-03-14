@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>bot-control-3d</h1>
+    <h1><a href="https://github.com/lepult/BotControl3D-Prototype">bot-control-3d</a></h1>
     <p>An application that can be used to supervise service-robots</p>
     <a href="https://github.com/TobitSoftware/chayns-toolkit">
         <img 
@@ -33,6 +33,39 @@ You can also use the prototype on your chayns site by integrating the build (htt
 
 ---
 
+## Dependencies
+
+### Web Framework
+
+- [React](https://react.dev/)
+- [Redux](https://redux.js.org/)
+
+### 3D Map
+
+- [deck.gl](https://deck.gl)
+- [loaders.gl](https://loaders.gl)
+
+### chayns
+
+- [chayns-api](https://github.com/TobitSoftware/chayns-api)
+- [chayns-colors](https://github.com/TobitSoftware/chayns-colors)
+- [chayns-components](https://github.com/TobitSoftware/chayns-components)
+- [chayns-toolkit](https://github.com/TobitSoftware/chayns-toolkit)
+
+### Testing
+
+- [jest](https://jestjs.io/)
+- [enzyme](https://enzymejs.github.io/enzyme/)
+
+(Note that tests can be found in files that end with test.ts/tsx)
+
+### Misc
+
+- [clsx](https://github.com/lukeed/clsx)
+- [Font Awesome](https://fontawesome.com/)
+
+---
+
 ## Get Started
 
 To get started with working on the project first you have to install its
@@ -50,12 +83,20 @@ This starts the project with a local server for development. Typically this will
 be on [`http://localhost:1234/`](http://localhost:1234/), but this
 [can be adjusted](https://github.com/TobitSoftware/chayns-toolkit#development-options).
 
+### `npm run build:test`
+
+This tests and builds your project for production.
+
 ### `npm run build`
 
-This builds your project for production.
+This builds your project without testing.
 
 > If you want to analyze your bundle size you can do so by passing the `-a` flag
 > to this command.
+
+### `npm run test`
+
+This tests your project.
 
 ### `npm run lint`
 
