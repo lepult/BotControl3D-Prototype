@@ -9,8 +9,6 @@ import Preview from '../shared/Preview';
 import { PreviewType } from '../../../types/deckgl-map';
 import { changeSelectedMap } from '../../../redux-modules/map/actions';
 
-// TODO Write Tests for this component => Test that all information is rendered; Test that preview activation works
-
 const FloorItem: FC<{
     mapId: number
 }> = ({

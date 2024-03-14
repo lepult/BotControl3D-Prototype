@@ -26,8 +26,6 @@ const getRobotTypeName = (robotType?: RobotType) => {
     }
 }
 
-// TODO Write Tests for this component => Test that all information is rendered; Test that settings changes work; Test that preview activation works
-
 const RobotItem: FC<{
     robotId: string
 }> = ({
