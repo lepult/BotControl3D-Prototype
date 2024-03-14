@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorMapButtons should result in showing all buttons 1`] = `
+<div
+  className="user-mode-buttons__wrapper"
+>
+  <div
+    style={
+      {
+        "height": "100%",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <button
+        className="change-initial-view"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "bottom": 0,
+          "padding": "10px",
+          "right": 0,
+        }
+      }
+    >
+      <button
+        className="import"
+      />
+      <button
+        className="shortcuts"
+      />
+      <button
+        className="reset"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "bottom": "10px",
+          "display": "flex",
+          "flexDirection": "row",
+          "left": "50%",
+          "transform": "translateX(-50%)",
+        }
+      }
+    >
+      <button
+        className="save"
+      />
+      <div
+        style={
+          {
+            "marginLeft": "10px",
+          }
+        }
+      >
+        <button
+          className="cancel"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

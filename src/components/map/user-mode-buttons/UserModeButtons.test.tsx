@@ -34,24 +34,24 @@ jest.mock('chayns-api', () => ({
     useWindowMetrics: () => ({ ...windowMetrics })
 }));
 
-jest.mock('./robot-controls-buttons/route/RoutePlanner', () => () => <div className="route-planner"/>);
-jest.mock('./robot-controls-buttons/route/RouteButton', () => () => <div className="route"/>);
-jest.mock('./robot-controls-buttons/cancel/CancelButton', () => () => <div className="cancel"/>);
-jest.mock('./robot-controls-buttons/charge/ChargeButton', () => () => <div className="charge"/>);
-jest.mock('./robot-controls-buttons/follow-robot/FollowRobotButton', () => () => <div className="follow"/>);
-jest.mock('./robot-controls-buttons/information/InformationButton', () => () => <div className="info"/>);
-jest.mock('./interaction-buttons/EditMapButton', () => () => <div className="edit"/>);
-jest.mock('./interaction-buttons/ResetViewButton', () => () => <div className="reset"/>);
+jest.mock('./robot-controls-buttons/route/RoutePlanner', () => () => <button className="route-planner"/>);
+jest.mock('./robot-controls-buttons/route/RouteButton', () => () => <button className="route"/>);
+jest.mock('./robot-controls-buttons/cancel/CancelButton', () => () => <button className="cancel"/>);
+jest.mock('./robot-controls-buttons/charge/ChargeButton', () => () => <button className="charge"/>);
+jest.mock('./robot-controls-buttons/follow-robot/FollowRobotButton', () => () => <button className="follow"/>);
+jest.mock('./robot-controls-buttons/information/InformationButton', () => () => <button className="info"/>);
+jest.mock('./interaction-buttons/EditMapButton', () => () => <button className="edit"/>);
+jest.mock('./interaction-buttons/ResetViewButton', () => () => <button className="reset"/>);
 jest.mock('./robot-selection-buttons/RobotSelectionButton', () => ({
     robotId
 }: {
     robotId: number
-}) => <div className="select-robot" id={`${robotId}`}/>);
+}) => <button className="select-robot" id={`${robotId}`}/>);
 jest.mock('./floor-buttons/FloorSelectionButton', () => ({
     mapId
 }: {
     mapId: number
-}) => <div className="select-floor" id={`${mapId}`}/>);
+}) => <button className="select-floor" id={`${mapId}`}/>);
 
 it('robotIds, mapIds and not planning route should result in all buttons showing', () => {
     const component = renderer.create(

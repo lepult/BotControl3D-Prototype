@@ -21,15 +21,15 @@ exports[`No mapIds should result in no map buttons 1`] = `
         }
       }
     >
-      <div
+      <button
         className="select-robot"
         id="1"
       />
-      <div
+      <button
         className="select-robot"
         id="2"
       />
-      <div
+      <button
         className="select-robot"
         id="3"
       />
@@ -46,13 +46,13 @@ exports[`No mapIds should result in no map buttons 1`] = `
         }
       }
     >
-      <div
+      <button
         className="route"
       />
-      <div
+      <button
         className="cancel"
       />
-      <div
+      <button
         className="charge"
       />
     </div>
@@ -69,10 +69,10 @@ exports[`No mapIds should result in no map buttons 1`] = `
         }
       }
     >
-      <div
+      <button
         className="follow"
       />
-      <div
+      <button
         className="info"
       />
     </div>
@@ -82,10 +82,10 @@ exports[`No mapIds should result in no map buttons 1`] = `
     <div
       className="map-buttons position-right position-bottom"
     >
-      <div
+      <button
         className="edit"
       />
-      <div
+      <button
         className="reset"
       />
     </div>
@@ -126,13 +126,13 @@ exports[`No robotIds should result in no robot buttons 1`] = `
         }
       }
     >
-      <div
+      <button
         className="route"
       />
-      <div
+      <button
         className="cancel"
       />
-      <div
+      <button
         className="charge"
       />
     </div>
@@ -149,25 +149,25 @@ exports[`No robotIds should result in no robot buttons 1`] = `
         }
       }
     >
-      <div
+      <button
         className="follow"
       />
-      <div
+      <button
         className="info"
       />
     </div>
     <div
       className="map-buttons position-left position-bottom"
     >
-      <div
+      <button
         className="select-floor"
         id="1"
       />
-      <div
+      <button
         className="select-floor"
         id="2"
       />
-      <div
+      <button
         className="select-floor"
         id="3"
       />
@@ -175,10 +175,10 @@ exports[`No robotIds should result in no robot buttons 1`] = `
     <div
       className="map-buttons position-right position-bottom"
     >
-      <div
+      <button
         className="edit"
       />
-      <div
+      <button
         className="reset"
       />
     </div>
@@ -207,20 +207,20 @@ exports[`isPlanningRoute should result in route planner showing 1`] = `
         }
       }
     >
-      <div
+      <button
         className="select-robot"
         id="1"
       />
-      <div
+      <button
         className="select-robot"
         id="2"
       />
-      <div
+      <button
         className="select-robot"
         id="3"
       />
     </div>
-    <div
+    <button
       className="route-planner"
     />
     <div
@@ -235,13 +235,13 @@ exports[`isPlanningRoute should result in route planner showing 1`] = `
         }
       }
     >
-      <div
+      <button
         className="route"
       />
-      <div
+      <button
         className="cancel"
       />
-      <div
+      <button
         className="charge"
       />
     </div>
@@ -258,25 +258,25 @@ exports[`isPlanningRoute should result in route planner showing 1`] = `
         }
       }
     >
-      <div
+      <button
         className="follow"
       />
-      <div
+      <button
         className="info"
       />
     </div>
     <div
       className="map-buttons position-left position-bottom"
     >
-      <div
+      <button
         className="select-floor"
         id="1"
       />
-      <div
+      <button
         className="select-floor"
         id="2"
       />
-      <div
+      <button
         className="select-floor"
         id="3"
       />
@@ -284,10 +284,10 @@ exports[`isPlanningRoute should result in route planner showing 1`] = `
     <div
       className="map-buttons position-right position-bottom"
     >
-      <div
+      <button
         className="edit"
       />
-      <div
+      <button
         className="reset"
       />
     </div>
@@ -308,7 +308,7 @@ exports[`isPlanningRoute should result in route planner showing 2`] = `
       }
     }
   >
-    <div
+    <button
       className="route-planner"
     />
     <div
@@ -324,25 +324,25 @@ exports[`isPlanningRoute should result in route planner showing 2`] = `
         }
       }
     >
-      <div
+      <button
         className="follow"
       />
-      <div
+      <button
         className="info"
       />
     </div>
     <div
       className="map-buttons position-left position-bottom"
     >
-      <div
+      <button
         className="select-floor"
         id="1"
       />
-      <div
+      <button
         className="select-floor"
         id="2"
       />
-      <div
+      <button
         className="select-floor"
         id="3"
       />
@@ -350,10 +350,10 @@ exports[`isPlanningRoute should result in route planner showing 2`] = `
     <div
       className="map-buttons position-right position-bottom"
     >
-      <div
+      <button
         className="edit"
       />
-      <div
+      <button
         className="reset"
       />
     </div>
@@ -382,15 +382,15 @@ exports[`robotIds, mapIds and not planning route should result in all buttons sh
         }
       }
     >
-      <div
+      <button
         className="select-robot"
         id="1"
       />
-      <div
+      <button
         className="select-robot"
         id="2"
       />
-      <div
+      <button
         className="select-robot"
         id="3"
       />
@@ -407,13 +407,13 @@ exports[`robotIds, mapIds and not planning route should result in all buttons sh
         }
       }
     >
-      <div
+      <button
         className="route"
       />
-      <div
+      <button
         className="cancel"
       />
-      <div
+      <button
         className="charge"
       />
     </div>
@@ -430,25 +430,25 @@ exports[`robotIds, mapIds and not planning route should result in all buttons sh
         }
       }
     >
-      <div
+      <button
         className="follow"
       />
-      <div
+      <button
         className="info"
       />
     </div>
     <div
       className="map-buttons position-left position-bottom"
     >
-      <div
+      <button
         className="select-floor"
         id="1"
       />
-      <div
+      <button
         className="select-floor"
         id="2"
       />
-      <div
+      <button
         className="select-floor"
         id="3"
       />
@@ -456,10 +456,10 @@ exports[`robotIds, mapIds and not planning route should result in all buttons sh
     <div
       className="map-buttons position-right position-bottom"
     >
-      <div
+      <button
         className="edit"
       />
-      <div
+      <button
         className="reset"
       />
     </div>
