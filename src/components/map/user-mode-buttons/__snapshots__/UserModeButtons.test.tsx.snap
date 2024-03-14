@@ -1,0 +1,468 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`No mapIds should result in no map buttons 1`] = `
+<div
+  className="user-mode-buttons__wrapper"
+>
+  <div
+    style={
+      {
+        "height": "100%",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="map-buttons map-buttons-row position-left position-top bot-selection-buttons"
+      style={
+        {
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <div
+        className="select-robot"
+        id="1"
+      />
+      <div
+        className="select-robot"
+        id="2"
+      />
+      <div
+        className="select-robot"
+        id="3"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <div
+        className="route"
+      />
+      <div
+        className="cancel"
+      />
+      <div
+        className="charge"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <div
+        className="follow"
+      />
+      <div
+        className="info"
+      />
+    </div>
+    <div
+      className="map-buttons position-left position-bottom"
+    />
+    <div
+      className="map-buttons position-right position-bottom"
+    >
+      <div
+        className="edit"
+      />
+      <div
+        className="reset"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`No robotIds should result in no robot buttons 1`] = `
+<div
+  className="user-mode-buttons__wrapper"
+>
+  <div
+    style={
+      {
+        "height": "100%",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="map-buttons map-buttons-row position-left position-top bot-selection-buttons"
+      style={
+        {
+          "flexWrap": "wrap",
+        }
+      }
+    />
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <div
+        className="route"
+      />
+      <div
+        className="cancel"
+      />
+      <div
+        className="charge"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <div
+        className="follow"
+      />
+      <div
+        className="info"
+      />
+    </div>
+    <div
+      className="map-buttons position-left position-bottom"
+    >
+      <div
+        className="select-floor"
+        id="1"
+      />
+      <div
+        className="select-floor"
+        id="2"
+      />
+      <div
+        className="select-floor"
+        id="3"
+      />
+    </div>
+    <div
+      className="map-buttons position-right position-bottom"
+    >
+      <div
+        className="edit"
+      />
+      <div
+        className="reset"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`isPlanningRoute should result in route planner showing 1`] = `
+<div
+  className="user-mode-buttons__wrapper"
+>
+  <div
+    style={
+      {
+        "height": "100%",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="map-buttons map-buttons-row position-left position-top bot-selection-buttons"
+      style={
+        {
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <div
+        className="select-robot"
+        id="1"
+      />
+      <div
+        className="select-robot"
+        id="2"
+      />
+      <div
+        className="select-robot"
+        id="3"
+      />
+    </div>
+    <div
+      className="route-planner"
+    />
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <div
+        className="route"
+      />
+      <div
+        className="cancel"
+      />
+      <div
+        className="charge"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <div
+        className="follow"
+      />
+      <div
+        className="info"
+      />
+    </div>
+    <div
+      className="map-buttons position-left position-bottom"
+    >
+      <div
+        className="select-floor"
+        id="1"
+      />
+      <div
+        className="select-floor"
+        id="2"
+      />
+      <div
+        className="select-floor"
+        id="3"
+      />
+    </div>
+    <div
+      className="map-buttons position-right position-bottom"
+    >
+      <div
+        className="edit"
+      />
+      <div
+        className="reset"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`isPlanningRoute should result in route planner showing 2`] = `
+<div
+  className="user-mode-buttons__wrapper"
+>
+  <div
+    style={
+      {
+        "height": "100%",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="route-planner"
+    />
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <div
+        className="follow"
+      />
+      <div
+        className="info"
+      />
+    </div>
+    <div
+      className="map-buttons position-left position-bottom"
+    >
+      <div
+        className="select-floor"
+        id="1"
+      />
+      <div
+        className="select-floor"
+        id="2"
+      />
+      <div
+        className="select-floor"
+        id="3"
+      />
+    </div>
+    <div
+      className="map-buttons position-right position-bottom"
+    >
+      <div
+        className="edit"
+      />
+      <div
+        className="reset"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`robotIds, mapIds and not planning route should result in all buttons showing 1`] = `
+<div
+  className="user-mode-buttons__wrapper"
+>
+  <div
+    style={
+      {
+        "height": "100%",
+        "position": "relative",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="map-buttons map-buttons-row position-left position-top bot-selection-buttons"
+      style={
+        {
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <div
+        className="select-robot"
+        id="1"
+      />
+      <div
+        className="select-robot"
+        id="2"
+      />
+      <div
+        className="select-robot"
+        id="3"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    >
+      <div
+        className="route"
+      />
+      <div
+        className="cancel"
+      />
+      <div
+        className="charge"
+      />
+    </div>
+    <div
+      className="map-buttons"
+      style={
+        {
+          "alignItems": "end",
+          "left": 0,
+          "padding": "10px",
+          "right": 0,
+          "top": "50%",
+          "transform": "translateY(-50%)",
+        }
+      }
+    >
+      <div
+        className="follow"
+      />
+      <div
+        className="info"
+      />
+    </div>
+    <div
+      className="map-buttons position-left position-bottom"
+    >
+      <div
+        className="select-floor"
+        id="1"
+      />
+      <div
+        className="select-floor"
+        id="2"
+      />
+      <div
+        className="select-floor"
+        id="3"
+      />
+    </div>
+    <div
+      className="map-buttons position-right position-bottom"
+    >
+      <div
+        className="edit"
+      />
+      <div
+        className="reset"
+      />
+    </div>
+  </div>
+</div>
+`;
