@@ -3,6 +3,7 @@
     "@chayns-toolkit"
   ],
   "rules": {
+    "@typescript-eslint/no-var-requires": 0,
     "react/jsx-props-no-spreading": "off",
     "no-param-reassign": [
       "error",

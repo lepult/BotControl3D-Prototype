@@ -9,6 +9,8 @@ import CancelButton from './buttons/CancelButton';
 import ShortcutsButton from './buttons/ShortcutsButton';
 import ResetViewButton from '../user-mode-buttons/interaction-buttons/ResetViewButton';
 
+// TODO Write tests for functionality of the buttons
+
 const EditorMapButtons: FC<{
     floorModels: ModelType[],
     viewState: TViewState | undefined,

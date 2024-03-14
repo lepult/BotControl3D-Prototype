@@ -53,6 +53,8 @@ const flyToInterpolator =  new FlyToInterpolator({
     maxDuration: 1000,
 });
 
+// TODO Write tests for map with different props
+
 const Map: FC<{
     mapId: number,
     robotId?: string,
@@ -375,7 +377,6 @@ const Map: FC<{
     // region Data Accessors
 
     const getCursor = useCallback(() => {
-        // TODO Display correct cursors for userMap (e.g. pointer on hover over icon)
         if (isDraggingMap) {
             return 'grabbing';
         }
@@ -560,7 +561,7 @@ const Map: FC<{
                         getIcon={(iconData: IIconData) => getLayerIcon(svgToDataURL(getIconByDestinationType(iconData)))}
                         onClick={(pickingInfo: PickingInfo) => {
                             const iconData = pickingInfo.object as IIconData;
-                            // Disables Selection for non targets when planning the route.
+                            // Disables Selection for non targets.
                             if (iconData.invalid || isEditor) {
                                 return;
                             }

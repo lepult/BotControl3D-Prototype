@@ -7,6 +7,8 @@ import { TRobotLayerData } from '../types/deckgl-map';
 import { getIconDataFromDestinations } from '../utils/dataHelper';
 import { radiansToDegrees, svgToDataURL } from '../utils/conversionHelper';
 
+// TODO Test this selector
+
 export const selectDestinationsLayerData = createSelector(
     [
         (state: RootState) => state,
@@ -17,7 +19,6 @@ export const selectDestinationsLayerData = createSelector(
         const destinations = destination.idsByMapId[mapId]?.map((id) => destination.entities[id]) || [];
         const selectedDestinationId = misc.selectedDestination;
         const selectedRobot = state[robotStatusName].entities[state.map.selectedRobot || ''];
-        const { isPlanningRoute } = misc;
 
         return getIconDataFromDestinations(
             destinations,
@@ -25,7 +26,6 @@ export const selectDestinationsLayerData = createSelector(
             selectedRobot?.robotStatus?.currentRoute,
             selectedRobot?.robotStatus?.destination,
             selectedRobot?.robotStatus?.currentDestination,
-            isPlanningRoute,
         );
     }
 );
@@ -65,6 +65,8 @@ export const selectRobotLayerData = createSelector(
             .map((data) => getRobotLayerData(data, selectedRobotId));
     }
 );
+
+// TODO Test this selector
 
 export const getRobotLayerData = (robot: TState, selectedRobot?: string) => {
     const robotId = robot?.robotStatus?.robotId as string;

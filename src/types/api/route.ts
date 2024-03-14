@@ -12,7 +12,7 @@ export type TRouteDestination = {
     routeId: number;
     destination: TDestination;
     status?: string,
-    text: string;
+    text?: string;
     sequence: number;
     distance?: number;
     robotSpeed?: number;

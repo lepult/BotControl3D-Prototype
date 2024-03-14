@@ -13,3 +13,4 @@ export type TPuduApiRobotStatus = {
     // Battery power
     robotPower?: number;
 };
+

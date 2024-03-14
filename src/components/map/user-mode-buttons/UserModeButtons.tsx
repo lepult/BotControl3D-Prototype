@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import '../buttons.scss';
 import { useSelector } from 'react-redux';
-import { getUser, useDevice, useUser, useWindowMetrics } from 'chayns-api';
+import { useUser, useWindowMetrics } from 'chayns-api';
 import { selectMapIds } from '../../../redux-modules/map/selectors';
 import FloorSelectionButton from './floor-buttons/FloorSelectionButton';
 import { selectRobotIds } from '../../../redux-modules/robot-status/selectors';
@@ -17,6 +17,8 @@ import { UserType } from '../../../types/misc';
 import InformationButton from './robot-controls-buttons/information/InformationButton';
 import EditMapButton from './interaction-buttons/EditMapButton';
 import RoutePlanner from './robot-controls-buttons/route/RoutePlanner';
+
+// TODO Write tests for functionality of the buttons
 
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
@@ -52,7 +54,6 @@ const UserModeButtons: FC = () => {
                         ))}
                     </div>
                 )}
-
                 {isPlanningRoute && <RoutePlanner/>}
                 {(!isPlanningRoute || metrics.pageWidth > 900) && !isGuest && (
                     <div

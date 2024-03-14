@@ -156,7 +156,8 @@ export const getIconByMapRobotStatus = (mapRobotStatus: MapRobotStatus, red: num
             i = exclamation;
             break;
     }
-    return getSvg(i as TFaIcon, red, green, blue, 1);
+    const svg = getSvg(i as TFaIcon, red, green, blue, 1);
+    return svg;
 }
 
 // endregion
