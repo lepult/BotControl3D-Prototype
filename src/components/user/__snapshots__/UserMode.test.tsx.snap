@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fetching maps should result in wait cursor and no map 1`] = `
+<div>
+  <div
+    className="buttons"
+  />
+  <div
+    style={
+      {
+        "alignItems": "center",
+        "display": "flex",
+        "height": "100vh",
+        "justifyContent": "center",
+        "width": "100%",
+      }
+    }
+  >
+    <div
+      className="wait-cursor"
+    />
+  </div>
+  0
+</div>
+`;
+
+exports[`selected map should result in displayed map 1`] = `
+<div>
+  <div
+    className="buttons"
+  />
+  <div
+    className="map"
+  />
+</div>
+`;
