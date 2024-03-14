@@ -2,14 +2,12 @@ import { TMapWithDestinations } from '../types/api/map';
 import { TDestination } from '../types/api/destination';
 
 export const sortMapsAndDestinations = (maps?: TMapWithDestinations[]) => {
-    console.log('maps', maps);
     const sortedMaps = sortMaps(maps);
     const retVal: TMapWithDestinations[] = [];
     sortedMaps?.forEach((map) => {
         const sortedDestinations = sortDestinations(map.destinations);
         retVal.push({ ...map, destinations: sortedDestinations });
     });
-    console.log('retVal', retVal);
 
     return retVal;
 };

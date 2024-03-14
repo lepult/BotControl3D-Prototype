@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ChangeInitialViewButton renders as expected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-crosshairs-simple"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test EditMapButton renders as expected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="fa-duotone fa-layer-group"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test FloorSelectionButton doesnt render when map is hidden or doesnt have pathData 1`] = `null`;
+
+exports[`Test FloorSelectionButton doesnt render when map is hidden or doesnt have pathData 2`] = `null`;
+
+exports[`Test FloorSelectionButton renders as expected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="list-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Tobit EG
+  </button>
+</div>
+`;
+
+exports[`Test FloorSelectionButton renders as expected 2`] = `null`;
+
+exports[`Test FloorSelectionButton shows border when map has selected robot 1`] = `null`;
+
+exports[`Test FloorSelectionButton shows border when map has selected robot 2`] = `null`;
+
+exports[`Test FollowRobotButton disabled when no robot is selected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-cctv"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test FollowRobotButton disabled when no robot is selected 2`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button button--disabled"
+    disabled={true}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-cctv"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test FollowRobotButton uses correct colors when following and not following 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-cctv"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test FollowRobotButton uses correct colors when following and not following 2`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-cctv"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test ResetViewButton renders as expected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-location-crosshairs"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test ResetViewButton renders as expected 2`] = `
+<button
+  className="pointer-events button"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+>
+  Speichern
+</button>
+`;
+
+exports[`Test RobotSelectionButton doesnt render when robot has no pose 1`] = `null`;
+
+exports[`Test RobotSelectionButton doesnt render when robot has no pose 2`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="pointer-events robot-selection-button button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    robotSelected
+  </button>
+</div>
+`;
+
+exports[`Test RobotSelectionButton renders as expected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="pointer-events robot-selection-button button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    robotDefault
+  </button>
+</div>
+`;
+
+exports[`Test RobotSelectionButton renders as expected 2`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="pointer-events robot-selection-button button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    robotSelected
+  </button>
+</div>
+`;
+
+exports[`Test ShortcutsButton renders as expected 1`] = `
+<div
+  className="tooltip"
+>
+  <button
+    className="icon-button pointer-events button--secondary button"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="far fa-question"
+    />
+  </button>
+</div>
+`;

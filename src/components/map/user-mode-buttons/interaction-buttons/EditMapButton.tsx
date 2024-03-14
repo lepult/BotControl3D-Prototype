@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { Button ,Tooltip } from 'chayns-components';
+import { Button, Tooltip } from 'chayns-components';
 import { setIsEditingMap } from '../../../../redux-modules/misc/actions';
 
 const EditMapButton = () => {
@@ -23,7 +23,6 @@ const EditMapButton = () => {
                 <i className="fa-duotone fa-layer-group"/>
             </Button>
         </Tooltip>
-
     );
 };
 

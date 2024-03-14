@@ -24,7 +24,7 @@ const FloorSelectionButton: FC<{
     const isSelected = useMemo(() => selectedMap === mapId,
         [selectedMap, mapId])
 
-    if (map.hidden || !pathData) {
+    if (map?.hidden || !pathData) {
         return null;
     }
 

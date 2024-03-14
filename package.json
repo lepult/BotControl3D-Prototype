@@ -40,6 +40,7 @@
     "@loaders.gl/core": "^3.4.13",
     "@loaders.gl/obj": "^3.4.13",
     "@reduxjs/toolkit": "^1.9.5",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "chayns-api": "^1.0.20",
     "chayns-components": "^4.31.4",
     "clsx": "^2.1.0",
@@ -51,6 +52,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
+    "@types/enzyme": "^3.10.18",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
@@ -58,6 +60,7 @@
     "@types/react-test-renderer": "^17.0.9",
     "babel-jest": "^29.7.0",
     "chayns-toolkit": "^2.0.8",
+    "enzyme": "^3.11.0",
     "jest": "^29.7.0",
     "prettier": "^2.8.8",
     "prettier-plugin-packagejson": "^2.4.3",
