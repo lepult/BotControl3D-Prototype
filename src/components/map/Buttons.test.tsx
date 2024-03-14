@@ -421,7 +421,7 @@ describe('Test FollowRobotButton', () => {
         const component = shallow((<FollowRobotButton/>));
         component.find('Button').simulate('click');
 
-        expect(useDispatchCallBack.mock.calls.length).toEqual(1);
+        expect(useDispatchCallBack.mock.calls.length).toEqual(2);
         expect(useDispatchCallBack.mock.calls[0][0].type).toEqual(toggleFollowRobot.type);
 
         useDispatchCallBack.mock.calls = [];
