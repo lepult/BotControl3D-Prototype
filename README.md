@@ -15,11 +15,11 @@
 
 This application can be used to monitor, control and configure service robots. The service robots need to be integrated in the BotControlBackend by Tobit Labs.
 
-<img src="https://lptest.chayns.site/space/Screenshot_Steuerung.png" alt="Screenshot of the Prototype" width="75%"/>
+![Screenshot of the Prototype](resources/Screenshot%20Uebersicht.png)
 
 This application also offers a 3D view of a buildings floors. This 3D View can be edited via drag and drop. The 3D (glTF) Models were created, using the [Scaniverse App](https://scaniverse.com/).
 
-![Video that shows dragging of models](https://lptest.chayns.site/space/Animation.gif)
+![Video that shows dragging of models](resources/Animation.gif)
 
 ---
 
