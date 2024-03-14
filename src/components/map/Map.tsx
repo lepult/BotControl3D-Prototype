@@ -53,8 +53,6 @@ const flyToInterpolator =  new FlyToInterpolator({
     maxDuration: 1000,
 });
 
-// TODO Write tests for map with different props
-
 const Map: FC<{
     mapId: number,
     robotId?: string,

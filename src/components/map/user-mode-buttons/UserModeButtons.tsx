@@ -18,8 +18,6 @@ import InformationButton from './robot-controls-buttons/information/InformationB
 import EditMapButton from './interaction-buttons/EditMapButton';
 import RoutePlanner from './robot-controls-buttons/route/RoutePlanner';
 
-// TODO Write tests for functionality of the buttons
-
 const UserModeButtons: FC = () => {
     const allMapIds = useSelector(selectMapIds);
     const allRobotIds = useSelector(selectRobotIds);

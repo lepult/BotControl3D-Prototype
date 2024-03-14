@@ -11,9 +11,25 @@
 
 ---
 
-## Basics
+<b>Important</b>: This is a Prototype!
 
-TODO: Add text
+This application can be used to monitor, control and configure service robots. The service robots need to be integrated in the BotControlBackend by Tobit Labs.
+
+<img src="https://lptest.chayns.site/space/Screenshot_Steuerung.png" alt="Screenshot of the Prototype" width="75%"/>
+
+This application also offers a 3D view of a buildings floors. This 3D View can be edited via drag and drop. The 3D (glTF) Models were created, using the [Scaniverse App](https://scaniverse.com/).
+
+<img src="https://lptest.chayns.site/space/Animation.gif" alt="Video that shows dragging of models" width="75%"/>
+
+---
+
+## Usage of Prototype
+
+The prototype can be viewed [here](https://lptest.chayns.site/). Note that you need a chayns account to view the prototype.
+
+You can also use the prototype on your chayns site by integrating the build (https://lepult.github.io/BotControl3D-Prototype/) like [this](https://github.com/TobitSoftware/create-chayns-app?tab=readme-ov-file#developing-a-custom-page).
+
+<b>Important</b>: You won't be able to control the robots!
 
 ---
 
