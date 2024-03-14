@@ -33,6 +33,39 @@ You can also use the prototype on your chayns site by integrating the build (htt
 
 ---
 
+## Dependencies
+
+### Web Framework
+
+- [React](https://react.dev/)
+- [Redux](https://redux.js.org/)
+
+### 3D Map
+
+- [deck.gl](https://deck.gl)
+- [loaders.gl](https://loaders.gl)
+
+### chayns
+
+- [chayns-api](https://github.com/TobitSoftware/chayns-api)
+- [chayns-colors](https://github.com/TobitSoftware/chayns-colors)
+- [chayns-components](https://github.com/TobitSoftware/chayns-components)
+- [chayns-toolkit](https://github.com/TobitSoftware/chayns-toolkit)
+
+### Testing
+
+- [jest](https://jestjs.io/)
+- [enzyme](https://enzymejs.github.io/enzyme/)
+
+(Note that tests can be found in files that end with test.ts/tsx)
+
+### Misc
+
+- [clsx](https://github.com/lukeed/clsx)
+- [Font Awesome](https://fontawesome.com/)
+
+---
+
 ## Get Started
 
 To get started with working on the project first you have to install its
