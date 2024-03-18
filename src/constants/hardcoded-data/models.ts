@@ -66,8 +66,8 @@ export const floorModelsT21OG: ModelType[] = [{
 {
     id: "T2_1OG/Heinze",
     url: "https://chayns.space/77896-05853/3D-Modelle/T2_1OG/Heinze.glb",
-    position: [-13.33396794378293, 25.1408418718374, 0],
-    orientation: [0, 0, 90]
+    position: [1.3988126737215305, 12.88832747368052, 0],
+    orientation: [0, -150.61538343847275, 90]
 },
 {
     id: "T2_1OG/Wagner",
