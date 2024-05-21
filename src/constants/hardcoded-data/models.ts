@@ -5,6 +5,8 @@ export type ModelType = {
     orientation: [number, number, number],
 }
 
+
+
 export const floorModelsEg: ModelType[] = [{
     id: "EG/Dome",
     url: "https://chayns.space/77896-05853/3D-Modelle/EG/Dome.glb",
@@ -15,7 +17,106 @@ export const floorModelsEg: ModelType[] = [{
     url: "https://chayns.space/77896-05853/3D-Modelle/EG/Atrium_Norden.glb",
     position: [6.546039244784711, -79.53639843228481, 0],
     orientation: [0, 206.6837556318823, 90]
-}];
+},
+    {
+        "id": "EG/Dome",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/Dome.glb",
+        "position": [
+            0.30353255969106474,
+            -116.77306274331785,
+            0
+        ],
+        "orientation": [
+            0,
+            -50.97685956018226,
+            90
+        ]
+    },
+    {
+        "id": "EG/Atrium_Norden",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/Atrium_Norden.glb",
+        "position": [
+            6.546039244784711,
+            -79.53639843228481,
+            0
+        ],
+        "orientation": [
+            0,
+            206.6837556318823,
+            90
+        ]
+    },
+    {
+        "id": "EG/EG_T1_Flur1",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/EG_T1_Flur1.glb",
+        "position": [
+            10.880882489975987,
+            -10.267232355352796,
+            0
+        ],
+        "orientation": [
+            0,
+            -183.47641317002382,
+            90
+        ]
+    },
+    {
+        "id": "EG/EG_T1_Lounge2",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/EG_T1_Lounge2.glb",
+        "position": [
+            13.794759909576012,
+            -17.550226677043792,
+            0
+        ],
+        "orientation": [
+            0,
+            -183.05941769349906,
+            90
+        ]
+    },
+    {
+        "id": "EG/EG_T1_M1",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/EG_T1_M1.glb",
+        "position": [
+            14.437488052531066,
+            -6.524201802938443,
+            0
+        ],
+        "orientation": [
+            0,
+            -94.21939082471246,
+            90
+        ]
+    },
+    {
+        "id": "EG/EG_T1_M2",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/EG_T1_M2.glb",
+        "position": [
+            14.187558195221985,
+            -10.881680177946729,
+            0
+        ],
+        "orientation": [
+            0,
+            176.50215136436123,
+            90
+        ]
+    },
+    {
+        "id": "EG/EG_T1_1",
+        "url": "https://chayns.space/77896-05853/3D-Modelle/EG/EG_T1_1.glb",
+        "position": [
+            4.480946243515761,
+            -2.0496706031643757,
+            0
+        ],
+        "orientation": [
+            0,
+            -93.30179866558458,
+            90
+        ]
+    }
+];
 
 export const floorModelsAtriumDome: ModelType[] = [{
     id: "AtriumDome/Dome",
