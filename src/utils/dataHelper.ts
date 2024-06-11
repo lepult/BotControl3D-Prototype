@@ -15,7 +15,7 @@ export const mapRobotElementsToPathData = (elements: Array<TMapElement>): Array<
     const pathData: Array<IPathData> = [];
     const { colorMode } = getSite();
     const color = hexToRgb255(
-        getColorFromPalette(300, { colorMode }) || '#ffffff'
+        '#00CED1' || '#ffffff'
     ) || { r: 255, g: 255, b: 255 };
 
     elements.forEach((element) => {
