@@ -11,7 +11,7 @@
 
 ---
 
-<b>Important</b>: This is a Prototype!
+<b>IMPORTANT</b>: This is a Prototype!
 
 This application can be used to monitor, control and configure service robots. The service robots need to be integrated in the BotControlBackend by Tobit Laboratories.
 
